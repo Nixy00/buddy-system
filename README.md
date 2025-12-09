@@ -21,10 +21,10 @@ Bienvenue sur le dépôt du projet **Buddy System**, une application web réalis
 **Buddy System** est une plateforme destinée à faciliter l'intégration des étudiants internationaux à l'Université de Reims Champagne-Ardenne. L'application permet de mettre en relation des étudiants locaux ("parrains") avec des étudiants arrivants ("filleuls") pour favoriser l'échange culturel et l'entraide.
 
 ### Fonctionnalités principales
-**Gestion des comptes :** Inscription et profils différenciés (Local / International).
-**Messagerie :** Conversations privées et système de signalement.
-**Événements :** Création, publication et inscriptions aux événements.
-**Administration :** Back-office pour la modération et la gestion des utilisateurs.
+* **Gestion des comptes :** Inscription et profils différenciés (Local / International).
+* **Messagerie :** Conversations privées et système de signalement.
+* **Événements :** Création, publication et inscriptions aux événements.
+* **Administration :** Back-office pour la modération et la gestion des utilisateurs.
 
 ---
 
