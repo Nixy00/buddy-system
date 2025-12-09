@@ -18,13 +18,13 @@ Bienvenue sur le dépôt du projet **Buddy System**, une application web réalis
 
 ##  Présentation du Projet
 
-**Buddy System** est une plateforme destinée à faciliter l'intégration des étudiants internationaux à l'Université de Reims Champagne-Ardenne. [cite_start]L'application permet de mettre en relation des étudiants locaux ("parrains") avec des étudiants arrivants ("filleuls") pour favoriser l'échange culturel et l'entraide[cite: 171].
+**Buddy System** est une plateforme destinée à faciliter l'intégration des étudiants internationaux à l'Université de Reims Champagne-Ardenne. L'application permet de mettre en relation des étudiants locaux ("parrains") avec des étudiants arrivants ("filleuls") pour favoriser l'échange culturel et l'entraide.
 
 ### Fonctionnalités principales
-* [cite_start]**Gestion des comptes :** Inscription et profils différenciés (Local / International) [cite: 205-207].
-* [cite_start]**Messagerie :** Conversations privées et système de signalement[cite: 1457].
-* [cite_start]**Événements :** Création, publication et inscriptions aux événements[cite: 2160].
-* [cite_start]**Administration :** Back-office pour la modération et la gestion des utilisateurs[cite: 3019].
+**Gestion des comptes :** Inscription et profils différenciés (Local / International).
+**Messagerie :** Conversations privées et système de signalement.
+**Événements :** Création, publication et inscriptions aux événements.
+**Administration :** Back-office pour la modération et la gestion des utilisateurs.
 
 ---
 
@@ -40,7 +40,7 @@ Avant de lancer le projet, assurez-vous d'avoir installé sur votre machine :
 
 ## Installation & Configuration
 
-[cite_start]Pour évaluer notre travail, suivez ces étapes afin de lancer l'application en local [cite: 136-146].
+Pour évaluer notre travail, suivez ces étapes afin de lancer l'application en local.
 
 ### 1. Cloner le dépôt
 ```bash
