@@ -56,4 +56,45 @@ composer install
 composer start
 ```
 
-### En attente de la suite de la SAE
+---
+
+## Scripts Composer
+
+Les scripts Composer suivants sont fournis dans `composer.json` pour faciliter le développement et la vérification du code.
+
+| Commande | Description |
+|----------|-------------|
+| `composer start` | Démarre le serveur de développement Symfony sans limite de temps. |
+| `composer test:phpcs` | Vérifie le style PHP avec PHP CS Fixer (mode dry-run, sans modification). |
+| `composer fix:phpcs` | Corrige automatiquement le style PHP avec PHP CS Fixer. |
+| `composer test:twigcs` | Vérifie la conformité des templates Twig. |
+| `composer fix:twigcs` | Corrige automatiquement les templates Twig. |
+| `composer test:codeception` | Initialise la base de test et exécute les tests fonctionnels Codeception. |
+| `composer test` | Exécute les vérifications de style : `test:phpcs` et `test:twigcs`. |
+| `composer fix` | Applique toutes les corrections : `fix:phpcs` et `fix:twigcs`. |
+
+### Utilisation rapide
+
+```bash
+# Démarrer le serveur de développement
+composer start
+
+# Vérifier le style du code
+composer test
+
+# Corriger automatiquement le style
+composer fix
+```
+
+---
+
+## Qualité du code
+
+- **PHP CS Fixer** est configuré avec les règles Symfony dans `.php-cs-fixer.dist.php`.
+- **Twig CS Fixer** vérifie et corrige les templates Twig.
+
+---
+
+## Développement
+
+*En attente de la suite de la SAE*
