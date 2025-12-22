@@ -18,3 +18,25 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> IDE ###
+/.idea/
+###< IDE ###
+
+###> php-cs-fixer ###
+/.php-cs-fixer.cache
+###< php-cs-fixer ###
+
+###> codeception ###
+/tests/_output/
+/tests/Support/_generated/
+###< codeception ###
+
+###> Aide SAE - Documents internes ###
+/Aide SAE/
+###< Aide SAE ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
