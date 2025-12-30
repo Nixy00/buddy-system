@@ -3,20 +3,20 @@
 {% block title %}Événements - Buddy System{% endblock %}
 
 {% block main %}
-<div class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
-    <div class="page-header" style="margin-bottom: 2rem; text-align: center;">
-        <h1 style="font-size: 2.5rem; font-weight: 700; color: var(--color-text);">Découvrez nos Événements</h1>
-        <p class="muted" style="font-size: 1.125rem;">Participez à la vie étudiante et rencontrez vos futurs parrains/filleuls !</p>
+<div class="container" style="padding: 2rem 0 4rem 0;">
+    <div class="page-header">
+        <h1>Découvrez nos Événements</h1>
+        <p class="muted">Participez à la vie étudiante et rencontrez vos futurs parrains/filleuls !</p>
     </div>
 
     <!-- Filtres -->
-    <div class="filters-bar" style="background: #F3F4F6; padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 3rem;">
-        <form class="filters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+    <div class="filters-bar">
+        <form class="filters-grid">
             <div class="form-group">
-                <input type="text" placeholder="Rechercher un événement..." class="form-control" style="width: 100%; padding: 0.75rem; border: 1px solid #D1D5DB; border-radius: var(--radius);">
+                <input type="text" placeholder="Rechercher un événement..." class="form-control">
             </div>
             <div class="form-group">
-                <select class="form-control" style="width: 100%; padding: 0.75rem; border: 1px solid #D1D5DB; border-radius: var(--radius);">
+                <select class="form-control">
                     <option value="">Toutes les catégories</option>
                     <option value="integration">Intégration</option>
                     <option value="culture">Culture</option>
@@ -25,7 +25,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="date" class="form-control" style="width: 100%; padding: 0.75rem; border: 1px solid #D1D5DB; border-radius: var(--radius);">
+                <input type="date" class="form-control">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn--primary" style="width: 100%;">Filtrer</button>
@@ -34,7 +34,7 @@
     </div>
 
     <!-- Grille des événements -->
-    <div class="events-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+    <div class="events-grid">
         {% for event in events %}
             {% include 'events/_event_card.html.twig' %}
         {% else %}
@@ -45,7 +45,7 @@
     </div>
 
     <!-- Pagination -->
-    <div class="pagination" style="display: flex; justify-content: center; margin-top: 4rem; gap: 0.5rem;">
+    <div class="pagination">
         <span class="btn btn--ghost" style="opacity: 0.5; pointer-events: none;">&laquo; Précédent</span>
         <a href="#" class="btn btn--primary">1</a>
         <a href="#" class="btn btn--ghost">2</a>
