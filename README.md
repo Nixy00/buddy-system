@@ -95,6 +95,21 @@ composer fix
 
 ---
 
+## Base de données (local)
+
+### Prérequis
+- MySQL/MariaDB démarré (ex: XAMPP)
+- Une base locale (ex: `bouz0078_buddy`)
+
+### Configuration
+Créer un fichier `.env.local` à la racine du projet (non versionné) et y définir :
+
+```env
+DATABASE_URL="mysql://USER:PASSWORD@mysql:3306/bouz0078_buddy?serverVersion=mariadb-10.2.25&charset=utf8mb4"
+```
+
+---
+
 ## Développement
 
 *En attente de la suite de la SAE*
