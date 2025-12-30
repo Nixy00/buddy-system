@@ -75,6 +75,18 @@ class User
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Signalement::class, orphanRemoval: true)]
     private Collection $signalements;
 
+    /**
+     * @var Collection<int, Relation>
+     */
+    #[ORM\OneToMany(mappedBy: 'envoyeur', targetEntity: Relation::class, orphanRemoval: true)]
+    private Collection $relationsEnvoyees;
+
+    /**
+     * @var Collection<int, Relation>
+     */
+    #[ORM\OneToMany(mappedBy: 'receveur', targetEntity: Relation::class, orphanRemoval: true)]
+    private Collection $relationsRecues;
+
     public function __construct()
     {
         $this->possessions = new ArrayCollection();
@@ -84,6 +96,8 @@ class User
         $this->conversationsRecues = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->signalements = new ArrayCollection();
+        $this->relationsEnvoyees = new ArrayCollection();
+        $this->relationsRecues = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -372,6 +386,66 @@ class User
             // set the owning side to null (unless already changed)
             if ($signalement->getUtilisateur() === $this) {
                 $signalement->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Relation>
+     */
+    public function getRelationsEnvoyees(): Collection
+    {
+        return $this->relationsEnvoyees;
+    }
+
+    public function addRelationsEnvoyee(Relation $relationsEnvoyee): static
+    {
+        if (!$this->relationsEnvoyees->contains($relationsEnvoyee)) {
+            $this->relationsEnvoyees->add($relationsEnvoyee);
+            $relationsEnvoyee->setEnvoyeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelationsEnvoyee(Relation $relationsEnvoyee): static
+    {
+        if ($this->relationsEnvoyees->removeElement($relationsEnvoyee)) {
+            // set the owning side to null (unless already changed)
+            if ($relationsEnvoyee->getEnvoyeur() === $this) {
+                $relationsEnvoyee->setEnvoyeur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Relation>
+     */
+    public function getRelationsRecues(): Collection
+    {
+        return $this->relationsRecues;
+    }
+
+    public function addRelationsRecue(Relation $relationsRecue): static
+    {
+        if (!$this->relationsRecues->contains($relationsRecue)) {
+            $this->relationsRecues->add($relationsRecue);
+            $relationsRecue->setReceveur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelationsRecue(Relation $relationsRecue): static
+    {
+        if ($this->relationsRecues->removeElement($relationsRecue)) {
+            // set the owning side to null (unless already changed)
+            if ($relationsRecue->getReceveur() === $this) {
+                $relationsRecue->setReceveur(null);
             }
         }
 

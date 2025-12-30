@@ -22,6 +22,14 @@ class Relation
     #[ORM\Column(nullable: true)]
     private ?\DateTime $dateReponse = null;
 
+    #[ORM\ManyToOne(inversedBy: 'relationsEnvoyees')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $envoyeur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'relationsRecues')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $receveur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +67,30 @@ class Relation
     public function setDateReponse(?\DateTime $dateReponse): static
     {
         $this->dateReponse = $dateReponse;
+
+        return $this;
+    }
+
+    public function getEnvoyeur(): ?User
+    {
+        return $this->envoyeur;
+    }
+
+    public function setEnvoyeur(?User $envoyeur): static
+    {
+        $this->envoyeur = $envoyeur;
+
+        return $this;
+    }
+
+    public function getReceveur(): ?User
+    {
+        return $this->receveur;
+    }
+
+    public function setReceveur(?User $receveur): static
+    {
+        $this->receveur = $receveur;
 
         return $this;
     }
