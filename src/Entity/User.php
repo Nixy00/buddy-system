@@ -63,6 +63,12 @@ class User
     #[ORM\OneToMany(mappedBy: 'interlocuteur', targetEntity: Conversation::class, orphanRemoval: true)]
     private Collection $conversationsRecues;
 
+    /**
+     * @var Collection<int, Message>
+     */
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Message::class, orphanRemoval: true)]
+    private Collection $messages;
+
     public function __construct()
     {
         $this->possessions = new ArrayCollection();
@@ -70,6 +76,7 @@ class User
         $this->organisations = new ArrayCollection();
         $this->conversationsInitiees = new ArrayCollection();
         $this->conversationsRecues = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -298,6 +305,36 @@ class User
             // set the owning side to null (unless already changed)
             if ($conversationsRecue->getInterlocuteur() === $this) {
                 $conversationsRecue->setInterlocuteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): static
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages->add($message);
+            $message->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): static
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getUtilisateur() === $this) {
+                $message->setUtilisateur(null);
             }
         }
 
