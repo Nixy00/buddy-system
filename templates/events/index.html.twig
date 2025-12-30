@@ -9,5 +9,29 @@
         <p class="muted" style="font-size: 1.125rem;">Participez à la vie étudiante et rencontrez vos futurs parrains/filleuls !</p>
     </div>
 
+    <!-- Filtres -->
+    <div class="filters-bar" style="background: #F3F4F6; padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 3rem;">
+        <form class="filters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div class="form-group">
+                <input type="text" placeholder="Rechercher un événement..." class="form-control" style="width: 100%; padding: 0.75rem; border: 1px solid #D1D5DB; border-radius: var(--radius);">
+            </div>
+            <div class="form-group">
+                <select class="form-control" style="width: 100%; padding: 0.75rem; border: 1px solid #D1D5DB; border-radius: var(--radius);">
+                    <option value="">Toutes les catégories</option>
+                    <option value="integration">Intégration</option>
+                    <option value="culture">Culture</option>
+                    <option value="sport">Sport</option>
+                    <option value="loisirs">Loisirs</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="date" class="form-control" style="width: 100%; padding: 0.75rem; border: 1px solid #D1D5DB; border-radius: var(--radius);">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn--primary" style="width: 100%;">Filtrer</button>
+            </div>
+        </form>
+    </div>
+
 </div>
 {% endblock %}
