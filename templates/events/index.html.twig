@@ -33,5 +33,16 @@
         </form>
     </div>
 
+    <!-- Grille des événements -->
+    <div class="events-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+        {% for event in events %}
+            {% include 'events/_event_card.html.twig' %}
+        {% else %}
+            <div class="no-events" style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #F9FAFB; border-radius: var(--radius-lg);">
+                <p class="muted">Aucun événement ne correspond à vos critères.</p>
+            </div>
+        {% endfor %}
+    </div>
+
 </div>
 {% endblock %}
