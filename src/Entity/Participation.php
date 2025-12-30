@@ -25,6 +25,14 @@ class Participation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $remarque = null;
 
+    #[ORM\ManyToOne(inversedBy: 'participations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $utilisateur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'participations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Evenement $evenement = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +82,30 @@ class Participation
     public function setRemarque(?string $remarque): static
     {
         $this->remarque = $remarque;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?User
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?User $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    public function getEvenement(): ?Evenement
+    {
+        return $this->evenement;
+    }
+
+    public function setEvenement(?Evenement $evenement): static
+    {
+        $this->evenement = $evenement;
 
         return $this;
     }
