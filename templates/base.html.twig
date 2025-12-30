@@ -13,6 +13,8 @@
     <body>
         <a class="skiplink" href="#contenu">Aller au contenu</a>
 
+        {% include '_navbar.html.twig' %}
+
         <main id="contenu" class="container">
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
