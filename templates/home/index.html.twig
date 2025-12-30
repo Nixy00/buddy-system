@@ -3,18 +3,22 @@
 {% block title %}Accueil - Buddy System{% endblock %}
 
 {% block main %}
-<div style="text-align: center; padding: 4rem 2rem;">
-    <h1>Bienvenue sur Buddy System</h1>
-    <p class="muted">Ceci est une page de test pour valider la structure globale.</p>
+<div class="container" style="padding-top: 2rem;">
     
-    <div style="margin-top: 2rem;">
-        <button class="btn btn--primary">Bouton Principal</button>
-        <button class="btn btn--ghost">Bouton Secondaire</button>
+    <section class="hero">
+        <h1>Trouvez votre binôme idéal</h1>
+        <p>Rejoignez la communauté <strong>Buddy System</strong> ! Une plateforme d'entraide étudiante pour faciliter l'intégration, le partage de connaissances et les rencontres.</p>
+        
+        <div class="hero-actions">
+            <a href="{{ path('app_events') }}" class="btn btn--primary">Découvrir les événements</a>
+            <button class="btn btn--ghost">En savoir plus</button>
+        </div>
+    </section>
+
+    <!-- Placeholder pour les autres sections (Features, etc.) -->
+    <div style="text-align: center; margin-top: 4rem; opacity: 0.5;">
+        <p>Plus de fonctionnalités à venir...</p>
     </div>
 
-    <div style="margin-top: 3rem; display: grid; gap: 1rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-        <div class="alert alert-info">Message d'information flash test</div>
-        <div class="alert alert-success">Message de succès flash test</div>
-    </div>
 </div>
 {% endblock %}
