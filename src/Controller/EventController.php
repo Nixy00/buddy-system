@@ -96,4 +96,12 @@ class EventController extends AbstractController
             'events' => $events,
         ]);
     }
+    #[Route('/evenement/{id}', name: 'app_event_show')]
+    public function show(int $id): Response
+    {
+        // En attendant la BDD, on utilise l'ID pour l'affichage
+        return $this->render('events/show.html.twig', [
+            'id' => $id,
+        ]);
+    }
 }
