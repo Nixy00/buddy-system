@@ -51,11 +51,25 @@ class User
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Organisation::class, orphanRemoval: true)]
     private Collection $organisations;
 
+    /**
+     * @var Collection<int, Conversation>
+     */
+    #[ORM\OneToMany(mappedBy: 'initiateur', targetEntity: Conversation::class, orphanRemoval: true)]
+    private Collection $conversationsInitiees;
+
+    /**
+     * @var Collection<int, Conversation>
+     */
+    #[ORM\OneToMany(mappedBy: 'interlocuteur', targetEntity: Conversation::class, orphanRemoval: true)]
+    private Collection $conversationsRecues;
+
     public function __construct()
     {
         $this->possessions = new ArrayCollection();
         $this->participations = new ArrayCollection();
         $this->organisations = new ArrayCollection();
+        $this->conversationsInitiees = new ArrayCollection();
+        $this->conversationsRecues = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -224,6 +238,66 @@ class User
             // set the owning side to null (unless already changed)
             if ($organisation->getUtilisateur() === $this) {
                 $organisation->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversationsInitiees(): Collection
+    {
+        return $this->conversationsInitiees;
+    }
+
+    public function addConversationsInitiee(Conversation $conversationsInitiee): static
+    {
+        if (!$this->conversationsInitiees->contains($conversationsInitiee)) {
+            $this->conversationsInitiees->add($conversationsInitiee);
+            $conversationsInitiee->setInitiateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversationsInitiee(Conversation $conversationsInitiee): static
+    {
+        if ($this->conversationsInitiees->removeElement($conversationsInitiee)) {
+            // set the owning side to null (unless already changed)
+            if ($conversationsInitiee->getInitiateur() === $this) {
+                $conversationsInitiee->setInitiateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversationsRecues(): Collection
+    {
+        return $this->conversationsRecues;
+    }
+
+    public function addConversationsRecue(Conversation $conversationsRecue): static
+    {
+        if (!$this->conversationsRecues->contains($conversationsRecue)) {
+            $this->conversationsRecues->add($conversationsRecue);
+            $conversationsRecue->setInterlocuteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversationsRecue(Conversation $conversationsRecue): static
+    {
+        if ($this->conversationsRecues->removeElement($conversationsRecue)) {
+            // set the owning side to null (unless already changed)
+            if ($conversationsRecue->getInterlocuteur() === $this) {
+                $conversationsRecue->setInterlocuteur(null);
             }
         }
 
