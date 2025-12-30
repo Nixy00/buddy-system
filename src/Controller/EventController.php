@@ -11,6 +11,7 @@ class EventController extends AbstractController
     #[Route('/evenements', name: 'app_events')]
     public function index(): Response
     {
+        // TODO: Remplacer par $eventRepository->findAll() une fois l'entité Doctrine créée
         $events = [
             [
                 'id' => 1,
@@ -22,8 +23,8 @@ class EventController extends AbstractController
                 'date_limite_inscr' => new \DateTime('2024-10-14 23:59:00'),
                 'capacite' => 50,
                 'statut' => 'COMPLET',
-                'category' => 'Intégration', // Champ Mock pour visuel
-                'image' => 'event_integration.jpg' // Champ Mock pour visuel
+                'category' => 'Intégration',
+                'image' => 'event_integration.jpg'
             ],
             [
                 'id' => 2,
@@ -96,6 +97,13 @@ class EventController extends AbstractController
             'events' => $events,
         ]);
     }
+    #[Route('/evenements/nouveau', name: 'app_event_create')]
+    public function create(): Response
+    {
+        // TODO: Implémenter le formulaire de création d'événement
+        return $this->render('events/create.html.twig');
+    }
+
     #[Route('/evenement/{id}', name: 'app_event_show')]
     public function show(int $id): Response
     {
