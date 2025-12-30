@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -30,6 +32,17 @@ class User
 
     #[ORM\OneToOne(mappedBy: 'utilisateur', cascade: ['persist', 'remove'])]
     private ?Profil $profil = null;
+
+    /**
+     * @var Collection<int, Possession>
+     */
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Possession::class, orphanRemoval: true)]
+    private Collection $possessions;
+
+    public function __construct()
+    {
+        $this->possessions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -109,6 +122,36 @@ class User
         }
 
         $this->profil = $profil;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Possession>
+     */
+    public function getPossessions(): Collection
+    {
+        return $this->possessions;
+    }
+
+    public function addPossession(Possession $possession): static
+    {
+        if (!$this->possessions->contains($possession)) {
+            $this->possessions->add($possession);
+            $possession->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removePossession(Possession $possession): static
+    {
+        if ($this->possessions->removeElement($possession)) {
+            // set the owning side to null (unless already changed)
+            if ($possession->getUtilisateur() === $this) {
+                $possession->setUtilisateur(null);
+            }
+        }
 
         return $this;
     }
