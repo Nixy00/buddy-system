@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail événement - Buddy System{% endblock %}
+
+{% block main %}
+<div class="container" style="padding-top: 3rem;">
+    <a href="{{ path('app_events') }}" class="btn btn--ghost" style="margin-bottom: 2rem;">&larr; Retour aux événements</a>
+    
+    <div class="event-detail" style="background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid #E5E7EB;">
+        <h1>Détail de l'événement #{{ id }}</h1>
+        <p>Cette page est en cours de construction.</p>
+        <p>Les données réelles de l'événement s'afficheront ici prochainement.</p>
+    </div>
+</div>
+{% endblock %}
