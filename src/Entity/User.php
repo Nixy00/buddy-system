@@ -45,10 +45,17 @@ class User
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Participation::class, orphanRemoval: true)]
     private Collection $participations;
 
+    /**
+     * @var Collection<int, Organisation>
+     */
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Organisation::class, orphanRemoval: true)]
+    private Collection $organisations;
+
     public function __construct()
     {
         $this->possessions = new ArrayCollection();
         $this->participations = new ArrayCollection();
+        $this->organisations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -187,6 +194,36 @@ class User
             // set the owning side to null (unless already changed)
             if ($participation->getUtilisateur() === $this) {
                 $participation->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Organisation>
+     */
+    public function getOrganisations(): Collection
+    {
+        return $this->organisations;
+    }
+
+    public function addOrganisation(Organisation $organisation): static
+    {
+        if (!$this->organisations->contains($organisation)) {
+            $this->organisations->add($organisation);
+            $organisation->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganisation(Organisation $organisation): static
+    {
+        if ($this->organisations->removeElement($organisation)) {
+            // set the owning side to null (unless already changed)
+            if ($organisation->getUtilisateur() === $this) {
+                $organisation->setUtilisateur(null);
             }
         }
 
