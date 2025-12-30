@@ -22,6 +22,35 @@
                 </div>
             </div>
 
+
+            <div class="form-group">
+                <label class="form-label">Type de compte</label>
+                <div style="display: flex; gap: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="type_compte" value="Parrain" required> <span>Parrain</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="type_compte" value="Filleul" required> <span>Filleul</span>
+                    </label>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="inputGenre" class="form-label">Genre</label>
+                    <select name="genre" id="inputGenre" class="form-control" required>
+                        <option value="">Sélectionner...</option>
+                        <option value="Homme">Homme</option>
+                        <option value="Femme">Femme</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputDateNaissance" class="form-label">Date de naissance</label>
+                    <input type="date" name="date_naissance" id="inputDateNaissance" class="form-control" required>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="inputEmail" class="form-label">Email étudiant (URCA)</label>
                 <input type="email" name="email" id="inputEmail" class="form-control" required placeholder="prenom.nom@etudiant.univ-reims.fr">
