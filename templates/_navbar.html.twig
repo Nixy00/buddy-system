@@ -1,0 +1,28 @@
+{# templates/_navbar.html.twig #}
+<header class="site-header">
+    <div class="container header__inner">
+        <a class="brand" href="{{ path('app_home') }}" aria-label="Buddy System — Accueil">
+            <img src="{{ asset('images/buddy_system_logo.png') }}" alt="Buddy System Logo" class="brand__logo">
+            <span class="brand__name">Buddy System</span>
+        </a>
+
+        <nav class="nav" aria-label="Navigation principale">
+            <ul id="menu-principal" class="nav__list">
+                <li><a class="nav__link" href="{{ path('app_home') }}">Accueil</a></li>
+                <li><a class="nav__link" href="#">Événements</a></li>
+                <li><a class="nav__link" href="#">Recherche</a></li>
+                <li><a class="nav__link" href="#">Messagerie</a></li>
+                <li><a class="nav__link" href="#">Mon Profil</a></li>
+            </ul>
+        </nav>
+
+        <div class="header__actions">
+            {% if app.user %}
+                <a class="btn btn--ghost" href="#">Déconnexion</a>
+            {% else %}
+                <a class="btn btn--ghost" href="#">Connexion</a>
+                <a class="btn btn--primary" href="#">Inscription</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
