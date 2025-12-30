@@ -32,6 +32,26 @@ class EventController extends AbstractController
                 'category' => 'Culture',
                 'image' => 'event_pommery.jpg'
             ],
+            [
+                'id' => 3,
+                'title' => 'Atelier Cuisine du Monde',
+                'date' => new \DateTime('2024-10-25 18:30:00'),
+                'location' => 'Maison des Étudiants',
+                'description' => 'Apprenez à préparer des plats typiques de différents pays.',
+                'places' => 15,
+                'category' => 'Loisirs',
+                'image' => 'event_cuisine.jpg'
+            ],
+            [
+                'id' => 4,
+                'title' => 'Tournoi de Futsal Inter-promo',
+                'date' => new \DateTime('2024-11-05 19:00:00'),
+                'location' => 'Gymnase Universitaire',
+                'description' => 'Formez vos équipes et venez affronter les autres départements !',
+                'places' => 40,
+                'category' => 'Sport',
+                'image' => 'event_futsal.jpg'
+            ],
         ];
 
         return $this->render('events/index.html.twig', [
