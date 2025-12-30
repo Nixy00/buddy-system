@@ -27,7 +27,6 @@
             </div>
         </div>
 
-        <a href="#" class="btn btn--primary" style="width: 100%; display: block; text-align: center;">Voir l'événement</a>
-        <!-- TODO: Remplacer # par le lien show -->
+        <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn--primary btn-block">Voir l'événement</a>
     </div>
 </article>
