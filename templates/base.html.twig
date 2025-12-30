@@ -14,6 +14,12 @@
         <a class="skiplink" href="#contenu">Aller au contenu</a>
 
         <main id="contenu" class="container">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
             {% block main %}{% endblock %}
         </main>
     </body>
