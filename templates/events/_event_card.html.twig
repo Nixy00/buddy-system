@@ -7,5 +7,15 @@
             {{ event.category }}
         </span>
     </div>
-    <!-- TODO: Corps de la carte -->
+    <div class="card-content" style="padding: 1.5rem;">
+        <div class="card-date" style="font-size: 0.875rem; color: var(--color-primary); font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg>
+            {{ event.date_debut|date('d/m/Y à H:i') }}
+        </div>
+        
+        <h3 class="card-title" style="margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 700; color: var(--color-text); line-height: 1.4;">
+            {{ event.titre }}
+        </h3>
+        <!-- TODO: Lieu et Places / Description courte -->
+    </div>
 </article>
