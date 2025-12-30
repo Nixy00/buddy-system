@@ -56,6 +56,10 @@ class Profil
     #[ORM\Column]
     private ?\DateTime $dateModif = null;
 
+    #[ORM\OneToOne(inversedBy: 'profil', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $utilisateur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -225,6 +229,18 @@ class Profil
     public function setDateModif(\DateTime $dateModif): static
     {
         $this->dateModif = $dateModif;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?User
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(User $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

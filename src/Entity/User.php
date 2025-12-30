@@ -28,6 +28,9 @@ class User
     #[ORM\Column(nullable: true)]
     private ?\DateTime $dateDerniereConnexion = null;
 
+    #[ORM\OneToOne(mappedBy: 'utilisateur', cascade: ['persist', 'remove'])]
+    private ?Profil $profil = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +92,23 @@ class User
     public function setDateDerniereConnexion(?\DateTime $dateDerniereConnexion): static
     {
         $this->dateDerniereConnexion = $dateDerniereConnexion;
+
+        return $this;
+    }
+
+    public function getProfil(): ?Profil
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(Profil $profil): static
+    {
+        // set the owning side of the relation if necessary
+        if ($profil->getUtilisateur() !== $this) {
+            $profil->setUtilisateur($this);
+        }
+
+        $this->profil = $profil;
 
         return $this;
     }
