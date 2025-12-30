@@ -15,5 +15,14 @@
                 <li><a class="nav__link" href="#">Mon Profil</a></li>
             </ul>
         </nav>
+
+        <div class="header__actions">
+            {% if app.user %}
+                <a class="btn btn--ghost" href="#">Déconnexion</a>
+            {% else %}
+                <a class="btn btn--ghost" href="#">Connexion</a>
+                <a class="btn btn--primary" href="#">Inscription</a>
+            {% endif %}
+        </div>
     </div>
 </header>
