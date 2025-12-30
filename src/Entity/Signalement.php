@@ -26,6 +26,14 @@ class Signalement
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $commentaireModeration = null;
 
+    #[ORM\ManyToOne(inversedBy: 'signalements')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Message $message = null;
+
+    #[ORM\ManyToOne(inversedBy: 'signalements')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $utilisateur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +83,30 @@ class Signalement
     public function setCommentaireModeration(?string $commentaireModeration): static
     {
         $this->commentaireModeration = $commentaireModeration;
+
+        return $this;
+    }
+
+    public function getMessage(): ?Message
+    {
+        return $this->message;
+    }
+
+    public function setMessage(?Message $message): static
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?User
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?User $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

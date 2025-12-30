@@ -69,6 +69,12 @@ class User
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
+    /**
+     * @var Collection<int, Signalement>
+     */
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Signalement::class, orphanRemoval: true)]
+    private Collection $signalements;
+
     public function __construct()
     {
         $this->possessions = new ArrayCollection();
@@ -77,6 +83,7 @@ class User
         $this->conversationsInitiees = new ArrayCollection();
         $this->conversationsRecues = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->signalements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -335,6 +342,36 @@ class User
             // set the owning side to null (unless already changed)
             if ($message->getUtilisateur() === $this) {
                 $message->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Signalement>
+     */
+    public function getSignalements(): Collection
+    {
+        return $this->signalements;
+    }
+
+    public function addSignalement(Signalement $signalement): static
+    {
+        if (!$this->signalements->contains($signalement)) {
+            $this->signalements->add($signalement);
+            $signalement->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSignalement(Signalement $signalement): static
+    {
+        if ($this->signalements->removeElement($signalement)) {
+            // set the owning side to null (unless already changed)
+            if ($signalement->getUtilisateur() === $this) {
+                $signalement->setUtilisateur(null);
             }
         }
 
