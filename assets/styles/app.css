@@ -430,35 +430,37 @@ body {
     gap: 1rem;
 }
 
-/* --- Page Accueil (Hero) --- */
-.hero {
-    background: linear-gradient(135deg, #EFF6FF 0%, #FFFFFF 100%);
-    padding: 6rem 2rem;
-    text-align: center;
-    border-radius: var(--radius-lg);
-    margin-bottom: 4rem;
-    border: 1px solid #DBEAFE;
-}
-
-.hero h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    color: #1E3A8A;
-    /* Dark blue */
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-}
-
-.hero p {
-    font-size: 1.25rem;
-    color: #4B5563;
-    max-width: 700px;
-    margin: 0 auto 2.5rem;
-    line-height: 1.6;
-}
-
-.hero-actions {
+/* --- Pages Authentification (Login/Register) --- */
+.auth-page {
+    background: #F3F4F6;
+    min-height: calc(100vh - 80px - 200px);
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 1rem;
+    padding: 4rem 1rem;
+}
+
+.auth-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid #E5E7EB;
+}
+
+.auth-card--wide {
+    max-width: 700px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+    font-size: 1.75rem;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
 }
