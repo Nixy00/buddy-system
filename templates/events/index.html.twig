@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Événements - Buddy System{% endblock %}
+
+{% block main %}
+<div class="container" style="padding: 2rem 0 4rem 0;">
+    <div class="page-header">
+        <h1>Découvrez nos Événements</h1>
+        <p class="muted">Participez à la vie étudiante et rencontrez vos futurs parrains/filleuls !</p>
+        <div style="margin-top: 1.5rem;">
+            <a href="{{ path('app_event_create') }}" class="btn btn--primary">Créer un événement</a>
+        </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filters-bar">
+        <form class="filters-grid">
+            <div class="form-group">
+                <input type="text" placeholder="Rechercher un événement..." class="form-control">
+            </div>
+            <div class="form-group">
+                <select class="form-control">
+                    <option value="">Toutes les catégories</option>
+                    <option value="integration">Intégration</option>
+                    <option value="culture">Culture</option>
+                    <option value="sport">Sport</option>
+                    <option value="loisirs">Loisirs</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="date" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn--primary" style="width: 100%;">Filtrer</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Grille des événements -->
+    <div class="events-grid">
+        {% for event in events %}
+            {% include 'events/_event_card.html.twig' %}
+        {% else %}
+            <div class="no-events" style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #F9FAFB; border-radius: var(--radius-lg);">
+                <p class="muted">Aucun événement ne correspond à vos critères.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <span class="btn btn--ghost" style="opacity: 0.5; pointer-events: none;">&laquo; Précédent</span>
+        <a href="#" class="btn btn--primary">1</a>
+        <a href="#" class="btn btn--ghost">2</a>
+        <a href="#" class="btn btn--ghost">3</a>
+        <a href="#" class="btn btn--ghost">Suivant &raquo;</a>
+    </div>
+
+</div>
+{% endblock %}
