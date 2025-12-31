@@ -35,7 +35,6 @@ final class UserFactory extends PersistentProxyObjectFactory
             'dateCrea' => self::faker()->dateTime(),
             'email' => self::faker()->text(190),
             'login' => self::faker()->text(40),
-            'mdpHache' => self::faker()->text(255),
         ];
     }
 
@@ -44,8 +43,8 @@ final class UserFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(User $user): void {})
-        ;
+        return $this->afterInstantiate(function (User $user): void {
+            $user->setMdpHache(password_hash('test', PASSWORD_BCRYPT));
+        });
     }
 }
