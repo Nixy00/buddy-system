@@ -613,6 +613,65 @@ body {
     font-size: 0.9rem;
 }
 
+/* --- Section Statistiques --- */
+.stats-section {
+    margin-bottom: 5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    text-align: center;
+}
+
+.stat-card {
+    padding: 2rem 1rem;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #6B7280;
+    font-weight: 500;
+}
+
+/* --- Call-to-Action final --- */
+.cta-section {
+    background: linear-gradient(135deg, var(--color-accent) 0%, #1D4ED8 100%);
+    padding: 4rem 2rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    color: white;
+    margin-bottom: 4rem;
+}
+
+.cta-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.cta-section p {
+    font-size: 1.15rem;
+    margin-bottom: 2rem;
+    opacity: 0.95;
+}
+
+.btn-large {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
 /* --- Pages Authentification (Login/Register) --- */
 .auth-page {
     background: #F3F4F6;
