@@ -12,27 +12,15 @@
         </div>
     </div>
 
-    <!-- Filtres -->
-    <div class="filters-bar">
-        <form class="filters-grid">
-            <div class="form-group">
-                <input type="text" placeholder="Rechercher un événement..." class="form-control">
-            </div>
-            <div class="form-group">
-                <select class="form-control">
-                    <option value="">Toutes les catégories</option>
-                    <option value="integration">Intégration</option>
-                    <option value="culture">Culture</option>
-                    <option value="sport">Sport</option>
-                    <option value="loisirs">Loisirs</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="date" class="form-control">
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn--primary" style="width: 100%;">Filtrer</button>
-            </div>
+    <!-- Filtre statut -->
+    <div class="filters-bar" style="margin-bottom: 2rem;">
+        <form action="{{ path('app_events') }}" method="get" style="display: flex; gap: 1rem; align-items: center;">
+            <label for="statut" style="font-weight: 600;">Filtrer par statut :</label>
+            <select name="statut" id="statut" class="form-control" style="max-width: 200px;" onchange="this.form.submit()">
+                <option value="">Tous</option>
+                <option value="OUVERT" {% if statut_filtre == 'OUVERT' %}selected{% endif %}>Ouverts</option>
+                <option value="COMPLET" {% if statut_filtre == 'COMPLET' %}selected{% endif %}>Complets</option>
+            </select>
         </form>
     </div>
 

@@ -5,28 +5,47 @@
         
         <span class="badge" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.95); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; color: var(--color-primary); box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             {{ event.category }}
-        </span>
+    <div class="event-card__header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+            <span class="event-card__category">{{ event.category }}</span>
+            {% if event.statut == 'OUVERT' %}
+                <span class="badge" style="background: #10B981; color: white; padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">
+                    Ouvert
+                </span>
+            {% elseif event.statut == 'COMPLET' %}
+                <span class="badge" style="background: #EF4444; color: white; padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">
+                    Complet
+                </span>
+            {% endif %}
+        </div>
+        <h3 class="event-card__title">{{ event.titre }}</h3>
     </div>
-    <div class="card-content">
-        <div class="card-date">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg>
-            {{ event.date_debut|date('d/m/Y à H:i') }}
+    <div class="event-card__body">
+        <div class="event-card__meta">
+            <span class="event-card__meta-item">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M4 1h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2m.5 2v1h7V3h-7M4 5h8v8H4z"/>
+                </svg>
+                {{ event.date_debut|date('d/m/Y à H:i') }}
+            </span>
+            <span class="event-card__meta-item">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M3.5 8a.5.5 0 0 1 .5-.5h3V4a.5.5 0 0 1 1 0v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5"/>
+                </svg>
+                {{ event.lieu }}
+            </span>
+            {% if event.inscrits is defined %}
+            <span class="event-card__meta-item">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                </svg>
+                {{ event.inscrits }}/{{ event.capacite }} inscrits
+            </span>
+            {% endif %}
         </div>
-        
-        <h3 class="card-title">
-            {{ event.titre }}
-        </h3>
-        <div class="card-meta">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
-                <span>{{ event.lieu }}</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-                <span>{{ event.capacite }} places disponibles</span>
-            </div>
-        </div>
-
-        <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn--primary btn-block">Voir l'événement</a>
+        <p class="event-card__description">{{ event.description }}</p>
+    </div>
+    <div class="event-card__footer">
+        <a href="{{ path('app_event_show', {id: event.id}) }}" class="btn btn--secondary btn--sm">Voir détails</a>
     </div>
 </article>
