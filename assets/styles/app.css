@@ -500,6 +500,54 @@ body {
     line-height: 1.6;
 }
 
+/* --- Section Nos Valeurs --- */
+.values-section {
+    margin-bottom: 5rem;
+    background: #F9FAFB;
+    padding: 4rem 2rem;
+    border-radius: var(--radius-lg);
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+}
+
+.value-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.value-card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.value-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.25rem;
+    filter: grayscale(0.2);
+}
+
+.value-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.value-card p {
+    font-size: 1rem;
+    color: #6B7280;
+    line-height: 1.7;
+}
+
 /* --- Pages Authentification (Login/Register) --- */
 .auth-page {
     background: #F3F4F6;
@@ -540,15 +588,15 @@ body {
     .hero h1 {
         font-size: 2rem;
     }
-    
+
     .hero-subtitle {
         font-size: 1rem;
     }
-    
+
     .section-title {
         font-size: 1.75rem;
     }
-    
+
     .steps-grid {
         grid-template-columns: 1fr;
     }
