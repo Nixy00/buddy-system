@@ -5,20 +5,140 @@
 {% block main %}
 <div class="container" style="padding-top: 2rem;">
     
+    {# Section Hero - Présentation principale #}
     <section class="hero">
-        <h1>Trouvez votre binôme idéal</h1>
-        <p>Rejoignez la communauté <strong>Buddy System</strong> ! Une plateforme d'entraide étudiante pour faciliter l'intégration, le partage de connaissances et les rencontres.</p>
+        <h1>Trouvez votre binôme idéal à l'URCA</h1>
+        <p class="hero-subtitle">
+            Rejoignez <strong>Buddy System</strong>, la plateforme d'entraide qui connecte 
+            les étudiants pour faciliter l'intégration, partager des connaissances et créer des liens.
+        </p>
         
         <div class="hero-actions">
-            <a href="{{ path('app_events') }}" class="btn btn--primary">Découvrir les événements</a>
-            <button class="btn btn--ghost">En savoir plus</button>
+            <a href="{{ path('app_register') }}" class="btn btn--primary">S'inscrire gratuitement</a>
+            <a href="{{ path('app_events') }}" class="btn btn--ghost">Découvrir les événements</a>
         </div>
     </section>
 
-    <!-- Placeholder pour les autres sections (Features, etc.) -->
-    <div style="text-align: center; margin-top: 4rem; opacity: 0.5;">
-        <p>Plus de fonctionnalités à venir...</p>
-    </div>
+    {# Section Comment ça marche #}
+    <section class="how-it-works">
+        <h2 class="section-title">Comment ça marche ?</h2>
+        <p class="section-subtitle">Rejoindre Buddy System, c'est simple !</p>
+        
+        <div class="steps-grid">
+            {# Étape 1 #}
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Créez votre profil</h3>
+                <p>Inscrivez-vous en quelques clics et présentez-vous à la communauté.</p>
+            </div>
+            
+            {# Étape 2 #}
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Trouvez votre binôme</h3>
+                <p>Recherchez des étudiants qui partagent vos centres d'intérêt.</p>
+            </div>
+            
+            {# Étape 3 #}
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Participez aux événements</h3>
+                <p>Rejoignez des activités et rencontrez votre binôme en vrai !</p>
+            </div>
+        </div>
+    </section>
+
+    {# Section Nos Valeurs #}
+    <section class="values-section">
+        <h2 class="section-title">Nos Valeurs</h2>
+        <p class="section-subtitle">Ce qui fait la force de Buddy System</p>
+        
+        <div class="values-grid">
+            {# Valeur 1 - Entraide #}
+            <div class="value-card">
+                <div class="value-icon">🤝</div>
+                <h3>Entraide étudiante</h3>
+                <p>
+                    Partagez vos connaissances et bénéficiez de l'expérience des autres 
+                    pour réussir ensemble vos années d'études.
+                </p>
+            </div>
+            
+            {# Valeur 2 - Diversité #}
+            <div class="value-card">
+                <div class="value-icon">🌍</div>
+                <h3>Diversité culturelle</h3>
+                <p>
+                    Découvrez de nouvelles cultures et enrichissez-vous au contact 
+                    d'étudiants venus du monde entier.
+                </p>
+            </div>
+            
+            {# Valeur 3 - Convivialité #}
+            <div class="value-card">
+                <div class="value-icon">😊</div>
+                <h3>Convivialité</h3>
+                <p>
+                    Participez à des événements dans une ambiance chaleureuse et 
+                    créez des liens d'amitié durables.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    {# Section Événements à venir #}
+    <section class="upcoming-events">
+        <h2 class="section-title">Événements à venir</h2>
+        <p class="section-subtitle">Découvrez les prochaines activités de la communauté</p>
+        
+        <div class="events-preview-grid">
+            {% for event in events %}
+                <div class="event-preview-card">
+                    <div class="event-tag">{{ event.category }}</div>
+                    <h3>{{ event.titre }}</h3>
+                    <div class="event-info">
+                        <span>📍 {{ event.lieu }}</span>
+                        <span>📅 {{ event.date_debut|date('d/m/Y') }}</span>
+                    </div>
+                    <div class="event-capacity">
+                        <span>{{ event.capacite }} places</span>
+                    </div>
+                    <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn--ghost btn-small">
+                        En savoir plus →
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div style="text-align: center; margin-top: 2.5rem;">
+            <a href="{{ path('app_events') }}" class="btn btn--primary">Voir tous les événements</a>
+        </div>
+    </section>
+
+    {# Section Statistiques #}
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">250+</div>
+                <div class="stat-label">Étudiants inscrits</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">120+</div>
+                <div class="stat-label">Binômes formés</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">45+</div>
+                <div class="stat-label">Événements organisés</div>
+            </div>
+        </div>
+    </section>
+
+    {# Call-to-Action final #}
+    <section class="cta-section">
+        <h2>Rejoignez la communauté Buddy System</h2>
+        <p>Créez votre compte dès maintenant et trouvez votre binôme idéal !</p>
+        <a href="{{ path('app_register') }}" class="btn btn--primary btn-large">Créer mon compte gratuitement</a>
+    </section>
 
 </div>
 {% endblock %}
