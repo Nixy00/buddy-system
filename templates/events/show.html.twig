@@ -1,15 +1,108 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail événement - Buddy System{% endblock %}
+{% block title %}{{ event.titre }} - Événements{% endblock %}
 
 {% block main %}
-<div class="container" style="padding-top: 3rem;">
-    <a href="{{ path('app_events') }}" class="btn btn--ghost" style="margin-bottom: 2rem;">&larr; Retour aux événements</a>
+<div class="container" style="padding: 2rem 0;">
     
-    <div class="event-detail" style="background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid #E5E7EB;">
-        <h1>Détail de l'événement #{{ id }}</h1>
-        <p>Cette page est en cours de construction.</p>
-        <p>Les données réelles de l'événement s'afficheront ici prochainement.</p>
+    {# Bouton retour #}
+    <div style="margin-bottom: 1.5rem;">
+        <a href="{{ path('app_events') }}" class="btn btn--ghost">← Retour aux événements</a>
     </div>
+
+    {# Titre et badge catégorie #}
+    <div style="margin-bottom: 2rem;">
+        <span class="badge" style="background: var(--color-accent); color: white; padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.85rem;">
+            {{ event.category }}
+        </span>
+        <h1 style="font-size: 2.5rem; margin-top: 1rem; margin-bottom: 0.5rem;">{{ event.titre }}</h1>
+    </div>
+
+    {# Grille 2 colonnes sur desktop, 1 colonne sur mobile #}
+    <div class="event-detail-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+        
+        {# Colonne gauche : infos principales #}
+        <div>
+            {# Description #}
+            <div class="card" style="background: white; padding: 2rem; border-radius: var(--radius-lg); margin-bottom: 2rem; border: 1px solid #E5E7EB;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Description</h2>
+                <p style="color: #4B5563; line-height: 1.7;">{{ event.description }}</p>
+            </div>
+
+            {# Participants #}
+            <div class="card" style="background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid #E5E7EB;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Participants ({{ event.inscrits }}/{{ event.capacite }})</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                    {% for participant in event.participants %}
+                        <span style="background: #F3F4F6; padding: 0.5rem 1rem; border-radius: var(--radius); font-size: 0.9rem;">
+                            {{ participant.nom }}
+                        </span>
+                    {% endfor %}
+                    {% if event.inscrits > event.participants|length %}
+                        <span style="background: #F3F4F6; padding: 0.5rem 1rem; border-radius: var(--radius); font-size: 0.9rem; color: #9CA3AF;">
+                            + {{ event.inscrits - event.participants|length }} autres
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Colonne droite : infos pratiques #}
+        <div>
+            {# Infos pratiques #}
+            <div class="card" style="background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid #E5E7EB; margin-bottom: 2rem;">
+                <h3 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Informations pratiques</h3>
+                
+                {# Date #}
+                <div style="margin-bottom: 1.25rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <span style="font-weight: 600;">📅 Date</span>
+                    </div>
+                    <div style="color: #6B7280; font-size: 0.95rem;">
+                        {{ event.date_debut|date('d/m/Y à H:i') }}
+                    </div>
+                </div>
+
+                {# Lieu #}
+                <div style="margin-bottom: 1.25rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <span style="font-weight: 600;">📍 Lieu</span>
+                    </div>
+                    <div style="color: #6B7280; font-size: 0.95rem;">
+                        {{ event.lieu }}
+                    </div>
+                </div>
+
+                {# Organisateur #}
+                <div style="margin-bottom: 1.25rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <span style="font-weight: 600;">👤 Organisateur</span>
+                    </div>
+                    <div style="color: #6B7280; font-size: 0.95rem;">
+                        {{ event.organisateur }}
+                    </div>
+                </div>
+
+                {# Places #}
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <span style="font-weight: 600;">🎫 Places</span>
+                    </div>
+                    <div style="color: #6B7280; font-size: 0.95rem;">
+                        {{ event.inscrits }} / {{ event.capacite }} inscrits
+                    </div>
+                </div>
+
+                {# Bouton inscription #}
+                {% if event.statut == 'OUVERT' %}
+                    <button class="btn btn--primary" style="width: 100%;">S'inscrire à l'événement</button>
+                {% else %}
+                    <button class="btn btn--ghost" disabled style="width: 100%; opacity: 0.5;">Événement complet</button>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
 </div>
 {% endblock %}
