@@ -107,9 +107,33 @@ class EventController extends AbstractController
     #[Route('/evenement/{id}', name: 'app_event_show')]
     public function show(int $id): Response
     {
-        // En attendant la BDD, on utilise l'ID pour l'affichage
-        return $this->render('events/show.html.twig', [
+        // Pour l'instant on simule la récupération depuis la BDD
+        // On crée un faux événement avec toutes les infos
+        $event = [
             'id' => $id,
+            'titre' => 'Soirée d\'intégration Internationale',
+            'description' => 'Venez rencontrer les étudiants internationaux autour d\'un buffet convivial ! Au programme : jeux, musique et échanges culturels. C\'est l\'occasion idéale pour se faire des amis et pratiquer les langues !',
+            'lieu' => 'Campus Croix-Rouge, Reims',
+            'date_debut' => new \DateTime('2024-10-15 20:00:00'),
+            'date_fin' => new \DateTime('2024-10-15 23:59:00'),
+            'capacite' => 50,
+            'inscrits' => 38,
+            'statut' => 'OUVERT',
+            'category' => 'Intégration',
+            'organisateur' => 'Marie Dupont',
+            // Liste des participants (mockée)
+            'participants' => [
+                ['nom' => 'Thomas Martin'],
+                ['nom' => 'Sophie Chen'],
+                ['nom' => 'Ahmed Karim'],
+                ['nom' => 'Laura Rossi'],
+                ['nom' => 'Lucas Dubois'],
+            ]
+        ];
+
+        return $this->render('events/show.html.twig', [
+            'event' => $event,
         ]);
     }
 }
+
