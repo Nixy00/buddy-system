@@ -116,6 +116,7 @@ class EventController extends AbstractController
             'lieu' => 'Campus Croix-Rouge, Reims',
             'date_debut' => new \DateTime('2024-10-15 20:00:00'),
             'date_fin' => new \DateTime('2024-10-15 23:59:00'),
+            'date_limite_inscr' => new \DateTime('2024-10-14 18:00:00'),
             'capacite' => 50,
             'inscrits' => 38,
             'statut' => 'OUVERT',
