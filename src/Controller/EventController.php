@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class EventController extends AbstractController
 {
     #[Route('/evenements', name: 'app_events')]
-    public function index(): Response
+    public function index(#[MapQueryParameter] string $statut = ''): Response
     {
         // TODO: Remplacer par $eventRepository->findAll() une fois l'entité Doctrine créée
         $events = [
@@ -22,6 +22,7 @@ class EventController extends AbstractController
                 'date_fin' => new \DateTime('2024-10-15 23:59:00'),
                 'date_limite_inscr' => new \DateTime('2024-10-14 23:59:00'),
                 'capacite' => 50,
+                'inscrits' => 50,
                 'statut' => 'COMPLET',
                 'category' => 'Intégration',
                 'image' => 'event_integration.jpg'
@@ -35,6 +36,7 @@ class EventController extends AbstractController
                 'date_fin' => new \DateTime('2024-10-20 17:00:00'),
                 'date_limite_inscr' => new \DateTime('2024-10-18 12:00:00'),
                 'capacite' => 20,
+                'inscrits' => 12,
                 'statut' => 'OUVERT',
                 'category' => 'Culture',
                 'image' => 'event_pommery.jpg'
@@ -48,6 +50,7 @@ class EventController extends AbstractController
                 'date_fin' => new \DateTime('2024-10-25 21:30:00'),
                 'date_limite_inscr' => new \DateTime('2024-10-23 23:59:00'),
                 'capacite' => 15,
+                'inscrits' => 8,
                 'statut' => 'OUVERT',
                 'category' => 'Loisirs',
                 'image' => 'event_cuisine.jpg'
@@ -61,6 +64,7 @@ class EventController extends AbstractController
                 'date_fin' => new \DateTime('2024-11-05 22:00:00'),
                 'date_limite_inscr' => new \DateTime('2024-11-04 18:00:00'),
                 'capacite' => 40,
+                'inscrits' => 25,
                 'statut' => 'OUVERT',
                 'category' => 'Sport',
                 'image' => 'event_futsal.jpg'
@@ -74,7 +78,8 @@ class EventController extends AbstractController
                 'date_fin' => new \DateTime('2024-11-12 19:30:00'),
                 'date_limite_inscr' => new \DateTime('2024-11-11 23:59:00'),
                 'capacite' => 100,
-                'statut' => 'A_VENIR',
+                'inscrits' => 0,
+                'statut' => 'OUVERT',
                 'category' => 'Conférence',
                 'image' => 'event_conference.jpg'
             ],
@@ -87,14 +92,28 @@ class EventController extends AbstractController
                 'date_fin' => new \DateTime('2024-11-18 23:00:00'),
                 'date_limite_inscr' => new \DateTime('2024-11-17 18:00:00'),
                 'capacite' => 30,
+                'inscrits' => 18,
                 'statut' => 'OUVERT',
                 'category' => 'Loisirs',
                 'image' => 'event_jeux.jpg'
             ],
         ];
 
+        // Filtre par statut si demandé
+        if (!empty($statut)) {
+            $events = array_filter($events, function ($event) use ($statut) {
+                return $event['statut'] === $statut;
+            });
+        }
+
+        // Tri par date (prochains événements en premier)
+        usort($events, function ($a, $b) {
+            return $a['date_debut'] <=> $b['date_debut'];
+        });
+
         return $this->render('events/index.html.twig', [
             'events' => $events,
+            'statut_filtre' => $statut,
         ]);
     }
     #[Route('/evenements/nouveau', name: 'app_event_create')]
