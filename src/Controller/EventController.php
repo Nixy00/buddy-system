@@ -23,7 +23,6 @@ class EventController extends AbstractController
                 'lieu' => 'Campus Croix-Rouge, Reims',
                 'date_debut' => new \DateTime('2024-10-15 20:00:00'),
                 'date_fin' => new \DateTime('2024-10-15 23:59:00'),
-                'date_limite_inscr' => new \DateTime('2024-10-14 23:59:00'),
                 'capacite' => 50,
                 'inscrits' => 50,
                 'statut' => 'COMPLET',
@@ -37,7 +36,6 @@ class EventController extends AbstractController
                 'lieu' => 'Domaine Pommery',
                 'date_debut' => new \DateTime('2024-10-20 14:00:00'),
                 'date_fin' => new \DateTime('2024-10-20 17:00:00'),
-                'date_limite_inscr' => new \DateTime('2024-10-18 12:00:00'),
                 'capacite' => 20,
                 'inscrits' => 12,
                 'statut' => 'OUVERT',
@@ -51,7 +49,6 @@ class EventController extends AbstractController
                 'lieu' => 'Maison des Étudiants',
                 'date_debut' => new \DateTime('2024-10-25 18:30:00'),
                 'date_fin' => new \DateTime('2024-10-25 21:30:00'),
-                'date_limite_inscr' => new \DateTime('2024-10-23 23:59:00'),
                 'capacite' => 15,
                 'inscrits' => 8,
                 'statut' => 'OUVERT',
@@ -65,7 +62,6 @@ class EventController extends AbstractController
                 'lieu' => 'Gymnase Universitaire',
                 'date_debut' => new \DateTime('2024-11-05 19:00:00'),
                 'date_fin' => new \DateTime('2024-11-05 22:00:00'),
-                'date_limite_inscr' => new \DateTime('2024-11-04 18:00:00'),
                 'capacite' => 40,
                 'inscrits' => 25,
                 'statut' => 'OUVERT',
@@ -79,7 +75,6 @@ class EventController extends AbstractController
                 'lieu' => 'Amphi 10, UFR Sciences',
                 'date_debut' => new \DateTime('2024-11-12 17:30:00'),
                 'date_fin' => new \DateTime('2024-11-12 19:30:00'),
-                'date_limite_inscr' => new \DateTime('2024-11-11 23:59:00'),
                 'capacite' => 100,
                 'inscrits' => 0,
                 'statut' => 'OUVERT',
@@ -93,7 +88,6 @@ class EventController extends AbstractController
                 'lieu' => 'Bar Le K',
                 'date_debut' => new \DateTime('2024-11-18 20:00:00'),
                 'date_fin' => new \DateTime('2024-11-18 23:00:00'),
-                'date_limite_inscr' => new \DateTime('2024-11-17 18:00:00'),
                 'capacite' => 30,
                 'inscrits' => 18,
                 'statut' => 'OUVERT',
@@ -104,25 +98,25 @@ class EventController extends AbstractController
 
         // Filtre par statut si demandé
         if (!empty($statut)) {
-            $events = array_values(array_filter($events, function ($event) use ($statut) {
+            $events = array_filter($events, function ($event) use ($statut) {
                 return $event['statut'] === $statut;
-            }));
+            });
         }
 
         // Filtre par catégorie si demandé
         if (!empty($category)) {
-            $events = array_values(array_filter($events, function ($event) use ($category) {
+            $events = array_filter($events, function ($event) use ($category) {
                 return $event['category'] === $category;
-            }));
+            });
         }
 
         // Filtre par recherche textuelle si demandé
         if (!empty($search)) {
-            $events = array_values(array_filter($events, function ($event) use ($search) {
+            $events = array_filter($events, function ($event) use ($search) {
                 return stripos($event['titre'], $search) !== false
                     || stripos($event['description'], $search) !== false
                     || stripos($event['lieu'], $search) !== false;
-            }));
+            });
         }
 
         // Tri par date (prochains événements en premier)
@@ -156,7 +150,6 @@ class EventController extends AbstractController
             'lieu' => 'Campus Croix-Rouge, Reims',
             'date_debut' => new \DateTime('2024-10-15 20:00:00'),
             'date_fin' => new \DateTime('2024-10-15 23:59:00'),
-            'date_limite_inscr' => new \DateTime('2024-10-14 18:00:00'),
             'capacite' => 50,
             'inscrits' => 38,
             'statut' => 'OUVERT',

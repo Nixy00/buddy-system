@@ -95,18 +95,6 @@
                     </div>
                 </div>
 
-                {# Date limite inscription #}
-                {% if event.date_limite_inscr %}
-                <div style="margin-bottom: 1.25rem;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                        <span style="font-weight: 600;">⏰ Inscriptions jusqu'au</span>
-                    </div>
-                    <div style="color: #6B7280; font-size: 0.95rem;">
-                        {{ event.date_limite_inscr|date('d/m/Y à H:i') }}
-                    </div>
-                </div>
-                {% endif %}
-
                 {# Lieu #}
                 <div style="margin-bottom: 1.25rem;">
                     <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
