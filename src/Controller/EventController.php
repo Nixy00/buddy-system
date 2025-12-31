@@ -101,9 +101,9 @@ class EventController extends AbstractController
 
         // Filtre par statut si demandé
         if (!empty($statut)) {
-            $events = array_filter($events, function ($event) use ($statut) {
+            $events = array_values(array_filter($events, function ($event) use ($statut) {
                 return $event['statut'] === $statut;
-            });
+            }));
         }
 
         // Tri par date (prochains événements en premier)
