@@ -399,35 +399,105 @@ body {
 
 /* --- Page Accueil (Hero) --- */
 .hero {
-    background: linear-gradient(135deg, #EFF6FF 0%, #FFFFFF 100%);
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #FFFFFF 100%);
     padding: 6rem 2rem;
     text-align: center;
     border-radius: var(--radius-lg);
     margin-bottom: 4rem;
     border: 1px solid #DBEAFE;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .hero h1 {
     font-size: 3rem;
     font-weight: 800;
     color: #1E3A8A;
-    /* Dark blue */
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
-.hero p {
-    font-size: 1.25rem;
+.hero-subtitle {
+    font-size: 1.2rem;
     color: #4B5563;
-    max-width: 700px;
+    max-width: 750px;
     margin: 0 auto 2.5rem;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .hero-actions {
     display: flex;
     justify-content: center;
     gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* --- Section Comment ça marche --- */
+.how-it-works {
+    margin-bottom: 5rem;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #6B7280;
+    margin-bottom: 3rem;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2.5rem;
+}
+
+.step-card {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    border: 2px solid #E5E7EB;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.step-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.1);
+    transform: translateY(-4px);
+}
+
+.step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    color: white;
+    font-size: 1.75rem;
+    font-weight: 700;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+}
+
+.step-card h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.75rem;
+}
+
+.step-card p {
+    font-size: 1rem;
+    color: #6B7280;
+    line-height: 1.6;
 }
 
 /* --- Pages Authentification (Login/Register) --- */
@@ -463,4 +533,23 @@ body {
     font-size: 1.75rem;
     color: #1F2937;
     margin-bottom: 0.5rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
 }
