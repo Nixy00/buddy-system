@@ -10,11 +10,26 @@
         <a href="{{ path('app_events') }}" class="btn btn--ghost">← Retour aux événements</a>
     </div>
 
-    {# Titre et badge catégorie #}
+    {# Titre et badge catégorie + statut #}
     <div style="margin-bottom: 2rem;">
-        <span class="badge" style="background: var(--color-accent); color: white; padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.85rem;">
-            {{ event.category }}
-        </span>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <span class="badge" style="background: var(--color-accent); color: white; padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.85rem;">
+                {{ event.category }}
+            </span>
+            {% if event.statut == 'OUVERT' %}
+                <span class="badge" style="background: #10B981; color: white; padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.85rem;">
+                    ✓ {{ event.statut }}
+                </span>
+            {% elseif event.statut == 'COMPLET' %}
+                <span class="badge" style="background: #F59E0B; color: white; padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.85rem;">
+                    ⚠ {{ event.statut }}
+                </span>
+            {% elseif event.statut == 'ANNULE' %}
+                <span class="badge" style="background: #EF4444; color: white; padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.85rem;">
+                    ✕ {{ event.statut }}
+                </span>
+            {% endif %}
+        </div>
         <h1 style="font-size: 2.5rem; margin-top: 1rem; margin-bottom: 0.5rem;">{{ event.titre }}</h1>
     </div>
 
@@ -74,6 +89,9 @@
                     </div>
                     <div style="color: #6B7280; font-size: 0.95rem;">
                         {{ event.date_debut|date('d/m/Y à H:i') }}
+                        {% if event.date_fin %}
+                            - {{ event.date_fin|date('H:i') }}
+                        {% endif %}
                     </div>
                 </div>
 

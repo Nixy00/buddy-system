@@ -3,9 +3,20 @@
         {# Placeholder si l'image n'existe pas, ou image mockée #}
         <img src="https://placehold.co/600x400?text={{ event.titre|url_encode }}" alt="{{ event.titre }}" style="width: 100%; height: 100%; object-fit: cover;">
         
-        <span class="badge" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.95); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; color: var(--color-primary); box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <span class="badge" style="position: absolute; top: 1rem; left: 1rem; background: rgba(255,255,255,0.95); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; color: var(--color-primary); box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             {{ event.category }}
         </span>
+        
+        {# Badge statut en haut à droite #}
+        {% if event.statut == 'OUVERT' %}
+            <span class="badge" style="position: absolute; top: 1rem; right: 1rem; background: #10B981; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                Ouvert
+            </span>
+        {% elseif event.statut == 'COMPLET' %}
+            <span class="badge" style="position: absolute; top: 1rem; right: 1rem; background: #EF4444; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                Complet
+            </span>
+        {% endif %}
     </div>
     <div class="card-content">
         <div class="card-date">
@@ -21,10 +32,12 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
                 <span>{{ event.lieu }}</span>
             </div>
+            {% if event.inscrits is defined %}
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-                <span>{{ event.capacite }} places disponibles</span>
+                <span>{{ event.inscrits }}/{{ event.capacite }} inscrits</span>
             </div>
+            {% endif %}
         </div>
 
         <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn--primary btn-block">Voir l'événement</a>

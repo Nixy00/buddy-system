@@ -14,21 +14,26 @@
 
     <!-- Filtres -->
     <div class="filters-bar">
-        <form class="filters-grid">
+        <form action="{{ path('app_events') }}" method="get" class="filters-grid">
             <div class="form-group">
-                <input type="text" placeholder="Rechercher un événement..." class="form-control">
+                <input type="text" name="search" placeholder="Rechercher un événement..." class="form-control" value="{{ search_filtre|default('') }}">
             </div>
             <div class="form-group">
-                <select class="form-control">
+                <select name="category" class="form-control">
                     <option value="">Toutes les catégories</option>
-                    <option value="integration">Intégration</option>
-                    <option value="culture">Culture</option>
-                    <option value="sport">Sport</option>
-                    <option value="loisirs">Loisirs</option>
+                    <option value="Intégration" {% if category_filtre == 'Intégration' %}selected{% endif %}>Intégration</option>
+                    <option value="Culture" {% if category_filtre == 'Culture' %}selected{% endif %}>Culture</option>
+                    <option value="Sport" {% if category_filtre == 'Sport' %}selected{% endif %}>Sport</option>
+                    <option value="Loisirs" {% if category_filtre == 'Loisirs' %}selected{% endif %}>Loisirs</option>
+                    <option value="Conférence" {% if category_filtre == 'Conférence' %}selected{% endif %}>Conférence</option>
                 </select>
             </div>
             <div class="form-group">
-                <input type="date" class="form-control">
+                <select name="statut" class="form-control">
+                    <option value="">Tous les statuts</option>
+                    <option value="OUVERT" {% if statut_filtre == 'OUVERT' %}selected{% endif %}>Ouverts</option>
+                    <option value="COMPLET" {% if statut_filtre == 'COMPLET' %}selected{% endif %}>Complets</option>
+                </select>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn--primary" style="width: 100%;">Filtrer</button>
