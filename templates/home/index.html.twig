@@ -86,5 +86,34 @@
         </div>
     </section>
 
+    {# Section Événements à venir #}
+    <section class="upcoming-events">
+        <h2 class="section-title">Événements à venir</h2>
+        <p class="section-subtitle">Découvrez les prochaines activités de la communauté</p>
+        
+        <div class="events-preview-grid">
+            {% for event in events %}
+                <div class="event-preview-card">
+                    <div class="event-tag">{{ event.category }}</div>
+                    <h3>{{ event.titre }}</h3>
+                    <div class="event-info">
+                        <span>📍 {{ event.lieu }}</span>
+                        <span>📅 {{ event.date_debut|date('d/m/Y') }}</span>
+                    </div>
+                    <div class="event-capacity">
+                        <span>{{ event.capacite }} places</span>
+                    </div>
+                    <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn--ghost btn-small">
+                        En savoir plus →
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div style="text-align: center; margin-top: 2.5rem;">
+            <a href="{{ path('app_events') }}" class="btn btn--primary">Voir tous les événements</a>
+        </div>
+    </section>
+
 </div>
 {% endblock %}
