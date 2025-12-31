@@ -9,8 +9,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class EventController extends AbstractController
 {
     #[Route('/evenements', name: 'app_events')]
-    public function index(#[MapQueryParameter] string $statut = ''): Response
-    {
+    public function index(
+        #[MapQueryParameter] string $statut = '',
+        #[MapQueryParameter] string $category = '',
+        #[MapQueryParameter] string $search = ''
+    ): Response {
         // TODO: Remplacer par $eventRepository->findAll() une fois l'entité Doctrine créée
         $events = [
             [
@@ -106,6 +109,22 @@ class EventController extends AbstractController
             }));
         }
 
+        // Filtre par catégorie si demandé
+        if (!empty($category)) {
+            $events = array_values(array_filter($events, function ($event) use ($category) {
+                return $event['category'] === $category;
+            }));
+        }
+
+        // Filtre par recherche textuelle si demandé
+        if (!empty($search)) {
+            $events = array_values(array_filter($events, function ($event) use ($search) {
+                return stripos($event['titre'], $search) !== false
+                    || stripos($event['description'], $search) !== false
+                    || stripos($event['lieu'], $search) !== false;
+            }));
+        }
+
         // Tri par date (prochains événements en premier)
         usort($events, function ($a, $b) {
             return $a['date_debut'] <=> $b['date_debut'];
@@ -114,6 +133,8 @@ class EventController extends AbstractController
         return $this->render('events/index.html.twig', [
             'events' => $events,
             'statut_filtre' => $statut,
+            'category_filtre' => $category,
+            'search_filtre' => $search,
         ]);
     }
     #[Route('/evenements/nouveau', name: 'app_event_create')]
