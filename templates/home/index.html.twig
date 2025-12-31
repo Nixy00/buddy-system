@@ -5,20 +5,48 @@
 {% block main %}
 <div class="container" style="padding-top: 2rem;">
     
+    {# Section Hero - Présentation principale #}
     <section class="hero">
-        <h1>Trouvez votre binôme idéal</h1>
-        <p>Rejoignez la communauté <strong>Buddy System</strong> ! Une plateforme d'entraide étudiante pour faciliter l'intégration, le partage de connaissances et les rencontres.</p>
+        <h1>Trouvez votre binôme idéal à l'URCA</h1>
+        <p class="hero-subtitle">
+            Rejoignez <strong>Buddy System</strong>, la plateforme d'entraide qui connecte 
+            les étudiants pour faciliter l'intégration, partager des connaissances et créer des liens.
+        </p>
         
         <div class="hero-actions">
-            <a href="{{ path('app_events') }}" class="btn btn--primary">Découvrir les événements</a>
-            <button class="btn btn--ghost">En savoir plus</button>
+            <a href="{{ path('app_register') }}" class="btn btn--primary">S'inscrire gratuitement</a>
+            <a href="{{ path('app_events') }}" class="btn btn--ghost">Découvrir les événements</a>
         </div>
     </section>
 
-    <!-- Placeholder pour les autres sections (Features, etc.) -->
-    <div style="text-align: center; margin-top: 4rem; opacity: 0.5;">
-        <p>Plus de fonctionnalités à venir...</p>
-    </div>
+    {# Section Comment ça marche #}
+    <section class="how-it-works">
+        <h2 class="section-title">Comment ça marche ?</h2>
+        <p class="section-subtitle">Rejoindre Buddy System, c'est simple !</p>
+        
+        <div class="steps-grid">
+            {# Étape 1 #}
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Créez votre profil</h3>
+                <p>Inscrivez-vous en quelques clics et présentez-vous à la communauté.</p>
+            </div>
+            
+            {# Étape 2 #}
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Trouvez votre binôme</h3>
+                <p>Recherchez des étudiants qui partagent vos centres d'intérêt.</p>
+            </div>
+            
+            {# Étape 3 #}
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Participez aux événements</h3>
+                <p>Rejoignez des activités et rencontrez votre binôme en vrai !</p>
+            </div>
+        </div>
+    </section>
 
 </div>
 {% endblock %}
