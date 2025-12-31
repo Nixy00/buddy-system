@@ -548,6 +548,71 @@ body {
     line-height: 1.7;
 }
 
+/* --- Section Événements à venir --- */
+.upcoming-events {
+    margin-bottom: 5rem;
+}
+
+.events-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2.5rem;
+}
+
+.event-preview-card {
+    background: white;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s ease;
+}
+
+.event-preview-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.event-tag {
+    display: inline-block;
+    background: var(--color-accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+}
+
+.event-preview-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.event-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #6B7280;
+}
+
+.event-capacity {
+    font-size: 0.85rem;
+    color: #4B5563;
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
 /* --- Pages Authentification (Login/Register) --- */
 .auth-page {
     background: #F3F4F6;
