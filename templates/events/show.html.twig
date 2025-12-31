@@ -29,6 +29,22 @@
                 <p style="color: #4B5563; line-height: 1.7;">{{ event.description }}</p>
             </div>
 
+            {# Carte du lieu #}
+            <div class="card" style="background: white; padding: 2rem; border-radius: var(--radius-lg); margin-bottom: 2rem; border: 1px solid #E5E7EB;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Localisation</h2>
+                <iframe 
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=4.017%2C49.246%2C4.047%2C49.266&layer=mapnik&marker=49.256%2C4.032" 
+                    width="100%" 
+                    height="300" 
+                    style="border: 1px solid #E5E7EB; border-radius: var(--radius);">
+                </iframe>
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: #9CA3AF;">
+                    <a href="https://www.openstreetmap.org/?mlat=49.256&mlon=4.032#map=15/49.256/4.032" target="_blank" style="color: var(--color-accent);">
+                        Voir sur OpenStreetMap
+                    </a>
+                </p>
+            </div>
+
             {# Participants #}
             <div class="card" style="background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid #E5E7EB;">
                 <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Participants ({{ event.inscrits }}/{{ event.capacite }})</h2>
