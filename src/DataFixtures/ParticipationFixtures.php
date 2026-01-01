@@ -6,10 +6,11 @@ use App\Factory\EvenementFactory;
 use App\Factory\ParticipationFactory;
 use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Random\RandomException;
 
-class ParticipationFixtures extends Fixture
+class ParticipationFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * @throws \DateMalformedStringException

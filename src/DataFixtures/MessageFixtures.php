@@ -7,10 +7,11 @@ use App\Factory\ConversationFactory;
 use App\Factory\MessageFactory;
 use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Random\RandomException;
 
-class MessageFixtures extends Fixture
+class MessageFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * @throws \DateMalformedStringException
