@@ -2,20 +2,43 @@
 
 namespace App\Controller;
 
+use App\Repository\EvenementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 
 class EventController extends AbstractController
 {
     #[Route('/evenements', name: 'app_events')]
     public function index(
+        EvenementRepository $evenementRepository,
         #[MapQueryParameter] string $statut = '',
         #[MapQueryParameter] string $category = '',
         #[MapQueryParameter] string $search = ''
     ): Response {
-        // TODO: Remplacer par $eventRepository->findAll() une fois l'entité Doctrine créée
-        $events = [
+        // Récupération depuis la BDD
+        $evenementsEntities = $evenementRepository->findAll();
+
+        // Conversion en tableaux pour compatibilité template
+        $events = [];
+        foreach ($evenementsEntities as $evenement) {
+            $events[] = [
+                'id' => $evenement->getId(),
+                'titre' => $evenement->getTitre(),
+                'description' => $evenement->getDescription(),
+                'lieu' => $evenement->getLieu(),
+                'date_debut' => $evenement->getDateDebut(),
+                'date_fin' => $evenement->getDateFin(),
+                'capacite' => $evenement->getCapacite(),
+                'inscrits' => count($evenement->getParticipations()),
+                'statut' => $evenement->getStatut(),
+                'category' => 'Événement',
+            ];
+        }
+
+        // Anciens mocks (supprimés)
+        $oldMocks = [
             [
                 'id' => 1,
                 'titre' => 'Soirée d\'intégration Internationale',
