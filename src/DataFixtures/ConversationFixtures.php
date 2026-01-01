@@ -28,7 +28,7 @@ class ConversationFixtures extends Fixture implements DependentFixtureInterface
             'interlocuteur' => $user,
         ]);
 
-        $this->addReference('conversation_demo', $convDemo->object());
+        $this->addReference('conversation_demo', $convDemo->_real());
 
         // 15 conversations aléatoires entre users
         for ($i = 1; $i <= 15; ++$i) {
@@ -47,7 +47,7 @@ class ConversationFixtures extends Fixture implements DependentFixtureInterface
                 'interlocuteur' => $interlocuteur,
             ]);
 
-            $this->addReference('conversation_'.$i, $conv->object());
+            $this->addReference('conversation_'.$i, $conv->_real());
         }
 
         $manager->flush();
