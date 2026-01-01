@@ -42,6 +42,7 @@ final class EvenementFactory extends PersistentProxyObjectFactory
             'lieu' => self::faker()->text(150),
             'statut' => self::faker()->text(20),
             'titre' => self::faker()->text(100),
+            'categorie' => self::faker()->randomElement(['Intégration', 'Culture', 'Sport', 'Loisirs', 'Conférence']),
         ];
     }
 
