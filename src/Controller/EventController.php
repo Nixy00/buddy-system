@@ -161,32 +161,41 @@ class EventController extends AbstractController
         return $this->render('events/create.html.twig');
     }
 
-    #[Route('/evenement/{id}', name: 'app_event_show')]
-    public function show(int $id): Response
+    #[Route('/evenements/{id}', name: 'app_event_show', requirements: ['id' => '\d+'])]
+    public function show(int $id, EvenementRepository $evenementRepository): Response
     {
-        // Pour l'instant on simule la récupération depuis la BDD
-        // On crée un faux événement avec toutes les infos
+        // Récupération depuis la BDD
+        $evenement = $evenementRepository->find($id);
+
+        if (!$evenement) {
+            throw $this->createNotFoundException('Événement non trouvé');
+        }
+
+        // Conversion pour compatibilité template
         $event = [
-            'id' => $id,
-            'titre' => 'Soirée d\'intégration Internationale',
-            'description' => 'Venez rencontrer les étudiants internationaux autour d\'un buffet convivial ! Au programme : jeux, musique et échanges culturels. C\'est l\'occasion idéale pour se faire des amis et pratiquer les langues !',
-            'lieu' => 'Campus Croix-Rouge, Reims',
-            'date_debut' => new \DateTime('2024-10-15 20:00:00'),
-            'date_fin' => new \DateTime('2024-10-15 23:59:00'),
-            'capacite' => 50,
-            'inscrits' => 38,
-            'statut' => 'OUVERT',
-            'category' => 'Intégration',
-            'organisateur' => 'Marie Dupont',
-            // Liste des participants (mockée)
-            'participants' => [
-                ['nom' => 'Thomas Martin'],
-                ['nom' => 'Sophie Chen'],
-                ['nom' => 'Ahmed Karim'],
-                ['nom' => 'Laura Rossi'],
-                ['nom' => 'Lucas Dubois'],
-            ]
+            'id' => $evenement->getId(),
+            'titre' => $evenement->getTitre(),
+            'description' => $evenement->getDescription(),
+            'lieu' => $evenement->getLieu(),
+            'date_debut' => $evenement->getDateDebut(),
+            'date_fin' => $evenement->getDateFin(),
+            'capacite' => $evenement->getCapacite(),
+            'inscrits' => count($evenement->getParticipations()),
+            'statut' => $evenement->getStatut(),
+            'category' => 'Événement',
+            'organisateur' => 'À définir', // TODO: Récupérer l'organisateur via la relation
+            'participants' => []
         ];
+
+        // Récupération des participants
+        foreach ($evenement->getParticipations() as $participation) {
+            $profil = $participation->getUtilisateur()->getProfil();
+            if ($profil) {
+                $event['participants'][] = [
+                    'nom' => $profil->getNom() . ' ' . $profil->getPrenom()
+                ];
+            }
+        }
 
         return $this->render('events/show.html.twig', [
             'event' => $event,
