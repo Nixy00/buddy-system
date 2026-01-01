@@ -33,7 +33,7 @@ class EventController extends AbstractController
                 'capacite' => $evenement->getCapacite(),
                 'inscrits' => count($evenement->getParticipations()),
                 'statut' => $evenement->getStatut(),
-                'category' => 'Événement',
+                'category' => $evenement->getCategorie(),
             ];
         }
 
