@@ -46,6 +46,9 @@ class Evenement
     #[ORM\Column]
     private ?\DateTime $dateModif = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $categorie = null;
+
     /**
      * @var Collection<int, Participation>
      */
@@ -188,6 +191,19 @@ class Evenement
 
         return $this;
     }
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(string $categorie): static
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
 
     /**
      * @return Collection<int, Participation>

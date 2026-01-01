@@ -21,6 +21,7 @@ class EvenementFixtures extends Fixture
             'statut' => 'OUVERT',
             'dateCrea' => new \DateTime('2026-01-15 10:00:00'),
             'dateModif' => new \DateTime('2026-01-15 10:00:00'),
+            'categorie' => 'Loisirs',
         ]);
 
         EvenementFactory::createOne([
@@ -34,6 +35,7 @@ class EvenementFixtures extends Fixture
             'statut' => 'OUVERT',
             'dateCrea' => new \DateTime('2026-01-20 09:00:00'),
             'dateModif' => new \DateTime('2026-01-20 09:00:00'),
+            'categorie' => 'Culture',
         ]);
 
         EvenementFactory::createOne([
@@ -47,6 +49,7 @@ class EvenementFixtures extends Fixture
             'statut' => 'OUVERT',
             'dateCrea' => new \DateTime('2026-01-18 12:00:00'),
             'dateModif' => new \DateTime('2026-01-18 12:00:00'),
+            'categorie' => 'Sport',
         ]);
 
         $manager->flush();
