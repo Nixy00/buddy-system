@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Profil;
+use Symfony\Component\Finder\Finder;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
@@ -31,6 +32,14 @@ final class ProfilFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
+        $finder = new Finder();
+        $finder->files()->in(__DIR__.'/../../assets/avatars');
+
+        $avatars = [];
+        foreach ($finder as $file) {
+            $avatars[] = file_get_contents($file->getRealPath());
+        }
+
         return [
             'dateCrea' => self::faker()->dateTime(),
             'dateModif' => self::faker()->dateTime(),
@@ -39,6 +48,7 @@ final class ProfilFactory extends PersistentProxyObjectFactory
             'nom' => self::faker()->lastName(),
             'prenom' => self::faker()->firstName(),
             'typeCompte' => self::faker()->randomElement(['ETUDIANT', 'BUDDY']),
+            'avatar' => $avatars ? self::faker()->randomElement($avatars) : null,
             'utilisateur' => UserFactory::new(),
         ];
     }
