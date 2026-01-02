@@ -3,17 +3,24 @@
 {% block title %}Créer un événement - Buddy System{% endblock %}
 
 {% block main %}
-<div class="container" style="padding-top: 3rem;">
-    <a href="{{ path('app_events') }}" class="btn btn--ghost" style="margin-bottom: 2rem;">&larr; Retour à la liste</a>
-    
-    <div class="page-header">
-        <h1>Créer un nouvel événement</h1>
-        <p class="muted">Proposez une activité à la communauté !</p>
+    <div class="breadcrumb" style="background: white; padding: 12px 0; border-bottom: 1px solid var(--gray-200); font-size: 0.9rem;">
+        <div class="container">
+            <a href="{{ path('app_home') }}" style="color: var(--gray-500); text-decoration: none;">Accueil</a>
+            <span style="color: var(--gray-400); margin: 0 8px;">/</span>
+            <a href="{{ path('app_events') }}" style="color: var(--gray-500); text-decoration: none;">Événements</a>
+            <span style="color: var(--gray-400); margin: 0 8px;">/</span>
+            <span style="color: var(--gray-900);">Créer un événement</span>
+        </div>
     </div>
 
-    <div style="background: white; padding: 3rem; border-radius: var(--radius-lg); border: 1px solid #E5E7EB; text-align: center;">
-        <p>Le formulaire de création sera disponible prochainement.</p>
-        <p class="muted">Fonctionnalité en cours de développement.</p>
+    <div class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
+        <div class="page-header" style="margin-bottom: 2rem;">
+            <h1 style="font-size: 2rem; color: var(--gray-900); margin-bottom: 0.5rem;">Créer un nouvel événement</h1>
+            <p style="color: var(--gray-600);">Proposez une activité à la communauté !</p>
+        </div>
+        
+        <form action="#" method="post">
+            {# Form content will go here #}
+        </form>
     </div>
-</div>
 {% endblock %}
