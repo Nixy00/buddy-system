@@ -40,4 +40,17 @@ class ProfilRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function search(string $text): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+            ->where('p.nom LIKE :search OR p.prenom LIKE :search')
+            ->setParameter('search', '%' . $text . '%')
+            ->orderBy('p.nom', 'ASC')
+            ->addOrderBy('p.prenom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
