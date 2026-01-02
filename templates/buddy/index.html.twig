@@ -38,7 +38,7 @@
                         </div>
                     {% endif %}
                     <p style="color: var(--gray-700); margin: 0 0 16px; font-size: 0.95rem;">{{ profil.bio|slice(0, 100) }}...</p>
-                    <a href="#" class="btn btn--primary" style="display: block; text-align: center;">Voir le profil</a>
+                    <a href="{{ path('app_profil_show', {id: profil.utilisateur.id}) }}" class="btn btn--primary" style="display: block; text-align: center;">Voir le profil</a>
                 </div>
             </div>
         {% else %}
