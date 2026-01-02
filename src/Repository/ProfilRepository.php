@@ -51,7 +51,7 @@ class ProfilRepository extends ServiceEntityRepository
 
         return $qb
             ->leftJoin('p.utilisateur', 'u')
-            ->where('p.nom LIKE :search OR p.prenom LIKE :search OR p.bio LIKE :search')
+            ->where('p.nom LIKE :search OR p.prenom LIKE :search OR p.biographie LIKE :search')
             ->setParameter('search', '%' . $text . '%')
             ->orderBy('p.nom', 'ASC')
             ->addOrderBy('p.prenom', 'ASC')
