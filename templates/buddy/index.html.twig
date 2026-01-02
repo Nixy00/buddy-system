@@ -4,4 +4,16 @@
 
 {% block main %}
     <h1 class="h1">Trouvez votre Buddy</h1>
+    
+    <div class="search-container" style="margin-bottom: 32px;">
+        <div class="search-bar" style="display: flex; gap: 12px; margin-bottom: 16px;">
+            <div style="flex: 1; position: relative;">
+                <input type="text" placeholder="Rechercher un buddy..." 
+                       style="width: 100%; padding: 12px 16px; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 1rem;">
+            </div>
+            <button class="btn btn--primary">
+                <span>Rechercher</span>
+            </button>
+        </div>
+    </div>
 {% endblock %}
