@@ -27,7 +27,17 @@
                 </div>
                 <div style="padding: 50px 20px 20px;">
                     <h3 style="margin: 0 0 4px; font-size: 1.25rem;">{{ profil.nom }} {{ profil.prenom }}</h3>
-                    <p style="color: var(--gray-600); margin: 0 0 12px;">{{ profil.ville }}, {{ profil.pays }}</p>
+                    <p style="color: var(--gray-600); margin: 0 0 12px;">
+                        {% if profil.ville and profil.pays %}
+                            {{ profil.ville }}, {{ profil.pays }}
+                        {% elseif profil.ville %}
+                            {{ profil.ville }}
+                        {% elseif profil.pays %}
+                            {{ profil.pays }}
+                        {% else %}
+                            Localisation non renseignée
+                        {% endif %}
+                    </p>
                     {% if profil.langues %}
                         <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
                             {% for langue in profil.langues|split(',') %}
@@ -37,7 +47,11 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <p style="color: var(--gray-700); margin: 0 0 16px; font-size: 0.95rem;">{{ profil.biographie|slice(0, 100) }}...</p>
+                    {% if profil.biographie %}
+                        <p style="color: var(--gray-700); margin: 0 0 16px; font-size: 0.95rem;">
+                            {{ profil.biographie|length > 100 ? profil.biographie|slice(0, 100) ~ '...' : profil.biographie }}
+                        </p>
+                    {% endif %}
                     <a href="#" class="btn btn--primary" style="display: block; text-align: center;">Voir le profil</a>
                 </div>
             </div>
