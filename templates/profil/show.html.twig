@@ -99,17 +99,16 @@
                         {{ profil.biographie }}
                     </p>
                 {% else %}
-                    <p style="color: var(--gray-500); font-style: italic; margin: 0;">
-                        Aucune biographie renseignée.
-                    </p>
+                    <p style="color: var(--gray-700); line-height: 1.6; margin: 0;">{{ profil.biographie }}</p>
+                {% else %}
+                    <p style="color: var(--gray-500); font-style: italic; margin: 0;">Aucune présentation renseignée.</p>
                 {% endif %}
             </div>
 
-            {# Autres sections #}
-            
-            <div class="profile-section" style="background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--gray-200);">
-                <h2 class="section-title" style="font-size: 1.25rem; margin: 0 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-language" style="color: var(--color-accent);"></i>
+            {# Section 2 : Langues #}
+            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 16px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-language" style="color: var(--color-primary);"></i>
                     Langues parlées
                 </h2>
                 
