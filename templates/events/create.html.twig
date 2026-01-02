@@ -3,6 +3,28 @@
 {% block title %}Créer un événement - Buddy System{% endblock %}
 
 {% block main %}
+    <style>
+        .form-control:focus {
+            border-color: var(--color-primary) !important;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1) !important;
+            outline: none;
+        }
+        .btn--primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.3) !important;
+        }
+        .btn--secondary:hover {
+            background-color: var(--gray-50) !important;
+            border-color: var(--gray-400) !important;
+        }
+        .profile-section {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .profile-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08) !important;
+        }
+    </style>
     <div class="breadcrumb" style="background: white; padding: 12px 0; border-bottom: 1px solid var(--gray-200); font-size: 0.9rem;">
         <div class="container">
             <a href="{{ path('app_home') }}" style="color: var(--gray-500); text-decoration: none;">Accueil</a>
