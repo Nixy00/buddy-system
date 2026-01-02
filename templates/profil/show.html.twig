@@ -71,7 +71,24 @@
 
     <div class="container" style="margin-top: 40px; padding-bottom: 60px;">
         <div style="display: grid; gap: 24px;">
-            {# Sections de contenu à venir #}
+            <div class="profile-section" style="background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--gray-200);">
+                <h2 class="section-title" style="font-size: 1.25rem; margin: 0 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-user" style="color: var(--color-accent);"></i>
+                    À propos
+                </h2>
+                
+                {% if profil.biographie %}
+                    <p style="color: var(--gray-700); line-height: 1.6; margin: 0;">
+                        {{ profil.biographie }}
+                    </p>
+                {% else %}
+                    <p style="color: var(--gray-500); font-style: italic; margin: 0;">
+                        Aucune biographie renseignée.
+                    </p>
+                {% endif %}
+            </div>
+
+            {# Autres sections #}
         </div>
     </div>
 {% endblock %}
