@@ -17,6 +17,13 @@
                         ({{ "now"|date("Y") - profil.dateNaissance|date("Y") }} ans)
                     </span>
                 </h1>
+                {# Téléphone #}
+                {% if profil.telephone %}
+                    <div class="info-item" style="margin-top: 10px;">
+                        <span style="display: block; font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-bottom: 4px;">Téléphone</span>
+                        <span style="font-weight: 600; color: white;">{{ profil.telephone }}</span>
+                    </div>
+                {% endif %}
             </div>
 
             <div class="profile-location" style="text-align: center; color: rgba(255,255,255,0.9); margin-bottom: 24px; display: flex; align-items: center; justify-content: center; gap: 6px;">
