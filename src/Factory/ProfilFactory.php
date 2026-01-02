@@ -35,10 +35,10 @@ final class ProfilFactory extends PersistentProxyObjectFactory
             'dateCrea' => self::faker()->dateTime(),
             'dateModif' => self::faker()->dateTime(),
             'dateNaissance' => self::faker()->dateTime(),
-            'genre' => self::faker()->text(30),
-            'nom' => self::faker()->text(100),
-            'prenom' => self::faker()->text(100),
-            'typeCompte' => self::faker()->text(30),
+            'genre' => self::faker()->randomElement(['HOMME', 'FEMME']),
+            'nom' => self::faker()->lastName(),
+            'prenom' => self::faker()->firstName(),
+            'typeCompte' => self::faker()->randomElement(['ETUDIANT', 'BUDDY']),
             'utilisateur' => UserFactory::new(),
         ];
     }
