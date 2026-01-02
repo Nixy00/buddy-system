@@ -6,15 +6,16 @@
     <h1 class="h1">Trouvez votre Buddy</h1>
     
     <div class="search-container" style="margin-bottom: 32px;">
-        <div class="search-bar" style="display: flex; gap: 12px; margin-bottom: 16px;">
+        <form method="get" class="search-bar" style="display: flex; gap: 12px; margin-bottom: 16px;">
             <div style="flex: 1; position: relative;">
-                <input type="text" placeholder="Rechercher un buddy..." 
+                <input type="text" name="search" value="{{ app.request.query.get('search', '') }}" 
+                       placeholder="Rechercher un buddy..." 
                        style="width: 100%; padding: 12px 16px; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 1rem;">
             </div>
-            <button class="btn btn--primary">
+            <button type="submit" class="btn btn--primary">
                 <span>Rechercher</span>
             </button>
-        </div>
+        </form>
     </div>
     
     <div class="buddies-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
