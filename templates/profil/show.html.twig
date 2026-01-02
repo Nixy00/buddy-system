@@ -88,17 +88,13 @@
 
     <div class="container" style="margin-top: 40px; padding-bottom: 60px;">
         <div style="display: grid; gap: 24px;">
-            <div class="profile-section" style="background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--gray-200);">
-                <h2 class="section-title" style="font-size: 1.25rem; margin: 0 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-user" style="color: var(--color-accent);"></i>
+            {# Section 1 : Biographie #}
+            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 16px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-user-circle" style="color: var(--color-primary);"></i>
                     À propos
                 </h2>
-                
                 {% if profil.biographie %}
-                    <p style="color: var(--gray-700); line-height: 1.6; margin: 0;">
-                        {{ profil.biographie }}
-                    </p>
-                {% else %}
                     <p style="color: var(--gray-700); line-height: 1.6; margin: 0;">{{ profil.biographie }}</p>
                 {% else %}
                     <p style="color: var(--gray-500); font-style: italic; margin: 0;">Aucune présentation renseignée.</p>
@@ -111,21 +107,56 @@
                     <i class="fas fa-language" style="color: var(--color-primary);"></i>
                     Langues parlées
                 </h2>
-                
                 {% if profil.langues %}
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         {% for langue in profil.langues|split(',') %}
-                            <span style="background: var(--gray-100); color: var(--gray-700); padding: 8px 16px; border-radius: 20px; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 6px;">
-                                <i class="fas fa-globe"></i>
+                            <span style="background: var(--gray-100); color: var(--gray-800); padding: 8px 16px; border-radius: 20px; font-weight: 500; font-size: 0.9rem;">
                                 {{ langue|trim }}
                             </span>
                         {% endfor %}
                     </div>
                 {% else %}
-                    <p style="color: var(--gray-500); font-style: italic; margin: 0;">
-                        Aucune langue renseignée.
-                    </p>
+                    <p style="color: var(--gray-500); font-style: italic; margin: 0;">Non renseigné.</p>
                 {% endif %}
+            </div>
+
+            {# Section 3 : Disponibilités #}
+            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 16px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-calendar-alt" style="color: var(--color-primary);"></i>
+                    Disponibilités
+                </h2>
+                {% if profil.disponibilites %}
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--color-primary); padding: 12px 16px; color: var(--gray-800);">
+                        {{ profil.disponibilites }}
+                    </div>
+                {% else %}
+                    <p style="color: var(--gray-500); font-style: italic; margin: 0;">Non renseigné.</p>
+                {% endif %}
+            </div>
+
+            {# Section 4 : Infos Personnelles #}
+            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 16px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-info-circle" style="color: var(--color-primary);"></i>
+                    Informations
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div>
+                        <span style="display: block; font-size: 0.85rem; color: var(--gray-500); margin-bottom: 4px;">Type de compte</span>
+                        <span style="font-weight: 600; color: var(--gray-900);">{{ profil.typeCompte|capitalize }}</span>
+                    </div>
+                    <div>
+                        <span style="display: block; font-size: 0.85rem; color: var(--gray-500); margin-bottom: 4px;">Genre</span>
+                        <span style="font-weight: 600; color: var(--gray-900);">{{ profil.genre|capitalize }}</span>
+                    </div>
+                    {% if profil.telephone %}
+                        <div>
+                            <span style="display: block; font-size: 0.85rem; color: var(--gray-500); margin-bottom: 4px;">Téléphone</span>
+                            <span style="font-weight: 600; color: var(--gray-900);">{{ profil.telephone }}</span>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
