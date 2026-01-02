@@ -52,7 +52,9 @@
                             {{ profil.biographie|length > 100 ? profil.biographie|slice(0, 100) ~ '...' : profil.biographie }}
                         </p>
                     {% endif %}
-                    <a href="#" class="btn btn--primary" style="display: block; text-align: center;">Voir le profil</a>
+                    <a href="{{ path('app_profil_show', {id: profil.id}) }}" class="btn btn--primary btn--sm" style="display: block; text-align: center;">
+                        <i class="fas fa-eye"></i> Voir le profil
+                    </a>
                 </div>
             </div>
         {% else %}
