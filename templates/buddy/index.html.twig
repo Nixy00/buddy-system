@@ -31,6 +31,10 @@
                     <a href="#" class="btn btn--primary" style="display: block; text-align: center;">Voir le profil</a>
                 </div>
             </div>
+        {% else %}
+            <p style="color: var(--gray-600); text-align: center; grid-column: 1 / -1; padding: 40px;">
+                Aucun buddy trouvé. Essayez une autre recherche.
+            </p>
         {% endfor %}
     </div>
 {% endblock %}
