@@ -43,11 +43,15 @@ class ProfilRepository extends ServiceEntityRepository
 
     public function search(string $text): array
     {
+        if (empty($text)) {
+            return $this->findAll();
+        }
+
         $qb = $this->createQueryBuilder('p');
 
         return $qb
             ->leftJoin('p.utilisateur', 'u')
-            ->where('p.nom LIKE :search OR p.prenom LIKE :search')
+            ->where('p.nom LIKE :search OR p.prenom LIKE :search OR p.bio LIKE :search')
             ->setParameter('search', '%' . $text . '%')
             ->orderBy('p.nom', 'ASC')
             ->addOrderBy('p.prenom', 'ASC')
