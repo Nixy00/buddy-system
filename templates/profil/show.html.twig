@@ -3,6 +3,16 @@
 {% block title %}Profil - Buddy System{% endblock %}
 
 {% block main %}
+    <div class="breadcrumb" style="background: white; padding: 12px 0; border-bottom: 1px solid var(--gray-200); font-size: 0.9rem;">
+        <div class="container">
+            <a href="{{ path('app_home') }}" style="color: var(--gray-500); text-decoration: none;">Accueil</a>
+            <span style="color: var(--gray-400); margin: 0 8px;">/</span>
+            <a href="{{ path('app_recherche_buddy') }}" style="color: var(--gray-500); text-decoration: none;">Rechercher un Buddy</a>
+            <span style="color: var(--gray-400); margin: 0 8px;">/</span>
+            <span style="color: var(--gray-900);">{{ profil.prenom }} {{ profil.nom }}</span>
+        </div>
+    </div>
+
     <div class="profile-header" style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%); padding: 40px 0; margin-bottom: 40px; border-bottom: 1px solid var(--gray-200);">
         <div class="container">
             {# Avatar Placeholder #}
