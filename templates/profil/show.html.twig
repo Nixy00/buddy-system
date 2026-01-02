@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil - Buddy System{% endblock %}
+
+{% block main %}
+    <div class="profile-header" style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%); padding: 40px 0; margin-bottom: 40px; border-bottom: 1px solid var(--gray-200);">
+        <div class="container">
+            {# Avatar Placeholder #}
+            <div class="profile-avatar" style="width: 150px; height: 150px; border-radius: 50%; border: 5px solid white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin: 0 auto 20px; overflow: hidden; background: var(--gray-300); display: flex; align-items: center; justify-content: center;">
+                 <span style="font-size: 3rem; color: white; opacity: 0.5;">{{ profil.prenom|first }}{{ profil.nom|first }}</span>
+            </div>
+            
+            <div class="profile-name" style="text-align: center; margin-bottom: 8px;">
+                <h1 style="color: white; margin: 0;">
+                    {{ profil.prenom }} {{ profil.nom }}
+                    <span style="font-size: 1rem; font-weight: normal; opacity: 0.8; margin-left: 10px;">
+                        ({{ "now"|date("Y") - profil.dateNaissance|date("Y") }} ans)
+                    </span>
+                </h1>
+            </div>
+
+            <div class="profile-location" style="text-align: center; color: rgba(255,255,255,0.9); margin-bottom: 24px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                {% if profil.ville and profil.pays %}
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ profil.ville }}, {{ profil.pays }}</span>
+                {% elseif profil.ville %}
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ profil.ville }}</span>
+                {% elseif profil.pays %}
+                    <i class="fas fa-globe"></i>
+                    <span>{{ profil.pays }}</span>
+                {% endif %}
+            </div>
+
+            <div class="profile-actions" style="display: flex; justify-content: center; gap: 16px; margin-bottom: 24px;">
+                <a href="#" class="btn btn--primary">
+                    <i class="fas fa-envelope"></i> Envoyer un message
+                </a>
+                <a href="#" class="btn btn--secondary">
+                    <i class="fas fa-user-plus"></i> Demander en buddy
+                </a>
+                <a href="{{ path('app_recherche_buddy') }}" class="btn btn--ghost" style="color: white; border-color: white;">
+                    <i class="fas fa-arrow-left"></i> Retour à la recherche
+                </a>
+            </div>
+
+            <div class="profile-stats" style="display: flex; justify-content: center; gap: 32px; text-align: center;">
+                <div class="stat-item" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="stat-value" style="font-size: 1.5rem; font-weight: 700; color: white; line-height: 1;">0</div>
+                    <div class="stat-label" style="font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-top: 4px;">Buddies</div>
+                </div>
+                <div class="stat-item" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="stat-value" style="font-size: 1.5rem; font-weight: 700; color: white; line-height: 1;">
+                        {{ profil.utilisateur.participations|length }}
+                    </div>
+                    <div class="stat-label" style="font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-top: 4px;">Événements</div>
+                </div>
+                <div class="stat-item" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="stat-value" style="font-size: 1.5rem; font-weight: 700; color: white; line-height: 1;">
+                        {% if profil.langues %}
+                            {{ profil.langues|split(',')|length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </div>
+                    <div class="stat-label" style="font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-top: 4px;">Langues</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 40px; padding-bottom: 60px;">
+        <div style="display: grid; gap: 24px;">
+            {# Sections de contenu à venir #}
+        </div>
+    </div>
+{% endblock %}
