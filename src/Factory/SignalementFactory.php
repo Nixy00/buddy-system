@@ -32,10 +32,11 @@ final class SignalementFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'dateSignalement' => self::faker()->dateTime(),
+            'dateSignalement' => self::faker()->dateTimeBetween('-30 days', 'now'),
             'message' => MessageFactory::new(),
-            'motif' => self::faker()->text(255),
-            'statut' => self::faker()->text(20),
+            'motif' => self::faker()->randomElement(['Spam', 'Harcèlement', 'Contenu inapproprié', 'Arnaque']),
+            'statut' => self::faker()->randomElement(['EN_ATTENTE', 'TRAITE', 'REFUSE']),
+            'commentaireModeration' => null,
             'utilisateur' => UserFactory::new(),
         ];
     }
@@ -45,8 +46,16 @@ final class SignalementFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(Signalement $signalement): void {})
-        ;
+        return $this->afterInstantiate(function (Signalement $signalement): void {
+            if ('EN_ATTENTE' !== $signalement->getStatut()) {
+                $signalement->setCommentaireModeration(
+                    self::faker()->randomElement([
+                        'Signalement traité par la modération.',
+                        'Action effectuée conformément au règlement.',
+                        'Signalement jugé non fondé.',
+                    ])
+                );
+            }
+        });
     }
 }

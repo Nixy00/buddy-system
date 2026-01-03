@@ -32,9 +32,10 @@ final class MessageFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'contenu' => self::faker()->text(),
+            'contenu' => self::faker()->paragraph(),
             'conversation' => ConversationFactory::new(),
-            'dateEnvoi' => self::faker()->dateTime(),
+            'dateEnvoi' => self::faker()->dateTimeBetween('-30 days', 'now'),
+            'dateLecture' => null,
             'utilisateur' => UserFactory::new(),
         ];
     }
@@ -44,8 +45,24 @@ final class MessageFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(Message $message): void {})
-        ;
+        return $this->afterInstantiate(function (Message $message): void {
+            $conversation = $message->getConversation();
+            if ($conversation) {
+                $initiateur = $conversation->getInitiateur();
+                $interlocuteur = $conversation->getInterlocuteur();
+
+                if ($initiateur && $interlocuteur) {
+                    $message->setUtilisateur(self::faker()->randomElement([$initiateur, $interlocuteur]));
+                }
+            }
+
+            // environ 70% lus
+            if (self::faker()->boolean(70)) {
+                $dateEnvoi = $message->getDateEnvoi() ?? new \DateTime('-7 days');
+                $dateLecture = (clone $dateEnvoi);
+                $dateLecture->modify('+'.self::faker()->numberBetween(1, 600).' minutes');
+                $message->setDateLecture($dateLecture);
+            }
+        });
     }
 }
