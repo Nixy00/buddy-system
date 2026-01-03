@@ -32,10 +32,11 @@ final class RelationFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'dateDemande' => self::faker()->dateTime(),
+            'dateDemande' => self::faker()->dateTimeBetween('-30 days', 'now'),
             'envoyeur' => UserFactory::new(),
             'receveur' => UserFactory::new(),
-            'statut' => self::faker()->text(20),
+            'statut' => self::faker()->randomElement(['EN_ATTENTE', 'ACCEPTEE', 'REFUSEE']),
+            'dateReponse' => null,
         ];
     }
 
@@ -44,8 +45,19 @@ final class RelationFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(Relation $relation): void {})
-        ;
+        return $this->afterInstantiate(function (Relation $relation): void {
+            while ($relation->getEnvoyeur() && $relation->getReceveur()
+                && $relation->getEnvoyeur()->getId() === $relation->getReceveur()->getId()
+            ) {
+                $relation->setReceveur(UserFactory::new()->create()->_real());
+            }
+
+            if ('EN_ATTENTE' !== $relation->getStatut()) {
+                $dateDemande = $relation->getDateDemande() ?? new \DateTime('-7 days');
+                $dateReponse = (clone $dateDemande);
+                $dateReponse->modify('+'.self::faker()->numberBetween(1, 10).' days');
+                $relation->setDateReponse($dateReponse);
+            }
+        });
     }
 }
