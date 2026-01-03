@@ -29,34 +29,16 @@ class RelationFixtures extends Fixture implements DependentFixtureInterface
             'dateReponse' => null,
         ]);
 
-        // 25 relations aléatoires
-        for ($i = 0; $i < 25; ++$i) {
+        RelationFactory::createMany(25, function () {
             $envoyeur = UserFactory::random();
             $receveur = UserFactory::random();
 
-            // éviter une relation avec soi-même
             while ($receveur->getId() === $envoyeur->getId()) {
                 $receveur = UserFactory::random();
             }
 
-            $dateDemande = new \DateTime('-'.random_int(1, 30).' days');
-
-            $statut = ['EN_ATTENTE', 'ACCEPTEE', 'REFUSEE'][random_int(0, 2)];
-
-            $dateReponse = null;
-            if ('EN_ATTENTE' !== $statut) {
-                $dateReponse = (clone $dateDemande);
-                $dateReponse->modify('+'.random_int(1, 10).' days');
-            }
-
-            RelationFactory::createOne([
-                'envoyeur' => $envoyeur,
-                'receveur' => $receveur,
-                'statut' => $statut,
-                'dateDemande' => $dateDemande,
-                'dateReponse' => $dateReponse,
-            ]);
-        }
+            return ['envoyeur' => $envoyeur, 'receveur' => $receveur];
+        });
 
         $manager->flush();
     }
