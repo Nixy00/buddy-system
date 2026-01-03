@@ -31,9 +31,16 @@ final class RoleFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
+        $roles = [
+            ['code' => 'ROLE_ADMIN', 'libelle' => 'Administrateur'],
+            ['code' => 'ROLE_USER', 'libelle' => 'Utilisateur'],
+        ];
+
+        $role = self::faker()->randomElement($roles);
+
         return [
-            'code' => self::faker()->text(20),
-            'libelle' => self::faker()->text(80),
+            'code' => $role['code'],
+            'libelle' => $role['libelle'],
         ];
     }
 
