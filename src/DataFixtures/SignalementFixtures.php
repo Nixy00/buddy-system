@@ -42,28 +42,10 @@ class SignalementFixtures extends Fixture implements DependentFixtureInterface
             'commentaireModeration' => 'Signalement traité : aucun problème détecté.',
         ]);
 
-        // Signalements random
-        $faker = \Faker\Factory::create('fr_FR');
-
-        for ($i = 0; $i < 30; ++$i) {
-            $message = MessageFactory::random();
-
-            $statut = $faker->randomElement(['EN_ATTENTE', 'TRAITE', 'REFUSE']);
-            $commentaireModeration = null;
-
-            if ('EN_ATTENTE' !== $statut) {
-                $commentaireModeration = $faker->sentence(10);
-            }
-
-            SignalementFactory::createOne([
-                'message' => $message,
-                'utilisateur' => $faker->randomElement([$admin, $user]),
-                'motif' => $faker->randomElement(['Spam', 'Harcèlement', 'Contenu inapproprié', 'Arnaque']),
-                'statut' => $statut,
-                'dateSignalement' => new \DateTime('-'.random_int(1, 20).' days'),
-                'commentaireModeration' => $commentaireModeration,
-            ]);
-        }
+        SignalementFactory::createMany(30, fn () => [
+            'message' => MessageFactory::random(),
+            'utilisateur' => UserFactory::random(),
+        ]);
 
         $manager->flush();
     }
