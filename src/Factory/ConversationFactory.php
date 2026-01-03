@@ -32,10 +32,10 @@ final class ConversationFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'dateCrea' => self::faker()->dateTime(),
+            'dateCrea' => self::faker()->dateTimeBetween('-60 days', 'now'),
             'initiateur' => UserFactory::new(),
             'interlocuteur' => UserFactory::new(),
-            'statut' => self::faker()->text(20),
+            'statut' => self::faker()->randomElement(['OUVERTE', 'FERMEE', 'ARCHIVEE']),
         ];
     }
 
@@ -44,8 +44,12 @@ final class ConversationFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(Conversation $conversation): void {})
-        ;
+        return $this->afterInstantiate(function (Conversation $conversation): void {
+            while ($conversation->getInitiateur() && $conversation->getInterlocuteur()
+                && $conversation->getInitiateur()->getId() === $conversation->getInterlocuteur()->getId()
+            ) {
+                $conversation->setInterlocuteur(UserFactory::new()->create()->_real());
+            }
+        });
     }
 }
