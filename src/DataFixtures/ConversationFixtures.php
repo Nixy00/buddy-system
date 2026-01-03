@@ -46,8 +46,6 @@ class ConversationFixtures extends Fixture implements DependentFixtureInterface
                 'initiateur' => $initiateur,
                 'interlocuteur' => $interlocuteur,
             ]);
-
-            $this->addReference('conversation_'.$i, $conv->_real());
         }
 
         $manager->flush();
