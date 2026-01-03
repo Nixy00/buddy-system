@@ -9,14 +9,9 @@ use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Random\RandomException;
 
 class MessageFixtures extends Fixture implements DependentFixtureInterface
 {
-    /**
-     * @throws \DateMalformedStringException
-     * @throws RandomException
-     */
     public function load(ObjectManager $manager): void
     {
         $admin = UserFactory::find(['email' => 'root@example.com']);
@@ -50,29 +45,7 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
             'dateLecture' => null,
         ]);
 
-        // 80 messages répartis sur des conversations random
-        for ($i = 0; $i < 80; ++$i) {
-            $conversation = ConversationFactory::random();
-
-            // messages venant soit de l'initiateur soit de l'interloctueur
-            $auteur = (0 === random_int(0, 1)) ? $conversation->getInitiateur() : $conversation->getInterlocuteur();
-
-            $dateEnvoi = new \DateTime('-'.random_int(1, 30).' days');
-
-            $dateLecture = null;
-            if (random_int(0, 100) < 70) { // environ 70% des messages sont lues (et ont donc une date de lecture)
-                $dateLecture = (clone $dateEnvoi);
-                $dateLecture->modify('+'.random_int(1, 600).' minutes');
-            }
-
-            MessageFactory::createOne([
-                'conversation' => $conversation,
-                'utilisateur' => $auteur,
-                'contenu' => 'Message #'.($i + 1),
-                'dateEnvoi' => $dateEnvoi,
-                'dateLecture' => $dateLecture,
-            ]);
-        }
+        MessageFactory::createMany(80, fn () => ['conversation' => ConversationFactory::random()]);
 
         $manager->flush();
     }
