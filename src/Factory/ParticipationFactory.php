@@ -32,9 +32,11 @@ final class ParticipationFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'dateInscription' => self::faker()->dateTime(),
+            'dateInscription' => self::faker()->dateTimeBetween('-60 days', 'now'),
+            'dateDesinscription' => null,
             'evenement' => EvenementFactory::new(),
-            'statut' => self::faker()->text(20),
+            'statut' => self::faker()->randomElement(['INSCRIT', 'ANNULE']),
+            'remarque' => self::faker()->boolean(25) ? self::faker()->sentence() : null,
             'utilisateur' => UserFactory::new(),
         ];
     }
@@ -44,8 +46,13 @@ final class ParticipationFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(Participation $participation): void {})
-        ;
+        return $this->afterInstantiate(function (Participation $participation): void {
+            if ('ANNULE' === $participation->getStatut()) {
+                $dateInscription = $participation->getDateInscription() ?? new \DateTime('-10 days');
+                $dateDesinscription = (clone $dateInscription);
+                $dateDesinscription->modify('+'.self::faker()->numberBetween(1, 20).' days');
+                $participation->setDateDesinscription($dateDesinscription);
+            }
+        });
     }
 }
