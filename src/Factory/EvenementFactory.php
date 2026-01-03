@@ -53,6 +53,25 @@ final class EvenementFactory extends PersistentProxyObjectFactory
             'Musée des Beaux-Arts, Reims',
             'Gare de Reims'];
 
+        $titres = [
+            'Afterwork international',
+            'Soirée d’intégration internationale',
+            'Visite des Caves Pommery',
+            'Sortie musée',
+            'Session sport au parc',
+            'Tournoi de foot amical',
+            'Conférence : vivre à Reims',
+            'Atelier CV & alternance',
+        ];
+
+        $descriptions = [
+            'Rencontre conviviale pour échanger, rencontrer de nouveaux étudiants et découvrir la vie à Reims.',
+            'Sortie en petit groupe suivie d’un café pour apprendre à se connaître.',
+            'Activité sportive accessible à tous : footing léger + étirements.',
+            'Moment d’échange autour de la culture, avec visite et discussion.',
+            'Conférence et Q/R pour faciliter l’intégration des nouveaux arrivants.',
+        ];
+
         return [
             'capacite' => self::faker()->numberBetween(10, 150),
             'dateCrea' => $dateCrea,
@@ -60,10 +79,10 @@ final class EvenementFactory extends PersistentProxyObjectFactory
             'dateFin' => $dateFin,
             'dateLimiteInscr' => $dateLimite,
             'dateModif' => $dateModif,
-            'description' => self::faker()->paragraph(),
+            'description' => self::faker()->randomElement($descriptions),
             'lieu' => self::faker()->randomElement($lieux),
             'statut' => self::faker()->randomElement(['OUVERT', 'COMPLET', 'ANNULE']),
-            'titre' => self::faker()->sentence(4),
+            'titre' => self::faker()->randomElement($titres),
             'categorie' => self::faker()->randomElement(['Intégration', 'Culture', 'Sport', 'Loisirs', 'Conférence']),
         ];
     }
