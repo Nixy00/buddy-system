@@ -29,6 +29,7 @@ final class ProfilFactory extends PersistentProxyObjectFactory
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
      * @todo add your default values here
+     * @throws \DateMalformedStringException
      */
     protected function defaults(): array|callable
     {
@@ -40,10 +41,14 @@ final class ProfilFactory extends PersistentProxyObjectFactory
             $avatars[] = file_get_contents($file->getRealPath());
         }
 
+        $dateCrea = self::faker()->dateTimeBetween('-2 years', 'now');
+        $dateModif = (clone $dateCrea);
+        $dateModif->modify('+'.self::faker()->numberBetween(0, 60).' days');
+
         return [
-            'dateCrea' => self::faker()->dateTime(),
-            'dateModif' => self::faker()->dateTime(),
-            'dateNaissance' => self::faker()->dateTime(),
+            'dateCrea' => $dateCrea,
+            'dateModif' => $dateModif,
+            'dateNaissance' => self::faker()->dateTimeBetween('-60 years', '-18 years'),
             'genre' => self::faker()->randomElement(['HOMME', 'FEMME']),
             'nom' => self::faker()->lastName(),
             'prenom' => self::faker()->firstName(),
