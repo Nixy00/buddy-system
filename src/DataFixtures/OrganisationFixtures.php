@@ -23,13 +23,10 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
             ]);
         }
 
-        // 20 organisations aléatoires
-        for ($i = 0; $i < 20; ++$i) {
-            OrganisationFactory::createOne([
-                'utilisateur' => UserFactory::random(),
-                'evenement' => EvenementFactory::random(),
-            ]);
-        }
+        OrganisationFactory::createMany(20, fn () => [
+            'utilisateur' => UserFactory::random(),
+            'evenement' => EvenementFactory::random(),
+        ]);
 
         $manager->flush();
     }
