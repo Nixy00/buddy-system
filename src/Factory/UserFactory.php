@@ -10,6 +10,8 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
  */
 final class UserFactory extends PersistentProxyObjectFactory
 {
+    private \Transliterator $transliterator;
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
@@ -17,6 +19,8 @@ final class UserFactory extends PersistentProxyObjectFactory
      */
     public function __construct()
     {
+        $this->transliterator = \Transliterator::create('Any-Lower; Latin-ASCII');
+        parent::__construct();
     }
 
     public static function class(): string

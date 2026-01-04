@@ -52,6 +52,8 @@ class EvenementFixtures extends Fixture
             'categorie' => 'Sport',
         ]);
 
+        EvenementFactory::createMany(12);
+
         $manager->flush();
     }
 }

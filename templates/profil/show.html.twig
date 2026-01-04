@@ -17,15 +17,24 @@
         <div class="container">
             <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
                 {# Avatar #}
-                <div class="profile-avatar" style="width: 140px; height: 140px; border-radius: 50%; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); margin-bottom: 20px; overflow: hidden; background: var(--gray-100); display: flex; align-items: center; justify-content: center; border: 4px solid white;">
-                     <span style="font-size: 3rem; color: var(--color-primary); font-weight: 600;">{{ profil.prenom|first }}{{ profil.nom|first }}</span>
-                </div>
-                
+                {% if profil.avatar %}
+                    <img
+                        src="{{ path('app_profil_avatar', { id: profil.id }) }}"
+                        alt="Avatar de {{ profil.prenom }} {{ profil.nom }}"
+                        style="width: 20%; height: 20%; object-fit: cover; border-radius: 50%; display: block;"
+                    >
+                {% else %}
+                    <span style="font-size: 3rem; color: var(--color-primary); font-weight: 600;">
+                        {{ profil.prenom|first }}{{ profil.nom|first }}
+                    </span>
+                {% endif %}
+
+
                 {# Nom et Âge #}
                 <h1 style="color: var(--gray-900); margin: 0 0 8px; font-size: 2rem;">
                     {{ profil.prenom }} {{ profil.nom }}
                 </h1>
-                
+
                 <div style="color: var(--gray-600); margin-bottom: 16px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
                     <span>{{ "now"|date("Y") - profil.dateNaissance|date("Y") }} ans</span>
                     <span style="width: 4px; height: 4px; background: var(--gray-400); border-radius: 50%;"></span>

@@ -19,5 +19,7 @@ class RoleFixtures extends Fixture
             'code' => 'ROLE_USER',
             'libelle' => 'Utilisateur',
         ]);
+
+        $manager->flush();
     }
 }
