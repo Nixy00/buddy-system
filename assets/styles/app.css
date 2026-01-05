@@ -37,7 +37,8 @@ body {
     --bg: #FFFFFF;
     --radius: 12px;
     --space: 16px;
-    --maxw: 1080px;
+    --maxw: 1280px;
+    /* Agrandissement pour écrans modernes */
 }
 
 /* Utilitaires */
@@ -45,7 +46,8 @@ body {
     width: 100%;
     max-width: var(--maxw);
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 24px;
+    /* Plus de padding horizontal */
 }
 
 .muted {
@@ -80,11 +82,13 @@ body {
 }
 
 .header__inner {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 12px;
+    display: flex;
+    /* Flexbox mieux que Grid ici pour distribution */
+    justify-content: space-between;
     align-items: center;
-    min-height: 64px;
+    gap: 24px;
+    min-height: 72px;
+    /* Un peu plus haut */
 }
 
 /* Brand */
@@ -116,7 +120,8 @@ body {
 .nav__list {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
+    /* Réduction légère (était 24px) */
     list-style: none;
     padding: 0;
     margin: 0;
@@ -124,9 +129,14 @@ body {
 
 .nav__link {
     text-decoration: none;
-    color: var(--gray-700);
+    color: var(--gray-600);
     padding: 8px 10px;
     border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color .2s;
+    white-space: nowrap;
+    /* Empêche "Mon Profil" de casser */
 }
 
 .nav__link:hover,
