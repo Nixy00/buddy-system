@@ -31,4 +31,12 @@ class EvenementRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Compte le nombre total d'événements
+     */
+    public function countEvents(): int
+    {
+        return $this->count([]);
+    }
 }
