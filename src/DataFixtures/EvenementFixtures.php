@@ -52,6 +52,20 @@ class EvenementFixtures extends Fixture
             'categorie' => 'Sport',
         ]);
 
+        EvenementFactory::createOne([
+            'titre' => 'Concert annulé',
+            'description' => 'Cet événement a été annulé pour des raisons organisationnelles.',
+            'lieu' => 'Salle de spectacle, Reims',
+            'dateDebut' => new \DateTime('2026-02-15 20:00:00'),
+            'dateFin' => new \DateTime('2026-02-15 23:00:00'),
+            'dateLimiteInscr' => new \DateTime('2026-02-14 23:59:59'),
+            'capacite' => 100,
+            'statut' => 'ANNULE',
+            'dateCrea' => new \DateTime('2026-01-10 10:00:00'),
+            'dateModif' => new \DateTime('2026-01-25 15:30:00'),
+            'categorie' => 'Culture',
+        ]);
+
         EvenementFactory::createMany(12);
 
         $manager->flush();
