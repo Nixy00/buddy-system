@@ -463,4 +463,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string) $this->email;
     }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = ['ROLE_USER'];
+
+        // on récupère les rôles via la relation possessions -> role
+        foreach ($this->possessions as $possession) {
+            if ($role = $possession->getRole()) {
+                $roles[] = $role->getCode();
+            }
+        }
+
+        return array_unique($roles);
+    }
 }
