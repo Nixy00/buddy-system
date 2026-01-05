@@ -16,28 +16,19 @@ class EvenementRepository extends ServiceEntityRepository
         parent::__construct($registry, Evenement::class);
     }
 
-    //    /**
-    //     * @return Evenement[] Returns an array of Evenement objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Evenement
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Récupère les événements à venir (ouverts et futurs)
+     */
+    public function findUpcoming(int $limit = 3): array
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.statut = :statut')
+            ->andWhere('e.dateDebut > :now')
+            ->setParameter('statut', 'OUVERT')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('e.dateDebut', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }
