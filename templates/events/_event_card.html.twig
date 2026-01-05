@@ -16,6 +16,10 @@
             <span class="badge" style="position: absolute; top: 1rem; right: 1rem; background: #EF4444; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 Complet
             </span>
+        {% elseif event.statut == 'ANNULE' %}
+            <span class="badge" style="position: absolute; top: 1rem; right: 1rem; background: #F59E0B; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                Annulé
+            </span>
         {% endif %}
     </div>
     <div class="card-content">
