@@ -192,6 +192,7 @@ class EventController extends AbstractController
             $profil = $participation->getUtilisateur()->getProfil();
             if ($profil) {
                 $event['participants'][] = [
+                    'id' => $profil->getId(),
                     'nom' => $profil->getNom() . ' ' . $profil->getPrenom()
                 ];
             }
