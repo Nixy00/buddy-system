@@ -485,4 +485,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->mdpHache;
     }
+
+    public function eraseCredentials(): void
+    {
+        // permet de nettoyer des données sensibles temporaires si nécessaire pour la suite
+    }
 }
