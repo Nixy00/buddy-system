@@ -480,4 +480,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return array_unique($roles);
     }
+
+    public function getPassword(): ?string
+    {
+        return $this->mdpHache;
+    }
 }
