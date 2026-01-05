@@ -1,0 +1,11 @@
+{% if profil.avatar %}
+    <img 
+        src="{{ path('app_profil_avatar', { id: profil.id }) }}" 
+        alt="Avatar de {{ profil.prenom }} {{ profil.nom }}"
+        class="avatar-img"
+    >
+{% else %}
+    <div class="avatar-placeholder">
+        {{ profil.prenom|first }}{{ profil.nom|first }}
+    </div>
+{% endif %}
