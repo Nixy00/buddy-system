@@ -94,11 +94,11 @@
         <div class="events-preview-grid">
             {% for event in events %}
                 <div class="event-preview-card">
-                    <div class="event-tag">{{ event.category }}</div>
+                    <div class="event-tag">{{ event.categorie }}</div>
                     <h3>{{ event.titre }}</h3>
                     <div class="event-info">
                         <span>📍 {{ event.lieu }}</span>
-                        <span>📅 {{ event.date_debut|date('d/m/Y') }}</span>
+                        <span>📅 {{ event.dateDebut|date('d/m/Y') }}</span>
                     </div>
                     <div class="event-capacity">
                         <span>{{ event.capacite }} places</span>
