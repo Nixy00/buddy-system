@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - Buddy System{% endblock %}
+
+{% block main %}
+<section class="section dashboard-content">
+    <div class="container">
+        {# Message de bienvenue personnalisé avec le prénom de l'utilisateur #}
+        <h1 class="h1">Bienvenue, {{ user.profil.prenom }} 👋</h1>
+        <p class="lead">
+            Voici votre tableau de bord. Accédez rapidement aux principales fonctionnalités :
+        </p>
+
+        {# Grille de 4 cartes pour accéder aux différentes sections #}
+        <ul class="cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; list-style: none; padding: 0; margin: 2rem 0;">
+            
+            {# Carte Mon Profil #}
+            <li class="card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; background: white;">
+                <h3 style="margin: 0 0 0.5rem; color: var(--gray-900);">Mon Profil</h3>
+                <p style="color: var(--gray-600); margin: 0 0 1rem;">
+                    Consultez et modifiez vos informations personnelles.
+                </p>
+                <a href="{{ path('app_profil_show', {id: user.profil.id}) }}" class="card__link" 
+                   style="color: var(--color-accent); text-decoration: none; font-weight: 500;">
+                    Voir mon profil →
+                </a>
+            </li>
+
+            {# Carte Recherche Buddy #}
+            <li class="card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; background: white;">
+                <h3 style="margin: 0 0 0.5rem; color: var(--gray-900);">Recherche</h3>
+                <p style="color: var(--gray-600); margin: 0 0 1rem;">
+                    Trouvez un buddy qui correspond à vos attentes.
+                </p>
+                <a href="{{ path('app_recherche_buddy') }}" class="card__link"
+                   style="color: var(--color-accent); text-decoration: none; font-weight: 500;">
+                    Lancer une recherche →
+                </a>
+            </li>
+
+            {# Carte Messagerie - lien désactivé car pas encore implémentée #}
+            <li class="card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; background: white;">
+                <h3 style="margin: 0 0 0.5rem; color: var(--gray-900);">Messagerie</h3>
+                <p style="color: var(--gray-600); margin: 0 0 1rem;">
+                    Échangez avec vos buddies.
+                </p>
+                <span style="color: var(--gray-400); font-weight: 500;">
+                    Bientôt disponible →
+                </span>
+            </li>
+
+            {# Carte Événements #}
+            <li class="card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; background: white;">
+                <h3 style="margin: 0 0 0.5rem; color: var(--gray-900);">Événements</h3>
+                <p style="color: var(--gray-600); margin: 0 0 1rem;">
+                    Participez aux événements de la vie étudiante.
+                </p>
+                <a href="{{ path('app_events') }}" class="card__link"
+                   style="color: var(--color-accent); text-decoration: none; font-weight: 500;">
+                    Voir les événements →
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</section>
+{% endblock %}
