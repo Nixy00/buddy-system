@@ -33,6 +33,7 @@ class EvenementType extends AbstractType
                     'Culture' => 'Culture',
                     'Loisirs' => 'Loisirs',
                     'Intégration' => 'Intégration',
+                    'Conférence' => 'Conférence',
                     'Autre' => 'Autre',
                 ],
                 'placeholder' => 'Choisir une catégorie',
