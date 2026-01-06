@@ -23,4 +23,25 @@ final class ProfilController extends AbstractController
             'profil' => $profil,
         ]);
     }
+
+    #[Route('/profil/edit', name: 'app_profil_edit')]
+    public function edit(): Response
+    {
+        // Mode TEST comme Dashboard (en attendant système de connexion)
+        $user = $this->getUser();
+
+        if (!$user) {
+            // Simulation d'un utilisateur pour tester le frontend
+            $user = new \stdClass();
+            $user->id = 1;
+            // TODO BACKEND: Ajouter vraie connexion utilisateur
+        }
+
+        // TODO BACKEND: Récupérer le profil depuis la BDD
+        // $profil = $profilRepository->find($user->getId());
+
+        return $this->render('profil/edit.html.twig', [
+            'user' => $user
+        ]);
+    }
 }
