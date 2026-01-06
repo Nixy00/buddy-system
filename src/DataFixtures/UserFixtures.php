@@ -31,6 +31,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             'genre' => 'Homme',
             'typeCompte' => 'admin',
             'dateNaissance' => new \DateTime('1970-05-29'),
+            'biographie' => 'Administrateur système du Buddy System.',
             'dateCrea' => new \DateTime(),
             'dateModif' => new \DateTime(),
         ]);
@@ -54,6 +55,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             'genre' => 'Homme',
             'typeCompte' => 'user',
             'dateNaissance' => new \DateTime('2001-08-10'),
+            'biographie' => 'Étudiant en photo-journalisme, cherche un parrain sympa !',
             'dateCrea' => new \DateTime(),
             'dateModif' => new \DateTime(),
         ]);
