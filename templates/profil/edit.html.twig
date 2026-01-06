@@ -20,7 +20,7 @@
                 <img src="https://via.placeholder.com/120" alt="Photo de profil" class="profile-avatar">
                 <label class="avatar-label">
                     Changer la photo
-                    {# TODO BACKEND: Upload avatar fonctionnel #}
+                    {# TODO BACKEND: Upload avatar fonctionnel (champ BLOB dans Profil) #}
                 </label>
                 <input type="file" accept="image/*" style="display: none;">
             </div>
@@ -30,37 +30,32 @@
         <div class="form-section">
             <h2>Informations personnelles</h2>
             
-            {# Ligne 1 : Prénom et Nom #}
+            {# Ligne 1 : Prénom et Nom (champs Profil.prenom et Profil.nom) #}
             <div class="form-row">
                 <div class="form-group">
                     <label for="prenom">Prénom</label>
-                    <input type="text" id="prenom" class="form-control" required>
+                    <input type="text" id="prenom" name="prenom" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="nom">Nom</label>
-                    <input type="text" id="nom" class="form-control" required>
+                    <input type="text" id="nom" name="nom" class="form-control" required>
                 </div>
             </div>
             
-            {# Ligne 2 : Email et Téléphone #}
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="email">Adresse email</label>
-                    <input type="email" id="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="telephone">Téléphone</label>
-                    <input type="tel" id="telephone" class="form-control">
-                </div>
+            {# Téléphone (champ Profil.telephone, nullable) #}
+            <div class="form-group">
+                <label for="telephone">Téléphone</label>
+                <input type="tel" id="telephone" name="telephone" class="form-control" 
+                       placeholder="06 12 34 56 78" maxlength="15">
             </div>
 
-            {# Date de naissance #}
+            {# Date de naissance (champ Profil.dateNaissance) #}
             <div class="form-group">
                 <label for="dateNaissance">Date de naissance</label>
-                <input type="date" id="dateNaissance" class="form-control">
+                <input type="date" id="dateNaissance" name="dateNaissance" class="form-control" required>
             </div>
 
-            {# Genre avec boutons radio #}
+            {# Genre (champ Profil.genre) #}
             <div class="form-group">
                 <label>Genre</label>
                 <div class="radio-group">
@@ -77,56 +72,43 @@
             </div>
         </div>
 
-        {# Section À propos de moi #}
+        {# Section À propos de moi (champ Profil.biographie, max 500 caractères) #}
         <div class="form-section">
             <h2>À propos de moi</h2>
             <div class="form-group">
-                <label for="bio">Présentation</label>
-                <textarea id="bio" class="form-control" rows="4" 
+                <label for="biographie">Présentation</label>
+                <textarea id="biographie" name="biographie" class="form-control" rows="4" 
+                          maxlength="500"
                           placeholder="Parlez-nous un peu de vous..."></textarea>
+                <small class="muted">Maximum 500 caractères</small>
             </div>
         </div>
 
-        {# Section Langues parlées #}
+        {# Section Langues parlées (champ Profil.langues, stocké comme string) #}
         <div class="form-section">
             <h2>Langues parlées</h2>
             <div class="form-group">
-                <label for="languageSelect">Sélectionnez une langue</label>
-                <select id="languageSelect" class="form-control">
-                    <option value="">Sélectionnez une langue</option>
-                    <option value="francais">Français</option>
-                    <option value="anglais">Anglais</option>
-                    <option value="espagnol">Espagnol</option>
-                    <option value="allemand">Allemand</option>
-                    <option value="italien">Italien</option>
-                    <option value="chinois">Chinois</option>
-                    <option value="arabe">Arabe</option>
-                    <option value="russe">Russe</option>
-                    <option value="portugais">Portugais</option>
-                    <option value="japonais">Japonais</option>
-                </select>
+                <label for="langues">Langues</label>
+                <input type="text" id="langues" name="langues" class="form-control" 
+                       placeholder="Ex: Français, Anglais, Espagnol" maxlength="255">
+                <small class="muted">Séparez les langues par des virgules</small>
             </div>
-            {# TODO BACKEND: Système de tags dynamiques pour sélectionner plusieurs langues #}
+            {# TODO BACKEND: Système de tags dynamiques sera mieux qu'un champ texte #}
         </div>
 
-        {# Section Localisation #}
+        {# Section Localisation (champs Profil.pays et Profil.ville) #}
         <div class="form-section">
             <h2>Localisation</h2>
             <div class="form-row">
                 <div class="form-group">
                     <label for="pays">Pays</label>
-                    <select id="pays" class="form-control">
-                        <option value="">Sélectionnez un pays</option>
-                        <option value="france">France</option>
-                        <option value="belgique">Belgique</option>
-                        <option value="suisse">Suisse</option>
-                        <option value="canada">Canada</option>
-                        <option value="autre">Autre</option>
-                    </select>
+                    <input type="text" id="pays" name="pays" class="form-control" 
+                           placeholder="France" maxlength="100">
                 </div>
                 <div class="form-group">
                     <label for="ville">Ville</label>
-                    <input type="text" id="ville" class="form-control">
+                    <input type="text" id="ville" name="ville" class="form-control" 
+                           placeholder="Paris" maxlength="100">
                 </div>
             </div>
         </div>
@@ -141,4 +123,11 @@
         </div>
     </form>
 </main>
+
+{# Note pour le backend :
+   - Email : dans User.email (pas dans Profil)
+   - TypeCompte : dans Profil.typeCompte (pas géré par formulaire utilisateur)
+   - Disponibilites : dans Profil.disponibilites (pas dans ce formulaire)
+   - DateCrea, DateModif : gérés automatiquement
+#}
 {% endblock %}
