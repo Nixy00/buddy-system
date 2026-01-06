@@ -3,147 +3,142 @@
 {% block title %}Mon Profil{% endblock %}
 
 {% block main %}
-<section class="section">
-    <div class="container">
-        {# En-tête de la page #}
-        <div class="profile-header">
-            <h1 class="h1">Mon Profil</h1>
-            <p class="muted">Gérez vos informations personnelles</p>
-        </div>
-        
-        {# Formulaire d'édition du profil #}
-        <form class="profile-form">
-            
-            {# Section 1 : Photo de profil #}
-            <div class="form-section">
-                <h2>Photo de profil</h2>
-                <div class="avatar-container">
-                    <img src="https://via.placeholder.com/120" class="profile-avatar" alt="Avatar">
-                    <p class="muted">
-                        {# TODO BACKEND: Upload avatar fonctionnel avec VichUploader #}
-                        Upload d'avatar à implémenter
-                    </p>
-                </div>
-            </div>
-            
-            {# Section 2 : Informations personnelles #}
-            <div class="form-section">
-                <h2>Informations personnelles</h2>
-                
-                {# Ligne avec 2 champs : Prénom et Nom #}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="prenom">Prénom</label>
-                        <input type="text" id="prenom" name="prenom" class="form-control" placeholder="Jean">
-                    </div>
-                    <div class="form-group">
-                        <label for="nom">Nom</label>
-                        <input type="text" id="nom" name="nom" class="form-control" placeholder="Dupont">
-                    </div>
-                </div>
-                
-                {# Ligne avec 2 champs : Email et Téléphone #}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="jean@exemple.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="telephone">Téléphone</label>
-                        <input type="tel" id="telephone" name="telephone" class="form-control" placeholder="06 12 34 56 78">
-                    </div>
-                </div>
-                
-                {# Date de naissance #}
-                <div class="form-group">
-                    <label for="dateNaissance">Date de naissance</label>
-                    <input type="date" id="dateNaissance" name="dateNaissance" class="form-control">
-                </div>
-                
-                {# Genre avec boutons radio #}
-                <div class="form-group">
-                    <label>Genre</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="genre" value="homme" checked> Homme</label>
-                        <label><input type="radio" name="genre" value="femme"> Femme</label>
-                        <label><input type="radio" name="genre" value="autre"> Autre</label>
-                    </div>
-                </div>
-            </div>
-            
-            {# Section 3 : À propos de moi #}
-            <div class="form-section">
-                <h2>À propos de moi</h2>
-                
-                {# Biographie #}
-                <div class="form-group">
-                    <label for="bio">Présentation</label>
-                    <textarea id="bio" name="bio" class="form-control" rows="4" 
-                              placeholder="Parlez-nous un peu de vous..."></textarea>
-                </div>
-                
-                {# TODO BACKEND: Système de tags pour centres d'intérêt #}
-                {# Ce sera fait avec JavaScript + relation ManyToMany ou champ JSON #}
-                <p class="muted">
-                    <strong>Centres d'intérêt :</strong> fonctionnalité à implémenter avec tags dynamiques
-                </p>
-            </div>
-            
-            {# Section 4 : Langues parlées #}
-            <div class="form-section">
-                <h2>Langues parlées</h2>
-                
-                <div class="form-group">
-                    <label for="langues">Sélectionnez vos langues</label>
-                    {# Select multiple simple (sera remplacé par des tags plus tard) #}
-                    <select id="langues" name="langues" class="form-control" multiple size="5">
-                        <option value="francais">Français</option>
-                        <option value="anglais">Anglais</option>
-                        <option value="espagnol">Espagnol</option>
-                        <option value="allemand">Allemand</option>
-                        <option value="italien">Italien</option>
-                        <option value="chinois">Chinois</option>
-                        <option value="arabe">Arabe</option>
-                    </select>
-                    <small class="muted">Maintenez Ctrl (Cmd sur Mac) pour en sélectionner plusieurs</small>
-                </div>
-                
-                {# TODO BACKEND: Système de tags dynamiques JavaScript pour les langues #}
-            </div>
-            
-            {# Section 5 : Localisation #}
-            <div class="form-section">
-                <h2>Localisation</h2>
-                
-                {# Ligne avec 2 champs : Pays et Ville #}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="pays">Pays</label>
-                        <select id="pays" name="pays" class="form-control">
-                            <option value="">Sélectionnez un pays</option>
-                            <option value="france">France</option>
-                            <option value="belgique">Belgique</option>
-                            <option value="suisse">Suisse</option>
-                            <option value="canada">Canada</option>
-                            <option value="autre">Autre</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="ville">Ville</label>
-                        <input type="text" id="ville" name="ville" class="form-control" placeholder="Paris">
-                    </div>
-                </div>
-            </div>
-            
-            {# Boutons d'action #}
-            <div class="form-actions">
-                <a href="{{ path('app_dashboard') }}" class="btn btn--ghost">Annuler</a>
-                <button type="button" class="btn btn--primary" disabled 
-                        title="La sauvegarde sera implémentée par le backend">
-                    Enregistrer (bientôt disponible)
-                </button>
-            </div>
-        </form>
+{# Container principal avec classe de la maquette #}
+<main class="profile-container">
+    {# En-tête de la page #}
+    <div class="profile-header">
+        <h1 class="h1">Mon Profil</h1>
+        <p>Gérez vos informations personnelles et vos préférences</p>
     </div>
-</section>
+
+    {# Formulaire d'édition #}
+    <form class="profile-form">
+        
+        {# Section Photo de profil #}
+        <div class="form-section">
+            <div class="avatar-upload">
+                <img src="https://via.placeholder.com/120" alt="Photo de profil" class="profile-avatar">
+                <label class="avatar-label">
+                    Changer la photo
+                    {# TODO BACKEND: Upload avatar fonctionnel #}
+                </label>
+                <input type="file" accept="image/*" style="display: none;">
+            </div>
+        </div>
+
+        {# Section Informations personnelles #}
+        <div class="form-section">
+            <h2>Informations personnelles</h2>
+            
+            {# Ligne 1 : Prénom et Nom #}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="prenom">Prénom</label>
+                    <input type="text" id="prenom" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="nom">Nom</label>
+                    <input type="text" id="nom" class="form-control" required>
+                </div>
+            </div>
+            
+            {# Ligne 2 : Email et Téléphone #}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="telephone">Téléphone</label>
+                    <input type="tel" id="telephone" class="form-control">
+                </div>
+            </div>
+
+            {# Date de naissance #}
+            <div class="form-group">
+                <label for="dateNaissance">Date de naissance</label>
+                <input type="date" id="dateNaissance" class="form-control">
+            </div>
+
+            {# Genre avec boutons radio #}
+            <div class="form-group">
+                <label>Genre</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="genre" value="homme" checked> Homme
+                    </label>
+                    <label>
+                        <input type="radio" name="genre" value="femme"> Femme
+                    </label>
+                    <label>
+                        <input type="radio" name="genre" value="autre"> Autre
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        {# Section À propos de moi #}
+        <div class="form-section">
+            <h2>À propos de moi</h2>
+            <div class="form-group">
+                <label for="bio">Présentation</label>
+                <textarea id="bio" class="form-control" rows="4" 
+                          placeholder="Parlez-nous un peu de vous..."></textarea>
+            </div>
+        </div>
+
+        {# Section Langues parlées #}
+        <div class="form-section">
+            <h2>Langues parlées</h2>
+            <div class="form-group">
+                <label for="languageSelect">Sélectionnez une langue</label>
+                <select id="languageSelect" class="form-control">
+                    <option value="">Sélectionnez une langue</option>
+                    <option value="francais">Français</option>
+                    <option value="anglais">Anglais</option>
+                    <option value="espagnol">Espagnol</option>
+                    <option value="allemand">Allemand</option>
+                    <option value="italien">Italien</option>
+                    <option value="chinois">Chinois</option>
+                    <option value="arabe">Arabe</option>
+                    <option value="russe">Russe</option>
+                    <option value="portugais">Portugais</option>
+                    <option value="japonais">Japonais</option>
+                </select>
+            </div>
+            {# TODO BACKEND: Système de tags dynamiques pour sélectionner plusieurs langues #}
+        </div>
+
+        {# Section Localisation #}
+        <div class="form-section">
+            <h2>Localisation</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pays">Pays</label>
+                    <select id="pays" class="form-control">
+                        <option value="">Sélectionnez un pays</option>
+                        <option value="france">France</option>
+                        <option value="belgique">Belgique</option>
+                        <option value="suisse">Suisse</option>
+                        <option value="canada">Canada</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ville">Ville</label>
+                    <input type="text" id="ville" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        {# Boutons Annuler / Enregistrer #}
+        <div class="form-section" style="text-align: right;">
+            <a href="{{ path('app_dashboard') }}" class="btn btn--ghost" style="margin-right: 1rem;">Annuler</a>
+            <button type="button" class="btn-save" disabled 
+                    title="La sauvegarde sera implémentée par le backend">
+                Enregistrer les modifications
+            </button>
+        </div>
+    </form>
+</main>
 {% endblock %}
