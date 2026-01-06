@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Evenement;
+use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,7 +19,7 @@ class EventController extends AbstractController
         EvenementRepository $evenementRepository,
         #[MapQueryParameter] string $statut = '',
         #[MapQueryParameter] string $category = '',
-        #[MapQueryParameter] string $search = ''
+        #[MapQueryParameter] string $search = '',
     ): Response {
         // Récupération depuis la BDD
         $evenementsEntities = $evenementRepository->findAll();
@@ -37,88 +41,6 @@ class EventController extends AbstractController
             ];
         }
 
-        // Anciens mocks (supprimés)
-        $oldMocks = [
-            [
-                'id' => 1,
-                'titre' => 'Soirée d\'intégration Internationale',
-                'description' => 'Venez rencontrer les étudiants internationaux autour d\'un buffet !',
-                'lieu' => 'Campus Croix-Rouge, Reims',
-                'date_debut' => new \DateTime('2024-10-15 20:00:00'),
-                'date_fin' => new \DateTime('2024-10-15 23:59:00'),
-                'capacite' => 50,
-                'inscrits' => 50,
-                'statut' => 'COMPLET',
-                'category' => 'Intégration',
-                'image' => 'event_integration.jpg'
-            ],
-            [
-                'id' => 2,
-                'titre' => 'Visite des Caves Pommery',
-                'description' => 'Découverte du patrimoine champenois avec dégustation.',
-                'lieu' => 'Domaine Pommery',
-                'date_debut' => new \DateTime('2024-10-20 14:00:00'),
-                'date_fin' => new \DateTime('2024-10-20 17:00:00'),
-                'capacite' => 20,
-                'inscrits' => 12,
-                'statut' => 'OUVERT',
-                'category' => 'Culture',
-                'image' => 'event_pommery.jpg'
-            ],
-            [
-                'id' => 3,
-                'titre' => 'Atelier Cuisine du Monde',
-                'description' => 'Apprenez à préparer des plats typiques de différents pays.',
-                'lieu' => 'Maison des Étudiants',
-                'date_debut' => new \DateTime('2024-10-25 18:30:00'),
-                'date_fin' => new \DateTime('2024-10-25 21:30:00'),
-                'capacite' => 15,
-                'inscrits' => 8,
-                'statut' => 'OUVERT',
-                'category' => 'Loisirs',
-                'image' => 'event_cuisine.jpg'
-            ],
-            [
-                'id' => 4,
-                'titre' => 'Tournoi de Futsal Inter-promo',
-                'description' => 'Formez vos équipes et venez affronter les autres départements !',
-                'lieu' => 'Gymnase Universitaire',
-                'date_debut' => new \DateTime('2024-11-05 19:00:00'),
-                'date_fin' => new \DateTime('2024-11-05 22:00:00'),
-                'capacite' => 40,
-                'inscrits' => 25,
-                'statut' => 'OUVERT',
-                'category' => 'Sport',
-                'image' => 'event_futsal.jpg'
-            ],
-            [
-                'id' => 5,
-                'titre' => 'Conférence : L\'IA et l\'Éducation',
-                'description' => 'Débat sur l\'impact de l\'intelligence artificielle dans le milieu universitaire.',
-                'lieu' => 'Amphi 10, UFR Sciences',
-                'date_debut' => new \DateTime('2024-11-12 17:30:00'),
-                'date_fin' => new \DateTime('2024-11-12 19:30:00'),
-                'capacite' => 100,
-                'inscrits' => 0,
-                'statut' => 'OUVERT',
-                'category' => 'Conférence',
-                'image' => 'event_conference.jpg'
-            ],
-            [
-                'id' => 6,
-                'titre' => 'Soirée Jeux de Société',
-                'description' => 'Venez défier vos amis autour d\'un verre !',
-                'lieu' => 'Bar Le K',
-                'date_debut' => new \DateTime('2024-11-18 20:00:00'),
-                'date_fin' => new \DateTime('2024-11-18 23:00:00'),
-                'capacite' => 30,
-                'inscrits' => 18,
-                'statut' => 'OUVERT',
-                'category' => 'Loisirs',
-                'image' => 'event_jeux.jpg'
-            ],
-        ];
-
         // Filtre par statut si demandé
         if (!empty($statut)) {
             $events = array_filter($events, function ($event) use ($statut) {
@@ -136,9 +58,9 @@ class EventController extends AbstractController
         // Filtre par recherche textuelle si demandé
         if (!empty($search)) {
             $events = array_filter($events, function ($event) use ($search) {
-                return stripos($event['titre'], $search) !== false
-                    || stripos($event['description'], $search) !== false
-                    || stripos($event['lieu'], $search) !== false;
+                return false !== stripos($event['titre'], $search)
+                    || false !== stripos($event['description'], $search)
+                    || false !== stripos($event['lieu'], $search);
             });
         }
 
@@ -154,11 +76,30 @@ class EventController extends AbstractController
             'search_filtre' => $search,
         ]);
     }
+
     #[Route('/evenements/nouveau', name: 'app_event_create')]
-    public function create(): Response
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // TODO: Implémenter le formulaire de création d'événement
-        return $this->render('events/create.html.twig');
+        $evenement = new Evenement();
+        $form = $this->createForm(EvenementType::class, $evenement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $evenement->setStatut('OUVERT');
+            $evenement->setDateCrea(new \DateTime());
+            $evenement->setDateModif(new \DateTime());
+
+            $entityManager->persist($evenement);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'L\'événement a été créé avec succès !');
+
+            return $this->redirectToRoute('app_events');
+        }
+
+        return $this->render('events/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     #[Route('/evenements/{id}', name: 'app_event_show', requirements: ['id' => '\d+'])]
@@ -184,7 +125,7 @@ class EventController extends AbstractController
             'statut' => $evenement->getStatut(),
             'category' => $evenement->getCategorie(),
             'organisateur' => 'À définir', // TODO: Récupérer l'organisateur via la relation
-            'participants' => []
+            'participants' => [],
         ];
 
         // Récupération des participants
@@ -193,7 +134,7 @@ class EventController extends AbstractController
             if ($profil) {
                 $event['participants'][] = [
                     'id' => $profil->getId(),
-                    'nom' => $profil->getNom() . ' ' . $profil->getPrenom()
+                    'nom' => $profil->getNom().' '.$profil->getPrenom(),
                 ];
             }
         }
@@ -203,4 +144,3 @@ class EventController extends AbstractController
         ]);
     }
 }
-
