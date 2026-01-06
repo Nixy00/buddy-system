@@ -143,4 +143,15 @@ class EventController extends AbstractController
             'event' => $event,
         ]);
     }
+    // TODO: Quand on aura les rôles, faire en sorte que soit un buddy ou un admin puisse annuler l'event
+    #[Route('/evenements/{id}/annuler', name: 'app_event_cancel', methods: ['POST', 'GET'])]
+    public function cancel(Evenement $evenement, EntityManagerInterface $entityManager): Response
+    {
+        $evenement->setStatut('ANNULE');
+        $entityManager->flush();
+
+        $this->addFlash('success', 'L\'événement a été annulé avec succès.');
+
+        return $this->redirectToRoute('app_event_show', ['id' => $evenement->getId()]);
+    }
 }
