@@ -37,11 +37,15 @@ final class ProfilController extends AbstractController
             // TODO BACKEND: Ajouter vraie connexion utilisateur
         }
 
-        // TODO BACKEND: Récupérer le profil depuis la BDD
-        // $profil = $profilRepository->find($user->getId());
+        // TODO BACKEND: Récupérer le profil et l'utilisateur depuis la BDD
+        // $profil = $profilRepository->findOneBy(['utilisateur' => $user]);
+        // $email = $user->getEmail();
 
         return $this->render('profil/edit.html.twig', [
-            'user' => $user
+            'user' => $user,
+            // TODO BACKEND: Passer les vraies données
+            // 'profil' => $profil,
+            // 'email' => $email
         ]);
     }
 }
