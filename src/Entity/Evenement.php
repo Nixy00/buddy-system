@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
@@ -26,15 +27,18 @@ class Evenement
     private ?string $lieu = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual('today')]
     private ?\DateTime $dateDebut = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(propertyPath: 'dateDebut')]
     private ?\DateTime $dateFin = null;
 
     #[ORM\Column]
     private ?\DateTime $dateLimiteInscr = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?int $capacite = null;
 
     #[ORM\Column(length: 20)]
