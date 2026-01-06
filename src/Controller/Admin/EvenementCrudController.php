@@ -9,7 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 
 class EvenementCrudController extends AbstractCrudController
 {
@@ -27,8 +27,14 @@ class EvenementCrudController extends AbstractCrudController
             TextField::new('lieu'),
             DateTimeField::new('dateDebut', 'Date début'),
             DateTimeField::new('dateFin', 'Date fin'),
-            IntegerField::new('capaciteMax', 'Capacité'),
-            BooleanField::new('annule', 'Annulé'),
+            IntegerField::new('capacite', 'Capacité'),
+            ChoiceField::new('statut')
+                ->setChoices([
+                    'Ouvert' => 'ouvert',
+                    'Complet' => 'complet',
+                    'Annulé' => 'annule',
+                    'Terminé' => 'termine'
+                ]),
         ];
     }
 }
