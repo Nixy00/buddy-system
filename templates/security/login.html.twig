@@ -3,45 +3,45 @@
 {% block title %}Connexion - Buddy System{% endblock %}
 
 {% block main %}
-<div class="auth-page">
-    <div class="auth-card">
-        <div class="auth-header">
-            <h1>Bon retour parmi nous !</h1>
-            <p class="muted">Connectez-vous pour accéder à votre espace.</p>
-        </div>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Bon retour parmi nous !</h1>
+                <p class="muted">Connectez-vous pour accéder à votre espace.</p>
+            </div>
 
-        <form method="post">
-            {% if error %}
-                <div class="alert alert-danger" style="margin-bottom: 1.5rem;">
-                    {{ error.messageKey|trans(error.messageData, 'security') }}
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger" style="margin-bottom: 1.5rem;">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="inputEmail" class="form-label">Email étudiant</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="prenom.nom@etudiant.univ-reims.fr">
                 </div>
-            {% endif %}
 
-            <div class="form-group">
-                <label for="inputEmail" class="form-label">Email étudiant</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="prenom.nom@etudiant.univ-reims.fr">
+                <div class="form-group">
+                    <label for="inputPassword" class="form-label">Mot de passe</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="Votre mot de passe">
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.875rem;">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                    </label>
+                    <a href="#" style="color: var(--color-primary); text-decoration: none;">Mot de passe oublié ?</a>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit" class="btn btn--primary btn-block">Se connecter</button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--gray-600);">
+                Pas encore de compte ? <a href="{{ path('app_register') }}" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">S'inscrire</a>
             </div>
-
-            <div class="form-group">
-                <label for="inputPassword" class="form-label">Mot de passe</label>
-                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="Votre mot de passe">
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.875rem;">
-                <label>
-                    <input type="checkbox" name="_remember_me"> Se souvenir de moi
-                </label>
-                <a href="#" style="color: var(--color-primary); text-decoration: none;">Mot de passe oublié ?</a>
-            </div>
-
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-            <button type="submit" class="btn btn--primary btn-block">Se connecter</button>
-        </form>
-
-        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--gray-600);">
-            Pas encore de compte ? <a href="{{ path('app_register') }}" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">S'inscrire</a>
         </div>
     </div>
-</div>
 {% endblock %}
