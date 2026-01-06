@@ -10,14 +10,23 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/connexion', name: 'app_login')]
-    public function login(): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // En attendant la BDD, on affiche juste la vue
-        // On récupère quand même les erreurs s'il y en a (même si pas de BDD connectée)
-        $error = null;
-        $lastUsername = '';
+        // si utilisateur déjà connecté, alors on redirige vers le dashboard
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_dashboard');
+        }
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        // récuperer l'erreur de connexion s'il y en a une
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // récuperer le dernier email saisi par l'internaute
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
     }
 
     #[Route(path: '/deconnexion', name: 'app_logout')]
