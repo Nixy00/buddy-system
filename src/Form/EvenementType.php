@@ -34,7 +34,6 @@ class EvenementType extends AbstractType
                     'Loisirs' => 'Loisirs',
                     'Intégration' => 'Intégration',
                     'Conférence' => 'Conférence',
-                    'Autre' => 'Autre',
                 ],
                 'placeholder' => 'Choisir une catégorie',
                 'attr' => ['class' => 'form-control'],
