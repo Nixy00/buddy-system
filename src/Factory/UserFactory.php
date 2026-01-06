@@ -61,7 +61,8 @@ final class UserFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this->afterInstantiate(function (User $user): void {
-            $user->setMdpHache(password_hash('test', PASSWORD_BCRYPT));
+            // utilisation du hasheur de Symfony configuré dans security.yaml
+            $user->setMdpHache($this->passwordHasher->hashPassword($user, 'test'));
         });
     }
 
