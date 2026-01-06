@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
@@ -17,24 +18,36 @@ class Evenement
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le titre est obligatoire.")]
+    #[Assert\Length(min: 3, minMessage: "Le titre doit faire au moins {{ limit }} caractères.")]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: "La description est obligatoire.")]
     private ?string $description = null;
 
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank(message: "Le lieu est obligatoire.")]
     private ?string $lieu = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "La date de début est obligatoire.")]
+    #[Assert\GreaterThanOrEqual('today', message: "La date de début ne peut pas être dans le passé.")]
     private ?\DateTime $dateDebut = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "La date de fin est obligatoire.")]
+    #[Assert\GreaterThan(propertyPath: 'dateDebut', message: "La date de fin doit être postérieure à la date de début.")]
     private ?\DateTime $dateFin = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "La date limite d'inscription est obligatoire.")]
+    #[Assert\GreaterThan('today', message: "La date limite d'inscription doit être future.")]
     private ?\DateTime $dateLimiteInscr = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "Le nombre de places est obligatoire.")]
+    #[Assert\Positive(message: "Le nombre de places doit être supérieur à 0.")]
     private ?int $capacite = null;
 
     #[ORM\Column(length: 20)]
@@ -47,6 +60,7 @@ class Evenement
     private ?\DateTime $dateModif = null;
 
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(message: "Veuillez choisir une catégorie.")]
     private ?string $categorie = null;
 
     /**
@@ -204,7 +218,6 @@ class Evenement
         return $this;
     }
 
-
     /**
      * @return Collection<int, Participation>
      */
@@ -226,7 +239,6 @@ class Evenement
     public function removeParticipation(Participation $participation): static
     {
         if ($this->participations->removeElement($participation)) {
-            // set the owning side to null (unless already changed)
             if ($participation->getEvenement() === $this) {
                 $participation->setEvenement(null);
             }
@@ -256,7 +268,6 @@ class Evenement
     public function removeOrganisation(Organisation $organisation): static
     {
         if ($this->organisations->removeElement($organisation)) {
-            // set the owning side to null (unless already changed)
             if ($organisation->getEvenement() === $this) {
                 $organisation->setEvenement(null);
             }
