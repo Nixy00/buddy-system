@@ -21,15 +21,15 @@ class SignalementCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            TextField::new('raison'),
-            TextareaField::new('commentaire')->hideOnIndex(),
+            TextField::new('motif'),
+            TextareaField::new('commentaireModeration', 'Commentaire')->hideOnIndex(),
             ChoiceField::new('statut')
                 ->setChoices([
                     'En attente' => 'en_attente',
                     'Validé' => 'valide',
                     'Rejeté' => 'rejete'
                 ]),
-            DateTimeField::new('dateCreation', 'Date création')->hideOnForm(),
+            DateTimeField::new('dateSignalement', 'Date signalement')->hideOnForm(),
         ];
     }
 }

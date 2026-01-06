@@ -28,13 +28,19 @@ class EvenementCrudController extends AbstractCrudController
             DateTimeField::new('dateDebut', 'Date début'),
             DateTimeField::new('dateFin', 'Date fin'),
             IntegerField::new('capacite', 'Capacité'),
+
+            // Pour affichage dans la liste
+            TextField::new('statut')->onlyOnIndex(),
+
+            // Pour le formulaire (création/édition)
             ChoiceField::new('statut')
                 ->setChoices([
                     'Ouvert' => 'ouvert',
                     'Complet' => 'complet',
                     'Annulé' => 'annule',
                     'Terminé' => 'termine'
-                ]),
+                ])
+                ->hideOnIndex(),
         ];
     }
 }
