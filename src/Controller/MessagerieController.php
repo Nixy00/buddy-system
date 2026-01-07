@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Conversation;
 use App\Repository\ConversationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,28 @@ class MessagerieController extends AbstractController
 
         return $this->render('messagerie/index.html.twig', [
             'conversations' => $conversations,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_messagerie_show', requirements: ['id' => '\d+'])]
+    public function show(Conversation $conversation): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // on vérifie que l'utilisateur fait partie de la conversation (sécurité)
+        if ($conversation->getInitiateur() !== $user && $conversation->getInterlocuteur() !== $user) {
+            throw $this->createAccessDeniedException('Vous n\'avez pas accès à cette conversation.');
+        }
+
+        // on détermine qui est la personne en face
+        $contact = ($conversation->getInitiateur() === $user) ? $conversation->getInterlocuteur() : $conversation->getInitiateur();
+
+        return $this->render('messagerie/show.html.twig', [
+            'conversation' => $conversation,
+            'contact' => $contact,
         ]);
     }
 }
