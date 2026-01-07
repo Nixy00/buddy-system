@@ -110,6 +110,16 @@ class EventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $evenement->setDateModif(new \DateTime());
+
+            $nbInscrits = count($evenement->getParticipations());
+            $nouvelleCapacite = $evenement->getCapacite();
+
+            if ($nouvelleCapacite > $nbInscrits) {
+                $evenement->setStatut('OUVERT');
+            } elseif ($nouvelleCapacite <= $nbInscrits) {
+                $evenement->setStatut('COMPLET');
+            }
+
             $entityManager->flush();
 
             $this->addFlash('success', 'L\'événement a été modifié avec succès !');
