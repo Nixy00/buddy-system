@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('chatbot-close');
     const inputField = document.getElementById('chatbot-input');
     const messagesContainer = document.getElementById('chatbot-messages');
+    const sendBtn = document.getElementById('chatbot-send-btn');
 
     // gestion ouverture/fermeture
     function toggleChat() {
@@ -102,4 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 addMessageToUI("oups ! erreur de connexion.", 'bot');
             });
     }
+
+    // listeners envoi
+    sendBtn.addEventListener('click', () => sendMessage());
+
+    inputField.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
 });
