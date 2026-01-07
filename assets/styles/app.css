@@ -1392,3 +1392,142 @@ body {
     }
 }
 
+/* ---- MOBILE ADJUSTMENTS (< 480px) ---- */
+@media (max-width: 480px) {
+    /* Forms */
+    .form-container {
+        padding: 16px;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    textarea,
+    select {
+        font-size: 16px; /* Évite zoom auto iOS */
+    }
+    
+    button,
+    .btn {
+        min-height: 44px; /* Touch target iOS */
+        font-size: 16px;
+    }
+    
+    /* Header mobile */
+    .site-header {
+        padding: 12px 0;
+    }
+    
+    .brand__name {
+        font-size: 1.1rem;
+    }
+    
+    /* Typography mobile */
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+    }
+}
+
+/* ---- CARDS & GRIDS RESPONSIVE ---- */
+@media (max-width: 768px) {
+    .dashboard-grid,
+    .cards-grid,
+    .event-grid,
+    .grid {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .card,
+    .event-card,
+    .buddy-card {
+        width: 100%;
+        flex: 1 1 100%;
+    }
+    
+    /* Footer mobile */
+    .site-footer {
+        padding: 24px 16px;
+        text-align: center;
+    }
+    
+    .footer__inner {
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Tablet - 2 columns */
+    .dashboard-grid,
+    .cards-grid,
+    .event-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .card,
+    .event-card {
+        flex: 1 1 calc(50% - 10px);
+    }
+}
+
+@media (min-width: 1025px) {
+    /* Desktop - 3 columns */
+    .dashboard-grid,
+    .cards-grid,
+    .event-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+    }
+    
+    .card,
+    .event-card {
+        flex: 1 1 calc(33.333% - 16px);
+    }
+}
+
+/* ---- UTILITY CLASSES RESPONSIVE ---- */
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+    
+    .stack-mobile {
+        flex-direction: column !important;
+    }
+    
+    .full-width-mobile {
+        width: 100% !important;
+    }
+    
+    .text-center-mobile {
+        text-align: center !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .hide-desktop {
+        display: none !important;
+    }
+    
+    .site-footer {
+        padding: 32px 24px;
+    }
+    
+    .footer__inner {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
