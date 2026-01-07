@@ -50,7 +50,19 @@
                         {{ form_errors(form.langues) }}
                     </div>
 
-                    {{ form_row(form.disponibilites) }}
+                    {# Affichage des checkboxes pour les disponibilités #}
+                    <div class="form-group">
+                        {{ form_label(form.disponibilites) }}
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 8px;">
+                            {% for child in form.disponibilites %}
+                                <div class="form-check" style="display: flex; align-items: center; gap: 8px;">
+                                    {{ form_widget(child, {'attr': {'style': 'width: 16px; height: 16px; cursor: pointer;'}}) }}
+                                    {{ form_label(child, null, {'label_attr': {'style': 'cursor: pointer; margin-bottom: 0;'}}) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {{ form_errors(form.disponibilites) }}
+                    </div>
                 </div>
             </div>
 
