@@ -89,9 +89,9 @@ class EvenementFixtures extends Fixture implements DependentFixtureInterface
             $nbParticipants = 0;
 
             if ('VIDE' === $scenario) {
-                $nbParticipants = rand(0, (int) ceil($capacite * 0.1));
+                $nbParticipants = random_int(0, (int) ceil($capacite * 0.1));
             } elseif ('MOYEN' === $scenario) {
-                $nbParticipants = rand((int) ceil($capacite * 0.3), (int) ceil($capacite * 0.8));
+                $nbParticipants = random_int((int) ceil($capacite * 0.3), (int) ceil($capacite * 0.8));
             } elseif ('PLEIN' === $scenario) {
                 $nbParticipants = $capacite;
             }
