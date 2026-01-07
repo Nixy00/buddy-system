@@ -125,17 +125,36 @@
                     </div>
                 </div>
 
+                {# Date limite d'inscription #}
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <span style="font-weight: 600;">⏳ Fin des inscriptions</span>
+                    </div>
+                    <div style="color: #6B7280; font-size: 0.95rem;">
+                        {{ event.date_limite_inscr|date('d/m/Y à H:i') }}
+                    </div>
+                </div>
+
                 {% if event.statut != 'ANNULE' %}
                     {% if event.statut == 'OUVERT' %}
                         <button class="btn btn--primary" style="width: 100%; margin-bottom: 1rem;">S'inscrire à l'événement</button>
                     {% else %}
                         <button class="btn btn--ghost" disabled style="width: 100%; opacity: 0.5; margin-bottom: 1rem;">Événement complet</button>
                     {% endif %}
-                    <form method="post" action="{{ path('app_event_cancel', {'id': event.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cet événement ?');">
-                        <button class="btn" style="width: 100%; background-color: #EF4444; color: white; border: none;">
-                            Annuler l'événement
-                        </button>
-                    </form>
+
+                    <div style="display: flex; gap: 1rem;">
+                        <form method="get" action="{{ path('app_event_edit', {'id': event.id}) }}" style="flex: 1; margin: 0;">
+                            <button type="submit" class="btn" style="width: 100%; background-color: #6B7280; color: white; border: none;">
+                                Modifier
+                            </button>
+                        </form>
+
+                        <form method="post" action="{{ path('app_event_cancel', {'id': event.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cet événement ?');" style="flex: 1; margin: 0;">
+                            <button type="submit" class="btn" style="width: 100%; background-color: #EF4444; color: white; border: none;">
+                                Annuler
+                            </button>
+                        </form>
+                    </div>
                 {% endif %}
             </div>
         </div>
