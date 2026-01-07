@@ -36,6 +36,10 @@
 /Aide SAE/
 ###< Aide SAE ###
 
+###> Backups CSS ###
+assets/styles/*.BACKUP*
+###< Backups CSS ###
+
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
