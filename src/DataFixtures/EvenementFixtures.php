@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Factory\EvenementFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -22,6 +23,7 @@ class EvenementFixtures extends Fixture
             'dateCrea' => new \DateTime('2026-01-15 10:00:00'),
             'dateModif' => new \DateTime('2026-01-15 10:00:00'),
             'categorie' => 'Loisirs',
+            'createur' => UserFactory::random(),
         ]);
 
         EvenementFactory::createOne([
@@ -36,6 +38,7 @@ class EvenementFixtures extends Fixture
             'dateCrea' => new \DateTime('2026-01-20 09:00:00'),
             'dateModif' => new \DateTime('2026-01-20 09:00:00'),
             'categorie' => 'Culture',
+            'createur' => UserFactory::random(),
         ]);
 
         EvenementFactory::createOne([
@@ -50,6 +53,7 @@ class EvenementFixtures extends Fixture
             'dateCrea' => new \DateTime('2026-01-18 12:00:00'),
             'dateModif' => new \DateTime('2026-01-18 12:00:00'),
             'categorie' => 'Sport',
+            'createur' => UserFactory::random(),
         ]);
 
         EvenementFactory::createOne([
@@ -59,15 +63,23 @@ class EvenementFixtures extends Fixture
             'dateDebut' => new \DateTime('2026-02-15 20:00:00'),
             'dateFin' => new \DateTime('2026-02-15 23:00:00'),
             'dateLimiteInscr' => new \DateTime('2026-02-14 23:59:59'),
-            'capacite' => 100,
+            'capacite' => 40,
             'statut' => 'ANNULE',
             'dateCrea' => new \DateTime('2026-01-10 10:00:00'),
             'dateModif' => new \DateTime('2026-01-25 15:30:00'),
             'categorie' => 'Culture',
+            'createur' => UserFactory::random(),
         ]);
 
-        EvenementFactory::createMany(12);
+        EvenementFactory::createMany(20);
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            UserFixtures::class,
+        ];
     }
 }
