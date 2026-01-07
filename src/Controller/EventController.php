@@ -102,6 +102,27 @@ class EventController extends AbstractController
         ]);
     }
 
+    #[Route('/evenements/{id}/modifier', name: 'app_event_edit', requirements: ['id' => '\d+'])]
+    public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(EvenementType::class, $evenement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $evenement->setDateModif(new \DateTime());
+            $entityManager->flush();
+
+            $this->addFlash('success', 'L\'événement a été modifié avec succès !');
+
+            return $this->redirectToRoute('app_event_show', ['id' => $evenement->getId()]);
+        }
+
+        return $this->render('events/edit.html.twig', [
+            'form' => $form->createView(),
+            'evenement' => $evenement,
+        ]);
+    }
+
     #[Route('/evenements/{id}', name: 'app_event_show', requirements: ['id' => '\d+'])]
     public function show(int $id, EvenementRepository $evenementRepository): Response
     {
