@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Profil;
+use App\Form\ProfilType;
 use App\Repository\ProfilRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,27 +29,45 @@ final class ProfilController extends AbstractController
     }
 
     #[Route('/profil/edit', name: 'app_profil_edit')]
-    public function edit(): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, ProfilRepository $profilRepository): Response
     {
-        // Mode TEST comme Dashboard (en attendant système de connexion)
         $user = $this->getUser();
 
         if (!$user) {
-            // Simulation d'un utilisateur pour tester le frontend
-            $user = new \stdClass();
-            $user->id = 1;
-            // TODO BACKEND: Ajouter vraie connexion utilisateur
+            return $this->redirectToRoute('app_login');
         }
 
-        // TODO BACKEND: Récupérer le profil et l'utilisateur depuis la BDD
-        // $profil = $profilRepository->findOneBy(['utilisateur' => $user]);
-        // $email = $user->getEmail();
+        $profil = $profilRepository->findOneBy(['utilisateur' => $user]);
+
+        if (!$profil) {
+            $profil = new Profil();
+            $profil->setUtilisateur($user);
+            $profil->setDateCrea(new \DateTime());
+        }
+
+        $form = $this->createForm(ProfilType::class, $profil);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $profil->setDateModif(new \DateTime());
+
+            $avatarFile = $form->get('avatar')->getData();
+            if ($avatarFile) {
+                $avatarContent = file_get_contents($avatarFile->getPathname());
+                $profil->setAvatar($avatarContent);
+            }
+
+            $entityManager->persist($profil);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre profil a été mis à jour avec succès.');
+
+            return $this->redirectToRoute('app_profil_show', ['id' => $profil->getId()]);
+        }
 
         return $this->render('profil/edit.html.twig', [
+            'form' => $form->createView(),
             'user' => $user,
-            // TODO BACKEND: Passer les vraies données
-            // 'profil' => $profil,
-            // 'email' => $email
         ]);
     }
 }
