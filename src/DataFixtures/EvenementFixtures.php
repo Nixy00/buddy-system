@@ -72,7 +72,7 @@ class EvenementFixtures extends Fixture implements DependentFixtureInterface
             'createur' => UserFactory::random(),
         ]);
 
-        EvenementFactory::createMany(20);
+        EvenementFactory::new()->filled()->createMany(20);
 
         $manager->flush();
     }
