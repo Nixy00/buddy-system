@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Conversation;
 use App\Entity\Message;
+use App\Entity\User;
 use App\Form\MessageType;
 use App\Repository\ConversationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,5 +73,40 @@ class MessagerieController extends AbstractController
             'contact' => $contact,
             'form' => $form->createView(), // passer le formulaire à la vue
         ]);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    #[Route('/start/{id}', name: 'app_messagerie_start')]
+    public function start(User $target, ConversationRepository $repository, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // gestion d'erreur: on ne peut pas parler à soi-même
+        if ($user === $target) {
+            $this->addFlash('warning', 'Vous ne pouvez pas lancer une conversation avec vous-même.');
+            return $this->redirectToRoute('app_home');
+        }
+
+        $conversation = $repository->findConversationBetween($user, $target);
+
+        // s'il n'y a pas de conv déjà existante alors on l'a crée
+        if (!$conversation) {
+            $conversation = new Conversation();
+            $conversation->setInitiateur($user);
+            $conversation->setInterlocuteur($target);
+            $conversation->setDateCrea(new \DateTime());
+            $conversation->setStatut('active');
+
+            $entityManager->persist($conversation);
+            $entityManager->flush();
+        }
+
+        // redirection vers la conv
+        return $this->redirectToRoute('app_messagerie_show', ['id' => $conversation->getId()]);
     }
 }
