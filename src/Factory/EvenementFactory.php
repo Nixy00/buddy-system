@@ -118,6 +118,9 @@ final class EvenementFactory extends PersistentProxyObjectFactory
                     $nbParticipants = $capacite;
                 }
 
+                // SÉCURITÉ SUPPLÉMENTAIRE : On s'assure que mathématiquement on ne dépasse jamais
+                $nbParticipants = min($nbParticipants, $capacite);
+
                 if ($nbParticipants > 0) {
                     ParticipationFactory::createMany($nbParticipants, [
                         'evenement' => $evenement,
