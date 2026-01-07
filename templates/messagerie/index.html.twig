@@ -10,7 +10,46 @@
         </div>
 
         <div class="conversations-list" style="display: flex; flexDirection: column; gap: 1rem;">
-            <div class="alert alert-info">Chargement des conversations...</div>
+            {% for conversation in conversations %}
+                {# si je suis l'initiateur, l'autre est l'interlocuteur, et inversement #}
+                {% set contact = (conversation.initiateur == app.user) ? conversation.interlocuteur : conversation.initiateur %}
+
+                <a href="#" class="card conversation-card" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 1rem; padding: 1.5rem; transition: transform 0.2s;">
+                    <div class="avatar" style="width: 50px; height: 50px; flex-shrink: 0;">
+                        {% if contact.profil.avatar %}
+                            <img src="{{ path('app_profil_avatar', {id: contact.profil.id}) }}" alt="{{ contact.profil.prenom }}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                        {% else %}
+                            <div style="width: 100%; height: 100%; background: var(--gray-200); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--gray-600);">
+                                {{ contact.profil.prenom|first }}{{ contact.profil.nom|first }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div style="flex-grow: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <h3 style="margin: 0; font-size: 1.1rem;">{{ contact.profil.prenom }} {{ contact.profil.nom }}</h3>
+                            <span class="muted" style="font-size: 0.85rem;">
+                            {{ conversation.dateCrea|date('d/m/Y') }}
+                        </span>
+                        </div>
+                        <p class="muted" style="margin: 0; font-size: 0.95rem;">Cliquez pour voir les messages...</p>
+                    </div>
+                </a>
+            {% else %}
+                <div class="empty-state" style="text-align: center; padding: 3rem; background: var(--gray-100); border-radius: 12px;">
+                    <p class="muted">Vous n'avez pas encore de conversation.</p>
+                    <a href="{{ path('app_recherche_buddy') }}" class="btn btn--primary">Trouver un Buddy</a>
+                </div>
+            {% endfor %}
         </div>
+
+        {# css #}
+        <style>
+            .conversation-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+                background-color: white;
+            }
+        </style>
     </div>
 {% endblock %}
