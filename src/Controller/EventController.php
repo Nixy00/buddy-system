@@ -105,10 +105,45 @@ class EventController extends AbstractController
     #[Route('/evenements/{id}/modifier', name: 'app_event_edit', requirements: ['id' => '\d+'])]
     public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
     {
+        $originalData = clone $evenement;
+
         $form = $this->createForm(EvenementType::class, $evenement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $hasChanges = false;
+
+            $areDifferent = function($val1, $val2) {
+                if ($val1 instanceof \DateTimeInterface && $val2 instanceof \DateTimeInterface) {
+                    return $val1->format('Y-m-d H:i:s') !== $val2->format('Y-m-d H:i:s');
+                }
+                if (($val1 instanceof \DateTimeInterface && !$val2) || (!$val1 && $val2 instanceof \DateTimeInterface)) {
+                    return true;
+                }
+
+                $str1 = str_replace("\r\n", "\n", trim((string)$val1));
+                $str2 = str_replace("\r\n", "\n", trim((string)$val2));
+
+                return $str1 !== $str2;
+            };
+
+            if ($areDifferent($evenement->getTitre(), $originalData->getTitre())) $hasChanges = true;
+            if ($areDifferent($evenement->getCategorie(), $originalData->getCategorie())) $hasChanges = true;
+            if ($areDifferent($evenement->getDescription(), $originalData->getDescription())) $hasChanges = true;
+            if ($areDifferent($evenement->getLieu(), $originalData->getLieu())) $hasChanges = true;
+            if ($areDifferent($evenement->getCapacite(), $originalData->getCapacite())) $hasChanges = true;
+            if ($areDifferent($evenement->getDateDebut(), $originalData->getDateDebut())) $hasChanges = true;
+            if ($areDifferent($evenement->getDateFin(), $originalData->getDateFin())) $hasChanges = true;
+            if ($areDifferent($evenement->getDateLimiteInscr(), $originalData->getDateLimiteInscr())) $hasChanges = true;
+
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) $hasChanges = true;
+
+            if (!$hasChanges) {
+                $this->addFlash('warning', 'L\'événement n\'a pas été modifié car aucune information n\'a été modifiée.');
+                return $this->redirectToRoute('app_event_show', ['id' => $evenement->getId()]);
+            }
+
             $evenement->setDateModif(new \DateTime());
 
             $nbInscrits = count($evenement->getParticipations());
