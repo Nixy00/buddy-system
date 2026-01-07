@@ -97,7 +97,7 @@ class EvenementFixtures extends Fixture implements DependentFixtureInterface
             }
 
             if ($nbParticipants > 0) {
-                ParticipationFactory::createMany($nbParticipants, [
+                ParticipationFactory::createMany($nbParticipants, fn () => [
                     'evenement' => $event,
                     'utilisateur' => UserFactory::random(),
                     'statut' => 'INSCRIT',
