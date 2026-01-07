@@ -94,6 +94,11 @@ final class EvenementFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
+        return $this;
+    }
+
+    public function filled(): static
+    {
         return $this
             ->afterInstantiate(function (Evenement $evenement): void {
                 $scenario = self::faker()->randomElement(['VIDE', 'MOYEN', 'PLEIN', 'ANNULE']);
