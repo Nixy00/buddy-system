@@ -316,6 +316,10 @@ class EventController extends AbstractController
     #[Route('/evenements/{id}/annuler', name: 'app_event_cancel', methods: ['POST', 'GET'])]
     public function cancel(Evenement $evenement, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && $evenement->getCreateur() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez annuler que vos propres événements.');
+        }
+
         $evenement->setStatut('ANNULE');
         $entityManager->flush();
 
