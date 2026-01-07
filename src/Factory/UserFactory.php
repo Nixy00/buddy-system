@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\User;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
@@ -11,15 +12,15 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 final class UserFactory extends PersistentProxyObjectFactory
 {
     private \Transliterator $transliterator;
+    private UserPasswordHasherInterface $passwordHasher;
 
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
      */
-    public function __construct()
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->transliterator = \Transliterator::create('Any-Lower; Latin-ASCII');
+        $this->passwordHasher = $passwordHasher;
         parent::__construct();
     }
 
@@ -60,7 +61,8 @@ final class UserFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this->afterInstantiate(function (User $user): void {
-            $user->setMdpHache(password_hash('test', PASSWORD_BCRYPT));
+            // utilisation du hasheur de Symfony configuré dans security.yaml
+            $user->setMdpHache($this->passwordHasher->hashPassword($user, 'test'));
         });
     }
 
