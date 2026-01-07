@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmer la suppression du compte{% endblock %}
+
+{% block main %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 4rem; text-align: center; max-width: 600px;">
+    <h1 style="color: #dc3545; font-size: 2rem;">Êtes-vous sûr de vouloir supprimer votre compte ?</h1>
+    <p class="lead" style="color: var(--gray-600); margin: 1rem 0 2rem;">
+        Cette action est définitive et toutes vos données (profil, participations, etc.) seront perdues.
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 1rem; align-items: center;">
+        {# Formulaire pour la suppression effective #}
+        <form method="post" action="{{ path('app_account_delete') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete-account') }}">
+            <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none; padding: 0.75rem 1.5rem;">
+                Oui, supprimer mon compte
+            </button>
+        </form>
+
+        {# Bouton pour annuler et retourner au dashboard #}
+        <a href="{{ path('app_dashboard') }}" class="btn btn--secondary" style="padding: 0.75rem 1.5rem; border: 1px solid var(--gray-300); color: var(--gray-700); background: white; text-decoration: none; font-weight: 500;">
+            Annuler
+        </a>
+    </div>
+</div>
+{% endblock %}

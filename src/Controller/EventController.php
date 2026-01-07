@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Evenement;
+use App\Entity\Participation;
 use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
+use App\Repository\ParticipationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -188,7 +190,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/evenements/{id}', name: 'app_event_show', requirements: ['id' => '\d+'])]
-    public function show(int $id, EvenementRepository $evenementRepository): Response
+    public function show(int $id, EvenementRepository $evenementRepository, ParticipationRepository $participationRepository): Response
     {
         // Récupération depuis la BDD
         $evenement = $evenementRepository->find($id);
@@ -197,7 +199,18 @@ class EventController extends AbstractController
             throw $this->createNotFoundException('Événement non trouvé');
         }
 
-        // Conversion pour compatibilité template
+        $user = $this->getUser();
+        $isUserRegistered = false;
+        if ($user) {
+            $participation = $participationRepository->findOneBy([
+                'evenement' => $evenement,
+                'utilisateur' => $user,
+            ]);
+            if ($participation) {
+                $isUserRegistered = true;
+            }
+        }
+
         $event = [
             'id' => $evenement->getId(),
             'titre' => $evenement->getTitre(),
@@ -227,10 +240,68 @@ class EventController extends AbstractController
 
         return $this->render('events/show.html.twig', [
             'event' => $event,
+            'isUserRegistered' => $isUserRegistered,
         ]);
     }
 
-    // TODO: Quand on aura les rôles, faire en sorte que soit un buddy ou un admin puisse annuler l'event
+    #[Route('/evenements/{id}/participer', name: 'app_event_participate', methods: ['POST'])]
+    public function participate(Evenement $evenement, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ('OUVERT' !== $evenement->getStatut()) {
+            return $this->redirectToRoute('app_event_show', ['id' => $evenement->getId()]);
+        }
+
+        $participation = new Participation();
+        $participation->setUtilisateur($user);
+        $participation->setEvenement($evenement);
+        $participation->setDateInscription(new \DateTime());
+        $participation->setStatut('INSCRIT');
+
+        $entityManager->persist($participation);
+        $entityManager->flush();
+
+        if (count($evenement->getParticipations()) >= $evenement->getCapacite()) {
+            $evenement->setStatut('COMPLET');
+            $entityManager->flush();
+        }
+
+        $this->addFlash('success', 'Vous êtes maintenant inscrit à l\'événement !');
+
+        return $this->redirectToRoute('app_event_show', ['id' => $evenement->getId()]);
+    }
+
+    #[Route('/evenements/{id}/se-desinscrire', name: 'app_event_unsubscribe', methods: ['POST'])]
+    public function unsubscribe(Evenement $evenement, EntityManagerInterface $entityManager, ParticipationRepository $participationRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $participation = $participationRepository->findOneBy(['evenement' => $evenement, 'utilisateur' => $user]);
+
+        if ($participation) {
+            $entityManager->remove($participation);
+            $entityManager->flush();
+
+            if ('COMPLET' === $evenement->getStatut()) {
+                $evenement->setStatut('OUVERT');
+                $entityManager->flush();
+            }
+
+            $this->addFlash('success', 'Vous avez bien été désinscrit de l\'événement.');
+        } else {
+            $this->addFlash('danger', 'Vous n\'étiez pas inscrit à cet événement.');
+        }
+
+        return $this->redirectToRoute('app_event_show', ['id' => $evenement->getId()]);
+    }
+
     #[Route('/evenements/{id}/annuler', name: 'app_event_cancel', methods: ['POST', 'GET'])]
     public function cancel(Evenement $evenement, EntityManagerInterface $entityManager): Response
     {

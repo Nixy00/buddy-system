@@ -13,14 +13,14 @@
 
         {# Grille de 4 cartes pour accéder aux différentes sections #}
         <ul class="cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; list-style: none; padding: 0; margin: 2rem 0;">
-            
+
             {# Carte Mon Profil #}
             <li class="card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; background: white;">
                 <h3 style="margin: 0 0 0.5rem; color: var(--gray-900);">Mon Profil</h3>
                 <p style="color: var(--gray-600); margin: 0 0 1rem;">
                     Consultez et modifiez vos informations personnelles.
                 </p>
-                <a href="{{ path('app_profil_show', {id: user.profil.id}) }}" class="card__link" 
+                <a href="{{ path('app_profil_show', {id: user.profil.id}) }}" class="card__link"
                    style="color: var(--color-accent); text-decoration: none; font-weight: 500;">
                     Voir mon profil →
                 </a>
@@ -62,6 +62,13 @@
             </li>
 
         </ul>
+
+        {# Lien vers la page de confirmation de suppression #}
+        <div style="text-align: right; margin-top: 3rem;">
+            <a href="{{ path('app_account_confirm_delete') }}" class="btn" style="background-color: #dc3545; color: white; border: none; text-decoration: none;">
+                Supprimer mon compte
+            </a>
+        </div>
     </div>
 </section>
 {% endblock %}

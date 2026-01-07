@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class DashboardController extends AbstractController
 {
@@ -23,5 +26,36 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/index.html.twig', [
             'user' => $user,
         ]);
+    }
+
+    #[Route('/dashboard/confirm-delete', name: 'app_account_confirm_delete', methods: ['GET'])]
+    public function confirmDelete(): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('dashboard/confirm_delete.html.twig');
+    }
+
+    #[Route('/dashboard/delete-account', name: 'app_account_delete', methods: ['POST'])]
+    public function deleteAccount(Request $request, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user || !$this->isCsrfTokenValid('delete-account', $request->request->get('_token'))) {
+            $this->addFlash('danger', 'La suppression du compte a échoué.');
+            return $this->redirectToRoute('app_dashboard');
+        }
+
+        $tokenStorage->setToken(null);
+        $request->getSession()->invalidate();
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Votre compte a été supprimé avec succès.');
+
+        return $this->redirectToRoute('app_home');
     }
 }
