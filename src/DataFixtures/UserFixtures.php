@@ -66,7 +66,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         ]);
 
         // Users aléatoires
-        $users = UserFactory::createMany(10);
+        $users = UserFactory::createMany(100);
 
         foreach ($users as $randomUser) {
             ProfilFactory::createOne([

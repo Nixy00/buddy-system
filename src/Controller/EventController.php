@@ -82,6 +82,11 @@ class EventController extends AbstractController
     #[Route('/evenements/nouveau', name: 'app_event_create')]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $evenement = new Evenement();
         $form = $this->createForm(EvenementType::class, $evenement);
         $form->handleRequest($request);
@@ -90,6 +95,8 @@ class EventController extends AbstractController
             $evenement->setStatut('OUVERT');
             $evenement->setDateCrea(new \DateTime());
             $evenement->setDateModif(new \DateTime());
+
+            $evenement->setCreateur($user);
 
             $entityManager->persist($evenement);
             $entityManager->flush();
@@ -107,6 +114,10 @@ class EventController extends AbstractController
     #[Route('/evenements/{id}/modifier', name: 'app_event_edit', requirements: ['id' => '\d+'])]
     public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && $evenement->getCreateur() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres événements.');
+        }
+
         $originalData = clone $evenement;
 
         $form = $this->createForm(EvenementType::class, $evenement);
@@ -211,6 +222,9 @@ class EventController extends AbstractController
             }
         }
 
+        $createur = $evenement->getCreateur();
+        $nomOrga = $createur && $createur->getProfil() ? $createur->getProfil()->getPrenom().' '.$createur->getProfil()->getNom() : 'Utilisateur #'.$createur?->getId();
+
         $event = [
             'id' => $evenement->getId(),
             'titre' => $evenement->getTitre(),
@@ -223,7 +237,7 @@ class EventController extends AbstractController
             'inscrits' => count($evenement->getParticipations()),
             'statut' => $evenement->getStatut(),
             'category' => $evenement->getCategorie(),
-            'organisateur' => 'À définir', // TODO: Récupérer l'organisateur via la relation
+            'organisateur' => $nomOrga,
             'participants' => [],
         ];
 
@@ -240,6 +254,7 @@ class EventController extends AbstractController
 
         return $this->render('events/show.html.twig', [
             'event' => $event,
+            'event_entity' => $evenement,
             'isUserRegistered' => $isUserRegistered,
         ]);
     }
@@ -305,6 +320,10 @@ class EventController extends AbstractController
     #[Route('/evenements/{id}/annuler', name: 'app_event_cancel', methods: ['POST', 'GET'])]
     public function cancel(Evenement $evenement, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && $evenement->getCreateur() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez annuler que vos propres événements.');
+        }
+
         $evenement->setStatut('ANNULE');
         $entityManager->flush();
 
