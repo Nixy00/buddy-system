@@ -57,4 +57,49 @@ document.addEventListener('DOMContentLoaded', () => {
         const existingSuggestions = document.querySelectorAll('.suggestions-container');
         existingSuggestions.forEach(el => el.remove());
     }
+
+    function sendMessage(text = null) {
+        const message = text || inputField.value.trim();
+
+        if (!message) return;
+
+        // affichage message user
+        addMessageToUI(message, 'user');
+        inputField.value = '';
+        removeSuggestions();
+
+        // appel API avec fetch et promesses
+        fetch('/api/chatbot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message }),
+            credentials: 'include'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('erreur reseau : ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                addMessageToUI(data.response, 'bot');
+
+                if (data.suggestions && data.suggestions.length > 0) {
+                    addSuggestionsToUI(data.suggestions);
+                }
+
+                if (data.action_url) {
+                    setTimeout(() => {
+                        window.location.href = data.action_url;
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                // gestion des erreurs
+                console.error('Erreur fetch :', error);
+                addMessageToUI("oups ! erreur de connexion.", 'bot');
+            });
+    }
 });
