@@ -10,6 +10,9 @@
     </div>
 
     {{ form_start(form) }}
+        {# Affichage des erreurs globales du formulaire #}
+        {{ form_errors(form) }}
+
         <div style="display: grid; gap: 2rem; max-width: 800px; margin: 0 auto;">
 
             {# Section 1: Informations Personnelles #}
@@ -76,7 +79,7 @@
 
             {# Actions #}
             <div class="form-actions" style="display: flex; justify-content: flex-end; gap: 16px; padding-top: 10px;">
-                <a href="{{ path('app_profil_show', {'id': user.profil.id}) }}" class="btn btn--secondary" style="padding: 12px 24px; border-radius: 30px;">
+                <a href="{{ path('app_profil_show', {'id': user.profil.id}) }}" class="btn btn--secondary" style="padding: 12px 24px; border-radius: 30px; border: 1px solid var(--gray-300); color: var(--gray-700); background: white; text-decoration: none; font-weight: 500;">
                     Annuler
                 </a>
                 <button type="submit" class="btn btn--primary" style="padding: 12px 32px; border-radius: 30px;">
