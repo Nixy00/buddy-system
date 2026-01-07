@@ -30,4 +30,26 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesContainer.appendChild(messageDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
+
+    function addSuggestionsToUI(suggestions) {
+        const suggestionsDiv = document.createElement('div');
+        suggestionsDiv.classList.add('message', 'bot', 'suggestions-container');
+        suggestionsDiv.style.flexDirection = 'row';
+        suggestionsDiv.style.flexWrap = 'wrap';
+        suggestionsDiv.style.gap = '5px';
+        suggestionsDiv.style.background = 'transparent';
+
+        suggestions.forEach(suggestion => {
+            const chip = document.createElement('button');
+            chip.textContent = suggestion;
+            chip.classList.add('suggestion-chip');
+
+            chip.addEventListener('click', () => sendMessage(suggestion));
+
+            suggestionsDiv.appendChild(chip);
+        });
+
+        messagesContainer.appendChild(suggestionsDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
 });
