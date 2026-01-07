@@ -222,6 +222,9 @@ class EventController extends AbstractController
             }
         }
 
+        $createur = $evenement->getCreateur();
+        $nomOrga = $createur && $createur->getProfil() ? $createur->getProfil()->getPrenom().' '.$createur->getProfil()->getNom() : 'Utilisateur #'.$createur?->getId();
+
         $event = [
             'id' => $evenement->getId(),
             'titre' => $evenement->getTitre(),
@@ -234,7 +237,7 @@ class EventController extends AbstractController
             'inscrits' => count($evenement->getParticipations()),
             'statut' => $evenement->getStatut(),
             'category' => $evenement->getCategorie(),
-            'organisateur' => 'À définir', // TODO: Récupérer l'organisateur via la relation
+            'organisateur' => $nomOrga,
             'participants' => [],
         ];
 
@@ -251,6 +254,7 @@ class EventController extends AbstractController
 
         return $this->render('events/show.html.twig', [
             'event' => $event,
+            'event_entity' => $evenement,
             'isUserRegistered' => $isUserRegistered,
         ]);
     }
