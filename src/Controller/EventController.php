@@ -114,6 +114,10 @@ class EventController extends AbstractController
     #[Route('/evenements/{id}/modifier', name: 'app_event_edit', requirements: ['id' => '\d+'])]
     public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && $evenement->getCreateur() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres événements.');
+        }
+
         $originalData = clone $evenement;
 
         $form = $this->createForm(EvenementType::class, $evenement);
