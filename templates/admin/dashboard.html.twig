@@ -1,0 +1,31 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    <h1>Dashboard Admin - Buddy System</h1>
+{% endblock %}
+
+{% block main %}
+    <div style="padding: 2rem;">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;">
+            
+            <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+                <h3 style="color: #2563EB; margin: 0 0 1rem;">👥 Utilisateurs</h3>
+                <p style="font-size: 3rem; font-weight: bold; margin: 0;">{{ count_entities('App\\Entity\\User') }}</p>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+                <h3 style="color: #16a34a; margin: 0 0 1rem;">🎉 Événements</h3>
+                <p style="font-size: 3rem; font-weight: bold; margin: 0;">{{ count_entities('App\\Entity\\Evenement') }}</p>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+                <h3 style="color: #dc2626; margin: 0 0 1rem;">🚩 Signalements</h3>
+                <p style="font-size: 3rem; font-weight: bold; margin: 0;">{{ count_entities('App\\Entity\\Signalement') }}</p>
+            </div>
+            
+        </div>
+        
+        <p>Bienvenue dans l'interface d'administration du Buddy System.</p>
+        <p>Utilisez le menu pour gérer les utilisateurs, événements et signalements.</p>
+    </div>
+{% endblock %}
