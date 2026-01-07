@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Relation;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,15 @@ class RelationRepository extends ServiceEntityRepository
         parent::__construct($registry, Relation::class);
     }
 
-    //    /**
-    //     * @return Relation[] Returns an array of Relation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Relation
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function countAcceptedForUser(User $user): int
+    {
+        return (int) $this->createQueryBuilder('r')
+            ->select('count(r.id)')
+            ->where('r.statut = :statut')
+            ->andWhere('r.envoyeur = :userId OR r.receveur = :userId')
+            ->setParameter('statut', 'acceptee')
+            ->setParameter('userId', $user->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
