@@ -1,299 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon Profil - Buddy System{% endblock %}
+{% block title %}Modifier mon profil{% endblock %}
 
 {% block main %}
 <div class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
-    {# En-tête de la page #}
-    <div class="page-header" style="margin-bottom: 2rem; text-align: center;">
-        <h1 style="font-size: 2rem; color: var(--gray-900); margin-bottom: 0.5rem;">Mon Profil</h1>
-        <p style="color: var(--gray-600);">Gérez vos informations personnelles et vos préférences</p>
+    <div class="page-header" style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; color: var(--gray-900); margin-bottom: 0.5rem;">Modifier mon profil</h1>
+        <p style="color: var(--gray-600);">Mettez à jour vos informations personnelles.</p>
     </div>
 
-    <form id="profileForm" action="#" method="post">
+    {{ form_start(form) }}
         <div style="display: grid; gap: 2rem; max-width: 800px; margin: 0 auto;">
-            
-            {# Section 1: Photo de profil #}
+
+            {# Section 1: Informations Personnelles #}
             <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
                 <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 24px;">
-                    <i class="fas fa-user-circle" style="color: var(--color-accent); margin-right: 10px;"></i>
+                    Informations Personnelles
+                </h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    {{ form_row(form.nom) }}
+                    {{ form_row(form.prenom) }}
+                    {{ form_row(form.genre) }}
+                    {{ form_row(form.dateNaissance) }}
+                    {{ form_row(form.telephone) }}
+                    {{ form_row(form.ville) }}
+                    {{ form_row(form.pays) }}
+                </div>
+            </div>
+
+            {# Section 2: Détails #}
+            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
+                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 24px;">
+                    Détails
+                </h2>
+                <div style="display: grid; gap: 20px;">
+                    {{ form_row(form.biographie) }}
+                    {{ form_row(form.langues) }}
+                    {{ form_row(form.disponibilites) }}
+                </div>
+            </div>
+
+            {# Section 3: Avatar #}
+            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
+                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 24px;">
                     Photo de profil
                 </h2>
-                
-                <div style="text-align: center;">
-                    <img src="https://via.placeholder.com/120" alt="Photo de profil" 
-                         id="profileAvatar"
-                         style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; border: 3px solid var(--color-accent); display: block;">
-                    
-                    <label for="avatarInput" style="display: inline-block; margin-top: 0.5rem; color: var(--color-accent); cursor: pointer; font-weight: 500;">
-                        <i class="fas fa-camera"></i> Changer la photo
-                    </label>
-                    <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
-                </div>
+                {{ form_row(form.avatar) }}
             </div>
 
-            {# Section 2: Informations personnelles #}
-            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
-                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 24px;">
-                    <i class="fas fa-info-circle" style="color: var(--color-accent); margin-right: 10px;"></i>
-                    Informations personnelles
-                </h2>
-
-                <div style="display: grid; gap: 20px;">
-                    {# Prénom et Nom #}
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="form-group">
-                            <label for="prenom" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Prénom</label>
-                            <input type="text" id="prenom" name="prenom" class="form-control" required
-                                   style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="nom" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Nom</label>
-                            <input type="text" id="nom" name="nom" class="form-control" required
-                                   style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
-                        </div>
-                    </div>
-
-                    {# Téléphone #}
-                    <div class="form-group">
-                        <label for="telephone" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Téléphone</label>
-                        <input type="tel" id="telephone" name="telephone" class="form-control" placeholder="06 12 34 56 78"
-                               style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
-                    </div>
-
-                    {# Date naisssance et Genre #}
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="form-group">
-                            <label for="dateNaissance" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Date de naissance</label>
-                            <input type="date" id="dateNaissance" name="dateNaissance" class="form-control"
-                                   style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; font-family: inherit;">
-                        </div>
-
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Genre</label>
-                            <div style="display: flex; gap: 20px; margin-top: 12px;">
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                    <input type="radio" name="genre" value="homme" checked> Homme
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                    <input type="radio" name="genre" value="femme"> Femme
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                    <input type="radio" name="genre" value="autre"> Autre
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {# Section 3: À propos et Disponibilités #}
-            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
-                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 24px;">
-                    <i class="fas fa-align-left" style="color: var(--color-accent); margin-right: 10px;"></i>
-                    À propos de moi
-                </h2>
-
-                <div style="display: grid; gap: 20px;">
-                    {# Biographie #}
-                    <div class="form-group">
-                        <label for="biographie" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Bio</label>
-                        <textarea id="biographie" name="biographie" class="form-control" rows="4" 
-                                  placeholder="Parlez-nous un peu de vous..."
-                                  style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; resize: vertical; font-family: inherit;"></textarea>
-                    </div>
-
-                    {# Disponibilités #}
-                    <div class="form-group">
-                        <label for="disponibilites" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Disponibilités</label>
-                        <textarea id="disponibilites" name="disponibilites" class="form-control" rows="3" 
-                                  placeholder="Ex: Disponible les week-ends et mercredis après-midi..."
-                                  style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; resize: vertical; font-family: inherit;"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            {# Section 4: Langues parlées #}
-            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
-                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 24px;">
-                    <i class="fas fa-language" style="color: var(--color-accent); margin-right: 10px;"></i>
-                    Langues parlées
-                </h2>
-
-                {# Zone d'affichage des tags #}
-                <div id="languagesContainer" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; min-height: 38px;">
-                    {# Les tags seront ajoutés ici dynamiquement #}
-                </div>
-
-                {# Sélection de langue #}
-                <div style="display: flex; gap: 12px;">
-                    <select id="languageSelect" class="form-control" style="flex-grow: 1; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; background-color: white;">
-                        <option value="">Sélectionnez une langue</option>
-                        <option value="francais">Français</option>
-                        <option value="anglais">Anglais</option>
-                        <option value="espagnol">Espagnol</option>
-                        <option value="allemand">Allemand</option>
-                        <option value="italien">Italien</option>
-                        <option value="chinois">Chinois</option>
-                        <option value="arabe">Arabe</option>
-                        <option value="russe">Russe</option>
-                        <option value="portugais">Portugais</option>
-                        <option value="japonais">Japonais</option>
-                    </select>
-                    <button type="button" id="addLanguage" style="padding: 10px 20px; background: var(--color-accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
-                        <i class="fas fa-plus"></i> Ajouter
-                    </button>
-                </div>
-                
-                <input type="hidden" id="languesHidden" name="langues" value="">
-            </div>
-
-            {# Section 5: Localisation #}
-            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
-                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 24px;">
-                    <i class="fas fa-map-marker-alt" style="color: var(--color-accent); margin-right: 10px;"></i>
-                    Localisation
-                </h2>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
-                        <label for="pays" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Pays</label>
-                        <input type="text" id="pays" name="pays" class="form-control" placeholder="France"
-                               style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="ville" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Ville</label>
-                        <input type="text" id="ville" name="ville" class="form-control" placeholder="Paris"
-                               style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
-                    </div>
-                </div>
-            </div>
-
-            {# Section 6: Paramètres du compte #}
-            <div class="profile-section" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--gray-100);">
-                <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 24px;">
-                    <i class="fas fa-lock" style="color: var(--color-accent); margin-right: 10px;"></i>
-                    Paramètres du compte
-                </h2>
-
-                <div style="display: grid; gap: 20px;">
-                    {# Email #}
-                    <div class="form-group">
-                        <label for="email" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Adresse email</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="votre@email.com"
-                               style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
-                        <small style="color: var(--gray-500); font-size: 0.875rem;">Utilisée pour la connexion et les notifications</small>
-                    </div>
-
-                    {# Changement mot de passe #}
-                    <div style="border-top: 1px solid var(--gray-200); padding-top: 20px; margin-top: 10px;">
-                        <h3 style="font-size: 1rem; font-weight: 600; color: var(--gray-700); margin: 0 0 16px;">
-                            Modifier le mot de passe
-                        </h3>
-
-                        <div class="form-group">
-                            <label for="ancien_mdp" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Ancien mot de passe</label>
-                            <input type="password" id="ancien_mdp" name="ancien_mdp" class="form-control" placeholder="••••••••"
-                                   style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
-                            <small style="color: var(--gray-500); font-size: 0.875rem;">Laissez vide si vous ne souhaitez pas changer votre mot de passe</small>
-                        </div>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px;">
-                            <div class="form-group">
-                                <label for="nouveau_mdp" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Nouveau mot de passe</label>
-                                <input type="password" id="nouveau_mdp" name="nouveau_mdp" class="form-control" placeholder="••••••••"
-                                       style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="confirmer_mdp" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);">Confirmer le mot de passe</label>
-                                <input type="password" id="confirmer_mdp" name="confirmer_mdp" class="form-control" placeholder="••••••••"
-                                       style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {# Boutons d'action #}
+            {# Actions #}
             <div class="form-actions" style="display: flex; justify-content: flex-end; gap: 16px; padding-top: 10px;">
-                <a href="{{ path('app_dashboard') }}" class="btn btn--secondary" 
-                   style="padding: 12px 24px; border-radius: 30px; border: 1px solid var(--gray-300); color: var(--gray-700); background: white; text-decoration: none; font-weight: 500;">
+                <a href="{{ path('app_profil_show', {'id': user.profil.id}) }}" class="btn btn--secondary" style="padding: 12px 24px; border-radius: 30px;">
                     Annuler
                 </a>
-                <button type="submit" class="btn btn--primary" 
-                        style="padding: 12px 32px; border-radius: 30px; background: var(--color-accent); color: white; border: none; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-check"></i> Enregistrer
+                <button type="submit" class="btn btn--primary" style="padding: 12px 32px; border-radius: 30px;">
+                    Enregistrer les modifications
                 </button>
             </div>
         </div>
-    </form>
+    {{ form_end(form) }}
 </div>
-
-{# JavaScript pour les fonctionnalités interactives #}
-<script>
-// Prévisualisation avatar
-document.getElementById('avatarInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            document.getElementById('profileAvatar').src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-// Gestion des langues avec système de tags
-const languageSelect = document.getElementById('languageSelect');
-const languagesContainer = document.getElementById('languagesContainer');
-const addLanguageBtn = document.getElementById('addLanguage');
-const languesHidden = document.getElementById('languesHidden');
-const selectedLanguages = [];
-
-function updateHiddenLanguages() {
-    languesHidden.value = selectedLanguages.join(', ');
-}
-
-function addLanguage(language, value) {
-    if (!language || selectedLanguages.includes(value)) return;
-    
-    const tag = document.createElement('div');
-    tag.dataset.value = value;
-    tag.style.cssText = 'background-color: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem;';
-    tag.innerHTML = `
-        <span>${language}</span>
-        <button type="button" class="remove-tag" aria-label="Supprimer" style="background: none; border: none; color: var(--gray-600); cursor: pointer; font-size: 1rem; line-height: 1; padding: 0;">&times;</button>
-    `;
-    
-    tag.querySelector('.remove-tag').addEventListener('click', function() {
-        const index = selectedLanguages.indexOf(value);
-        if (index > -1) {
-            selectedLanguages.splice(index, 1);
-        }
-        tag.remove();
-        updateHiddenLanguages();
-    });
-    
-    languagesContainer.appendChild(tag);
-    selectedLanguages.push(value);
-    languageSelect.value = '';
-    updateHiddenLanguages();
-}
-
-addLanguageBtn.addEventListener('click', function() {
-    const selectedOption = languageSelect.options[languageSelect.selectedIndex];
-    if (selectedOption.value) {
-        addLanguage(selectedOption.text, selectedOption.value);
-    }
-});
-
-// Soumission du formulaire
-document.getElementById('profileForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Profil mis à jour avec succès !');
-});
-</script>
 {% endblock %}
