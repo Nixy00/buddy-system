@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes conversations - Buddy System{% endblock %}
+
+{% block main %}
+    <div class="container" style="padding-top: 2rem; max-width: 800px;">
+        <div class="page-header" style="margin-bottom: 2rem;">
+            <h1>Mes conversations</h1>
+            <p class="muted">Échangez avec vos buddies.</p>
+        </div>
+
+        <div class="conversations-list" style="display: flex; flexDirection: column; gap: 1rem;">
+            <div class="alert alert-info">Chargement des conversations...</div>
+        </div>
+    </div>
+{% endblock %}
