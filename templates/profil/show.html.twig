@@ -118,8 +118,12 @@
                         Disponibilités
                     </h2>
                     {% if profil.disponibilites %}
-                        <div style="font-size: 0.95rem; color: var(--gray-800);">
-                            {{ profil.disponibilites }}
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            {% for dispo in profil.disponibilites|split(',') %}
+                                <span style="background: var(--gray-50); color: var(--gray-800); padding: 6px 12px; border-radius: 20px; font-weight: 500; font-size: 0.85rem; border: 1px solid var(--gray-200);">
+                                    {{ dispo|trim }}
+                                </span>
+                            {% endfor %}
                         </div>
                     {% else %}
                         <p style="color: var(--gray-500); font-style: italic; margin: 0;">Non renseigné.</p>
