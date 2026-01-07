@@ -125,6 +125,16 @@
                     </div>
                 </div>
 
+                {# Date limite d'inscription #}
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <span style="font-weight: 600;">⏳ Fin des inscriptions</span>
+                    </div>
+                    <div style="color: #6B7280; font-size: 0.95rem;">
+                        {{ event.date_limite_inscr|date('d/m/Y à H:i') }}
+                    </div>
+                </div>
+
                 {% if event.statut != 'ANNULE' %}
                     {% if event.statut == 'OUVERT' %}
                         <button class="btn btn--primary" style="width: 100%; margin-bottom: 1rem;">S'inscrire à l'événement</button>
