@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Profil;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -61,10 +62,25 @@ class ProfilType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form-control', 'rows' => 4],
             ])
-            ->add('langues', TextType::class, [
+            ->add('langues', ChoiceType::class, [
                 'label' => 'Langues parlées',
                 'required' => false,
-                'attr' => ['class' => 'form-control', 'placeholder' => 'Ex: Français, Anglais, Espagnol'],
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => [
+                    'Français' => 'Français',
+                    'Anglais' => 'Anglais',
+                    'Espagnol' => 'Espagnol',
+                    'Allemand' => 'Allemand',
+                    'Italien' => 'Italien',
+                    'Chinois' => 'Chinois',
+                    'Arabe' => 'Arabe',
+                    'Russe' => 'Russe',
+                    'Portugais' => 'Portugais',
+                    'Japonais' => 'Japonais',
+                ],
+                'attr' => ['class' => 'language-checkboxes'],
+                'label_attr' => ['class' => 'checkbox-inline'],
             ])
             ->add('disponibilites', TextType::class, [
                 'label' => 'Disponibilités',
@@ -88,6 +104,23 @@ class ProfilType extends AbstractType
                 ],
                 'attr' => ['class' => 'form-control'],
             ])
+        ;
+
+        $builder->get('langues')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($languesAsString): array {
+                    if (null === $languesAsString) {
+                        return [];
+                    }
+                    return explode(', ', $languesAsString);
+                },
+                function ($languesAsArray): ?string {
+                    if (empty($languesAsArray)) {
+                        return null;
+                    }
+                    return implode(', ', $languesAsArray);
+                }
+            ))
         ;
     }
 
