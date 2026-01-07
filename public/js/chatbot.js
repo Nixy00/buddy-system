@@ -52,4 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesContainer.appendChild(suggestionsDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
+
+    function removeSuggestions() {
+        const existingSuggestions = document.querySelectorAll('.suggestions-container');
+        existingSuggestions.forEach(el => el.remove());
+    }
 });
