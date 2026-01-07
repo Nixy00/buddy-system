@@ -140,6 +140,11 @@
                         <button class="btn btn--ghost" disabled style="width: 100%; opacity: 0.7; margin-bottom: 1rem; cursor: not-allowed;">
                             Vous êtes déjà inscrit
                         </button>
+                        <form method="post" action="{{ path('app_event_unsubscribe', {'id': event.id}) }}" style="margin-bottom: 1rem;">
+                            <button type="submit" class="btn" style="width: 100%; background-color: #EF4444; color: white; border: none;">
+                                Se désinscrire
+                            </button>
+                        </form>
                     {% elseif event.statut == 'OUVERT' %}
                         <form method="post" action="{{ path('app_event_participate', {'id': event.id}) }}" style="margin-bottom: 1rem;">
                             <button type="submit" class="btn btn--primary" style="width: 100%;">S'inscrire à l'événement</button>
