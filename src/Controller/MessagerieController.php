@@ -7,6 +7,7 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Form\MessageType;
 use App\Repository\ConversationRepository;
+use App\Repository\RelationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,18 +19,42 @@ use Symfony\Component\Routing\Attribute\Route;
 class MessagerieController extends AbstractController
 {
     #[Route('/', name: 'app_messagerie')]
-    public function index(ConversationRepository $conversationRepository): Response
+    public function index(ConversationRepository $conversationRepository, RelationRepository $relationRepository): Response
     {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        // récupération des conversations où l'utilisateur est impliqué
+        // On récupère aussi les demandes pour afficher une notification
+        $buddyRequests = $relationRepository->findBy([
+            'receveur' => $user->getId(),
+            'statut' => 'en_attente'
+        ]);
+
         $conversations = $conversationRepository->findConversationsByUser($user);
 
         return $this->render('messagerie/index.html.twig', [
             'conversations' => $conversations,
+            'buddyRequestCount' => count($buddyRequests)
+        ]);
+    }
+
+    #[Route('/requests', name: 'app_messagerie_requests')]
+    public function requests(RelationRepository $relationRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $buddyRequests = $relationRepository->findBy(
+            ['receveur' => $user->getId(), 'statut' => 'en_attente'],
+            ['dateDemande' => 'DESC']
+        );
+
+        return $this->render('messagerie/requests.html.twig', [
+            'buddyRequests' => $buddyRequests,
         ]);
     }
 
@@ -41,20 +66,15 @@ class MessagerieController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // on vérifie que l'utilisateur fait partie de la conversation (sécurité)
         if ($conversation->getInitiateur() !== $user && $conversation->getInterlocuteur() !== $user) {
             throw $this->createAccessDeniedException('Vous n\'avez pas accès à cette conversation.');
         }
 
-        // création du formulaire
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
-
-        // traitement de la requête
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // automatisme du lien User-Conversation
             $message->setUtilisateur($user);
             $message->setConversation($conversation);
             $message->setDateEnvoi(new \DateTime());
@@ -65,13 +85,12 @@ class MessagerieController extends AbstractController
             return $this->redirectToRoute('app_messagerie_show', ['id' => $conversation->getId()]);
         }
 
-        // on détermine qui est la personne en face
         $contact = ($conversation->getInitiateur() === $user) ? $conversation->getInterlocuteur() : $conversation->getInitiateur();
 
         return $this->render('messagerie/show.html.twig', [
             'conversation' => $conversation,
             'contact' => $contact,
-            'form' => $form->createView(), // passer le formulaire à la vue
+            'form' => $form->createView(),
         ]);
     }
 
@@ -86,7 +105,6 @@ class MessagerieController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // gestion d'erreur: on ne peut pas parler à soi-même
         if ($user === $target) {
             $this->addFlash('warning', 'Vous ne pouvez pas lancer une conversation avec vous-même.');
             return $this->redirectToRoute('app_home');
@@ -94,7 +112,6 @@ class MessagerieController extends AbstractController
 
         $conversation = $repository->findConversationBetween($user, $target);
 
-        // s'il n'y a pas de conv déjà existante alors on l'a crée
         if (!$conversation) {
             $conversation = new Conversation();
             $conversation->setInitiateur($user);
@@ -106,7 +123,6 @@ class MessagerieController extends AbstractController
             $entityManager->flush();
         }
 
-        // redirection vers la conv
         return $this->redirectToRoute('app_messagerie_show', ['id' => $conversation->getId()]);
     }
 }
