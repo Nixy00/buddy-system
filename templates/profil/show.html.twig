@@ -47,7 +47,9 @@
 
                 {# Actions (Centrées et Stylisées) #}
                 <div class="profile-actions" style="display: flex; gap: 16px; margin-bottom: 30px;">
-                    <a href="{{ app.user ? '#' : path('app_login') }}" class="btn btn--primary" style="padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 8px;">
+                    <a href="{{ app.user ? path('app_messagerie_start', {id: profil.utilisateur.id}) : path('app_login') }}"
+                       class="btn btn--primary"
+                       style="padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 8px;">
                         <i class="fas fa-envelope"></i> Envoyer un message
                     </a>
                     <a href="{{ app.user ? '#' : path('app_login') }}" class="btn btn--secondary" style="padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--color-primary); color: var(--color-primary);">
