@@ -35,7 +35,21 @@
                 </h2>
                 <div style="display: grid; gap: 20px;">
                     {{ form_row(form.biographie) }}
-                    {{ form_row(form.langues) }}
+
+                    {# Affichage des checkboxes pour les langues #}
+                    <div class="form-group">
+                        {{ form_label(form.langues) }}
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 8px;">
+                            {% for child in form.langues %}
+                                <div class="form-check" style="display: flex; align-items: center; gap: 8px;">
+                                    {{ form_widget(child, {'attr': {'style': 'width: 16px; height: 16px; cursor: pointer;'}}) }}
+                                    {{ form_label(child, null, {'label_attr': {'style': 'cursor: pointer; margin-bottom: 0;'}}) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {{ form_errors(form.langues) }}
+                    </div>
+
                     {{ form_row(form.disponibilites) }}
                 </div>
             </div>
