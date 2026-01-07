@@ -141,6 +141,7 @@ class EventController extends AbstractController
             'lieu' => $evenement->getLieu(),
             'date_debut' => $evenement->getDateDebut(),
             'date_fin' => $evenement->getDateFin(),
+            'date_limite_inscr' => $evenement->getDateLimiteInscr(),
             'capacite' => $evenement->getCapacite(),
             'inscrits' => count($evenement->getParticipations()),
             'statut' => $evenement->getStatut(),
