@@ -14,7 +14,7 @@
                 {# si je suis l'initiateur, l'autre est l'interlocuteur, et inversement #}
                 {% set contact = (conversation.initiateur == app.user) ? conversation.interlocuteur : conversation.initiateur %}
 
-                <a href="#" class="card conversation-card" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 1rem; padding: 1.5rem; transition: transform 0.2s;">
+                <a href="{{ path('app_messagerie_show', {id: conversation.id}) }}" class="card conversation-card" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 1rem; padding: 1.5rem; transition: transform 0.2s;">
                     <div class="avatar" style="width: 50px; height: 50px; flex-shrink: 0;">
                         {% if contact.profil.avatar %}
                             <img src="{{ path('app_profil_avatar', {id: contact.profil.id}) }}" alt="{{ contact.profil.prenom }}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
