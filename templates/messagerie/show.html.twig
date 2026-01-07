@@ -49,11 +49,19 @@
             {% endfor %}
         </div>
 
-        {# zone formulaire (zone de saisie à venir) #}
+        {# zone formulaire #}
         <div class="chat-input-area" style="background: white; padding: 1rem; border-top: 1px solid var(--gray-200); position: sticky; bottom: 0;">
-            <p class="muted" style="text-align: center; font-size: 0.9rem;">
-                (Zone de saisie à venir)
-            </p>
+            {{ form_start(form) }}
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="flex-grow: 1;">
+                    {{ form_widget(form.contenu) }}
+                    {{ form_errors(form.contenu) }}
+                </div>
+                <button type="submit" class="btn btn--primary" style="height: 100%; padding: 0.8rem 1.5rem; border-radius: 8px;">
+                    <i class="fas fa-paper-plane"></i> Envoyer
+                </button>
+            </div>
+        {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
