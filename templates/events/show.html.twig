@@ -151,8 +151,8 @@
                         </form>
                     {% else %}
                         <button class="btn btn--ghost" disabled style="width: 100%; opacity: 0.5; margin-bottom: 1rem;">Événement complet</button>
-
-                {# on affiche ces boutons seulement si Admin OU si c'est (mon) événement #}
+                    {% endif %}
+                {# SÉCURITÉ : On affiche ces boutons seulement si Admin OU C'est mon événement #}
                 {% if is_granted('ROLE_ADMIN') or (app.user and event_entity.createur == app.user) %}
 
                     <div style="display: flex; gap: 1rem;">
@@ -168,7 +168,7 @@
                             </button>
                         </form>
                     </div>
-
+                {% endif %}
                 {% endif %}
             </div>
         </div>
