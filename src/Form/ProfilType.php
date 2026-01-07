@@ -82,10 +82,19 @@ class ProfilType extends AbstractType
                 'attr' => ['class' => 'language-checkboxes'],
                 'label_attr' => ['class' => 'checkbox-inline'],
             ])
-            ->add('disponibilites', TextType::class, [
+            ->add('disponibilites', ChoiceType::class, [
                 'label' => 'Disponibilités',
                 'required' => false,
-                'attr' => ['class' => 'form-control', 'placeholder' => 'Ex: Soirs et week-ends'],
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => [
+                    'Flexible (selon planning)' => 'Flexible (selon planning)',
+                    'Soirées principalement' => 'Soirées principalement',
+                    'Week-end : après-midi' => 'Week-end : après-midi',
+                    'Semaine : 18h-22h' => 'Semaine : 18h-22h',
+                ],
+                'attr' => ['class' => 'availability-checkboxes'],
+                'label_attr' => ['class' => 'checkbox-inline'],
             ])
             ->add('avatar', FileType::class, [
                 'label' => 'Photo de profil',
@@ -100,7 +109,7 @@ class ProfilType extends AbstractType
                             'image/webp',
                         ],
                         'mimeTypesMessage' => 'Veuillez uploader une image valide (JPG, PNG, WEBP)',
-                    ])
+                    ]),
                 ],
                 'attr' => ['class' => 'form-control'],
             ])
@@ -118,7 +127,27 @@ class ProfilType extends AbstractType
                     if (empty($languesAsArray)) {
                         return null;
                     }
+
                     return implode(', ', $languesAsArray);
+                }
+            ))
+        ;
+
+        $builder->get('disponibilites')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($dispoAsString): array {
+                    if (null === $dispoAsString) {
+                        return [];
+                    }
+
+                    return explode(', ', $dispoAsString);
+                },
+                function ($dispoAsArray): ?string {
+                    if (empty($dispoAsArray)) {
+                        return null;
+                    }
+
+                    return implode(', ', $dispoAsArray);
                 }
             ))
         ;
