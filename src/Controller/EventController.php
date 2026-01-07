@@ -82,6 +82,11 @@ class EventController extends AbstractController
     #[Route('/evenements/nouveau', name: 'app_event_create')]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $evenement = new Evenement();
         $form = $this->createForm(EvenementType::class, $evenement);
         $form->handleRequest($request);
@@ -90,6 +95,8 @@ class EventController extends AbstractController
             $evenement->setStatut('OUVERT');
             $evenement->setDateCrea(new \DateTime());
             $evenement->setDateModif(new \DateTime());
+
+            $evenement->setCreateur($user);
 
             $entityManager->persist($evenement);
             $entityManager->flush();
