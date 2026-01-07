@@ -3,10 +3,12 @@
 namespace App\DataFixtures;
 
 use App\Factory\EvenementFactory;
+use App\Factory\ParticipationFactory;
 use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class EvenementFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -72,7 +74,40 @@ class EvenementFixtures extends Fixture implements DependentFixtureInterface
             'createur' => UserFactory::random(),
         ]);
 
-        EvenementFactory::new()->filled()->createMany(20);
+        $events = EvenementFactory::createMany(30);
+
+        // remplissage intelligent
+        foreach ($events as $event) {
+            $scenario = Factory::create()->randomElement(['MOYEN', 'PLEIN', 'VIDE']);
+
+            if (random_int(0, 10) > 9) {
+                $event->setStatut('ANNULE');
+                continue;
+            }
+
+            $capacite = $event->getCapacite();
+            $nbParticipants = 0;
+
+            if ('VIDE' === $scenario) {
+                $nbParticipants = rand(0, (int) ceil($capacite * 0.1));
+            } elseif ('MOYEN' === $scenario) {
+                $nbParticipants = rand((int) ceil($capacite * 0.3), (int) ceil($capacite * 0.8));
+            } elseif ('PLEIN' === $scenario) {
+                $nbParticipants = $capacite;
+            }
+
+            if ($nbParticipants > 0) {
+                ParticipationFactory::createMany($nbParticipants, [
+                    'evenement' => $event,
+                    'utilisateur' => UserFactory::random(),
+                    'statut' => 'INSCRIT',
+                ]);
+            }
+
+            if ($nbParticipants >= $capacite) {
+                $event->setStatut('COMPLET');
+            }
+        }
 
         $manager->flush();
     }
