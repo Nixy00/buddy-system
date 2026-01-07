@@ -28,6 +28,7 @@ final class EvenementFactory extends PersistentProxyObjectFactory
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
      * @todo add your default values here
+     *
      * @throws \DateMalformedStringException
      */
     protected function defaults(): array|callable
@@ -73,7 +74,7 @@ final class EvenementFactory extends PersistentProxyObjectFactory
         ];
 
         return [
-            'capacite' => self::faker()->numberBetween(10, 150),
+            'capacite' => self::faker()->numberBetween(5, 50),
             'dateCrea' => $dateCrea,
             'dateDebut' => $dateDebut,
             'dateFin' => $dateFin,
@@ -81,9 +82,10 @@ final class EvenementFactory extends PersistentProxyObjectFactory
             'dateModif' => $dateModif,
             'description' => self::faker()->randomElement($descriptions),
             'lieu' => self::faker()->randomElement($lieux),
-            'statut' => self::faker()->randomElement(['OUVERT', 'COMPLET', 'ANNULE']),
+            'statut' => 'OUVERT',
             'titre' => self::faker()->randomElement($titres),
             'categorie' => self::faker()->randomElement(['Intégration', 'Culture', 'Sport', 'Loisirs', 'Conférence']),
+            'createur' => UserFactory::random(),
         ];
     }
 
@@ -93,7 +95,44 @@ final class EvenementFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Evenement $evenement): void {})
+            ->afterInstantiate(function (Evenement $evenement): void {
+                $scenario = self::faker()->randomElement(['VIDE', 'MOYEN', 'PLEIN', 'ANNULE']);
+                $capacite = $evenement->getCapacite();
+
+                if ('ANNULE' === $scenario) {
+                    $evenement->setStatut('ANNULE');
+
+                    return; // On s'arrête là
+                }
+
+                $nbParticipants = 0;
+
+                if ('VIDE' === $scenario) {
+                    // Entre 0 et 10% de remplissage
+                    $nbParticipants = self::faker()->numberBetween(0, (int) ceil($capacite * 0.1));
+                } elseif ('MOYEN' === $scenario) {
+                    // Entre 20% et 80% de remplissage
+                    $nbParticipants = self::faker()->numberBetween((int) ceil($capacite * 0.2), (int) ceil($capacite * 0.8));
+                } elseif ('PLEIN' === $scenario) {
+                    // EXACTEMENT la capacité max
+                    $nbParticipants = $capacite;
+                }
+
+                if ($nbParticipants > 0) {
+                    ParticipationFactory::createMany($nbParticipants, [
+                        'evenement' => $evenement,
+                        'utilisateur' => UserFactory::random(), // Des utilisateurs au hasard s'inscrivent
+                        'dateInscription' => self::faker()->dateTimeBetween('-10 days', 'now'),
+                        'statut' => 'INSCRIT',
+                    ]);
+                }
+
+                if ($nbParticipants >= $capacite) {
+                    $evenement->setStatut('COMPLET');
+                } else {
+                    $evenement->setStatut('OUVERT');
+                }
+            })
         ;
     }
 }
