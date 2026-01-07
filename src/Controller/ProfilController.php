@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Profil;
 use App\Form\ProfilType;
 use App\Repository\ProfilRepository;
+use App\Repository\RelationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ProfilController extends AbstractController
 {
     #[Route('/profil/{id}', name: 'app_profil_show', requirements: ['id' => '\d+'])]
-    public function show(int $id, ProfilRepository $profilRepository): Response
+    public function show(int $id, ProfilRepository $profilRepository, RelationRepository $relationRepository): Response
     {
         $profil = $profilRepository->find($id);
 
@@ -23,8 +24,27 @@ final class ProfilController extends AbstractController
             throw new NotFoundHttpException('Profil non trouvé');
         }
 
+        $relation = null;
+        $user = $this->getUser();
+        if ($user) {
+            $relation = $relationRepository->findOneBy([
+                'envoyeur' => $user,
+                'receveur' => $profil->getUtilisateur(),
+            ]);
+            if (!$relation) {
+                $relation = $relationRepository->findOneBy([
+                    'envoyeur' => $profil->getUtilisateur(),
+                    'receveur' => $user,
+                ]);
+            }
+        }
+
+        $buddyCount = $relationRepository->countAcceptedForUser($profil->getUtilisateur());
+
         return $this->render('profil/show.html.twig', [
             'profil' => $profil,
+            'relation' => $relation,
+            'buddyCount' => $buddyCount,
         ]);
     }
 
