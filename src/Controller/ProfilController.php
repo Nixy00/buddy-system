@@ -45,18 +45,59 @@ final class ProfilController extends AbstractController
             $profil->setDateCrea(new \DateTime());
         }
 
+        $originalProfil = clone $profil;
+
         $form = $this->createForm(ProfilType::class, $profil);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $profil->setDateModif(new \DateTime());
+            $hasChanges = false;
+
+            if ($originalProfil->getNom() !== $profil->getNom()) {
+                $hasChanges = true;
+            }
+            if ($originalProfil->getPrenom() !== $profil->getPrenom()) {
+                $hasChanges = true;
+            }
+            if ($originalProfil->getGenre() !== $profil->getGenre()) {
+                $hasChanges = true;
+            }
+            if ($originalProfil->getDateNaissance() != $profil->getDateNaissance()) {
+                $hasChanges = true;
+            }
+            if ($originalProfil->getTelephone() !== $profil->getTelephone()) {
+                $hasChanges = true;
+            }
+            if ($originalProfil->getVille() !== $profil->getVille()) {
+                $hasChanges = true;
+            }
+            if ($originalProfil->getPays() !== $profil->getPays()) {
+                $hasChanges = true;
+            }
+            if ($originalProfil->getBiographie() !== $profil->getBiographie()) {
+                $hasChanges = true;
+            }
+            if ($originalProfil->getLangues() !== $profil->getLangues()) {
+                $hasChanges = true;
+            }
+            if ($originalProfil->getDisponibilites() !== $profil->getDisponibilites()) {
+                $hasChanges = true;
+            }
 
             $avatarFile = $form->get('avatar')->getData();
             if ($avatarFile) {
+                $hasChanges = true;
                 $avatarContent = file_get_contents($avatarFile->getPathname());
                 $profil->setAvatar($avatarContent);
             }
 
+            if (!$hasChanges) {
+                $this->addFlash('warning', 'Le profil n\'a pas été modifié car aucune information n\'a changé.');
+
+                return $this->redirectToRoute('app_dashboard');
+            }
+
+            $profil->setDateModif(new \DateTime());
             $entityManager->persist($profil);
             $entityManager->flush();
 
