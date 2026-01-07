@@ -18,26 +18,26 @@ class Evenement
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: "Le titre est obligatoire.")]
-    #[Assert\Length(min: 3, minMessage: "Le titre doit faire au moins {{ limit }} caractères.")]
+    #[Assert\NotBlank(message: 'Le titre est obligatoire.')]
+    #[Assert\Length(min: 3, minMessage: 'Le titre doit faire au moins {{ limit }} caractères.')]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank(message: "La description est obligatoire.")]
+    #[Assert\NotBlank(message: 'La description est obligatoire.')]
     private ?string $description = null;
 
     #[ORM\Column(length: 150)]
-    #[Assert\NotBlank(message: "Le lieu est obligatoire.")]
+    #[Assert\NotBlank(message: 'Le lieu est obligatoire.')]
     private ?string $lieu = null;
 
     #[ORM\Column]
-    #[Assert\NotNull(message: "La date de début est obligatoire.")]
-    #[Assert\GreaterThanOrEqual('today', message: "La date de début ne peut pas être dans le passé.")]
+    #[Assert\NotNull(message: 'La date de début est obligatoire.')]
+    #[Assert\GreaterThanOrEqual('today', message: 'La date de début ne peut pas être dans le passé.')]
     private ?\DateTime $dateDebut = null;
 
     #[ORM\Column]
-    #[Assert\NotNull(message: "La date de fin est obligatoire.")]
-    #[Assert\GreaterThan(propertyPath: 'dateDebut', message: "La date de fin doit être postérieure à la date de début.")]
+    #[Assert\NotNull(message: 'La date de fin est obligatoire.')]
+    #[Assert\GreaterThan(propertyPath: 'dateDebut', message: 'La date de fin doit être postérieure à la date de début.')]
     private ?\DateTime $dateFin = null;
 
     #[ORM\Column]
@@ -46,8 +46,8 @@ class Evenement
     private ?\DateTime $dateLimiteInscr = null;
 
     #[ORM\Column]
-    #[Assert\NotNull(message: "Le nombre de places est obligatoire.")]
-    #[Assert\Positive(message: "Le nombre de places doit être supérieur à 0.")]
+    #[Assert\NotNull(message: 'Le nombre de places est obligatoire.')]
+    #[Assert\Positive(message: 'Le nombre de places doit être supérieur à 0.')]
     private ?int $capacite = null;
 
     #[ORM\Column(length: 20)]
@@ -60,8 +60,12 @@ class Evenement
     private ?\DateTime $dateModif = null;
 
     #[ORM\Column(length: 20)]
-    #[Assert\NotBlank(message: "Veuillez choisir une catégorie.")]
+    #[Assert\NotBlank(message: 'Veuillez choisir une catégorie.')]
     private ?string $categorie = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $createur = null;
 
     /**
      * @var Collection<int, Participation>
@@ -214,6 +218,18 @@ class Evenement
     public function setCategorie(string $categorie): static
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getCreateur(): ?User
+    {
+        return $this->createur;
+    }
+
+    public function setCreateur(?User $createur): static
+    {
+        $this->createur = $createur;
 
         return $this;
     }
