@@ -275,6 +275,33 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event_show', ['id' => $evenement->getId()]);
     }
 
+    #[Route('/evenements/{id}/se-desinscrire', name: 'app_event_unsubscribe', methods: ['POST'])]
+    public function unsubscribe(Evenement $evenement, EntityManagerInterface $entityManager, ParticipationRepository $participationRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $participation = $participationRepository->findOneBy(['evenement' => $evenement, 'utilisateur' => $user]);
+
+        if ($participation) {
+            $entityManager->remove($participation);
+            $entityManager->flush();
+
+            if ('COMPLET' === $evenement->getStatut()) {
+                $evenement->setStatut('OUVERT');
+                $entityManager->flush();
+            }
+
+            $this->addFlash('success', 'Vous avez bien été désinscrit de l\'événement.');
+        } else {
+            $this->addFlash('danger', 'Vous n\'étiez pas inscrit à cet événement.');
+        }
+
+        return $this->redirectToRoute('app_event_show', ['id' => $evenement->getId()]);
+    }
+
     #[Route('/evenements/{id}/annuler', name: 'app_event_cancel', methods: ['POST', 'GET'])]
     public function cancel(Evenement $evenement, EntityManagerInterface $entityManager): Response
     {
