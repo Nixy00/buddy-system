@@ -52,15 +52,40 @@
                        style="padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 8px;">
                         <i class="fas fa-envelope"></i> Envoyer un message
                     </a>
-                    <a href="{{ app.user ? '#' : path('app_login') }}" class="btn btn--secondary" style="padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--color-primary); color: var(--color-primary);">
-                        <i class="fas fa-user-plus"></i> Demander en Buddy
-                    </a>
+
+                    {% if app.user and app.user.profil.id != profil.id %}
+                        {% if relation is null %}
+                            <a href="{{ path('app_relation_send_request', {id: profil.utilisateur.id}) }}" class="btn btn--secondary" style="padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--gray-300); color: var(--color-primary);">
+                                <i class="fas fa-user-plus"></i> Demander en Buddy
+                            </a>
+                        {% elseif relation.statut == 'en_attente' %}
+                            {% if relation.envoyeur == app.user %}
+                                <span class="btn btn--disabled" style="padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 8px; background: var(--gray-100); border: 1px solid var(--gray-300); color: var(--gray-500);">
+                                    <i class="fas fa-clock"></i> Demande envoyée
+                                </span>
+                                <a href="{{ path('app_relation_cancel_request', {id: relation.id}) }}" class="btn btn--danger-outline" style="padding: 12px 24px; border-radius: 30px;">Annuler</a>
+                            {% else %}
+                                <a href="{{ path('app_relation_accept_request', {id: relation.id}) }}" class="btn btn--success" style="padding: 12px 24px; border-radius: 30px;">Accepter</a>
+                                <a href="{{ path('app_relation_refuse_request', {id: relation.id}) }}" class="btn btn--danger" style="padding: 12px 24px; border-radius: 30px;">Refuser</a>
+                            {% endif %}
+                        {% elseif relation.statut == 'acceptee' %}
+                             <span class="btn btn--disabled" style="padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 8px; background: var(--green-100); border: 1px solid var(--green-300); color: var(--green-700);">
+                                <i class="fas fa-check"></i> Vous êtes buddies
+                            </span>
+                        {% endif %}
+                    {% elseif not app.user %}
+                        <a href="{{ path('app_login') }}" class="btn btn--secondary" style="padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--gray-300); color: var(--color-primary);">
+                            <i class="fas fa-user-plus"></i> Demander en Buddy
+                        </a>
+                    {% endif %}
                 </div>
 
                 {# Stats #}
                 <div class="profile-stats" style="display: flex; gap: 40px; border-top: 1px solid var(--gray-200); padding-top: 24px;">
                     <div style="text-align: center;">
-                        <span style="display: block; font-size: 1.5rem; font-weight: 700; color: var(--gray-900);">0</span>
+                        <span style="display: block; font-size: 1.5rem; font-weight: 700; color: var(--gray-900);">
+                            {{ buddyCount }}
+                        </span>
                         <span style="display: block; font-size: 0.9rem; color: var(--gray-500);">Buddies</span>
                     </div>
                     <div style="text-align: center;">
