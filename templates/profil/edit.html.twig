@@ -37,7 +37,12 @@
                     Détails
                 </h2>
                 <div style="display: grid; gap: 20px;">
-                    {{ form_row(form.biographie) }}
+                    {# Modification pour la biographie #}
+                    <div class="form-group">
+                        {{ form_label(form.biographie) }}
+                        {{ form_widget(form.biographie, {'attr': {'style': 'resize: none;'}}) }}
+                        {{ form_errors(form.biographie) }}
+                    </div>
 
                     {# Affichage des checkboxes pour les langues #}
                     <div class="form-group">
@@ -74,6 +79,15 @@
                 <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900); margin: 0 0 24px;">
                     Photo de profil
                 </h2>
+
+                {# Affichage de l'avatar actuel #}
+                {% if user.profil and user.profil.avatar %}
+                    <div style="margin-bottom: 1rem;">
+                        <p>Avatar actuel :</p>
+                        <img src="{{ path('app_profil_avatar', {id: user.profil.id}) }}" alt="Avatar actuel" style="max-width: 150px; height: auto; border-radius: 8px;">
+                    </div>
+                {% endif %}
+
                 {{ form_row(form.avatar) }}
             </div>
 
