@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Message;
+use App\Entity\Signalement;
+use App\Form\SignalementType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class SignalementController extends AbstractController
+{
+    #[Route('/signalement/nouveau/{id}', name: 'app_signalement_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, Message $message, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $signalement = new Signalement();
+        $signalement->setMessage($message);
+        $signalement->setUtilisateur($user);
+        $signalement->setDateSignalement(new \DateTime());
+        $signalement->setStatut('EN_ATTENTE');
+
+        $form = $this->createForm(SignalementType::class, $signalement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($signalement);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le signalement a bien été pris en compte.');
+
+            return $this->redirectToRoute('app_messagerie_show', ['id' => $message->getConversation()->getId()]);
+        }
+
+        return $this->render('signalement/new.html.twig', [
+            'signalement' => $signalement,
+            'form' => $form->createView(),
+            'message_signale' => $message,
+        ]);
+    }
+}
