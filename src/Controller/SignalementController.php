@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Message;
 use App\Entity\Signalement;
 use App\Form\SignalementType;
+use App\Repository\SignalementRepository; // <-- Nouvel import
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,16 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SignalementController extends AbstractController
 {
+    #[Route('/signalements', name: 'app_signalement_index', methods: ['GET'])]
+    public function index(SignalementRepository $signalementRepository): Response
+    {
+        $signalements = $signalementRepository->findBy([], ['dateSignalement' => 'DESC']);
+
+        return $this->render('signalement/index.html.twig', [
+            'signalements' => $signalements,
+        ]);
+    }
+
     #[Route('/signalement/nouveau/{id}', name: 'app_signalement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Message $message, EntityManagerInterface $entityManager): Response
     {
