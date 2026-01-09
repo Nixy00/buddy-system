@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des signalements - Buddy System{% endblock %}
+
+{% block main %}
+    <div class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
+        <div class="page-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 style="font-size: 2rem; color: var(--gray-900); margin-bottom: 0.5rem;">Signalements</h1>
+                <p style="color: var(--gray-600);">Liste de tous les signalements effectués.</p>
+            </div>
+        </div>
+
+        {% if signalements is empty %}
+            <div class="card" style="text-align: center; padding: 3rem; background: var(--gray-50); border: 1px dashed var(--gray-300);">
+                <p style="color: var(--gray-500); font-size: 1.1rem;">Aucun signalement pour le moment. Tout va bien ! 🎉</p>
+            </div>
+        {% else %}
+            <div style="display: grid; gap: 1.5rem;">
+                <p>La liste des signalements sera affichée ici.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
