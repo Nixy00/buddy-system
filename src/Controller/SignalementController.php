@@ -152,10 +152,13 @@ class SignalementController extends AbstractController
     #[Route('/signalement/{id}/fermer', name: 'app_signalement_close', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function closeTicket(Signalement $signalement, EntityManagerInterface $entityManager): Response
     {
-        $signalement->setStatut('TRAITE');
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Le ticket a été fermé.');
+        if ($signalement->getStatut() !== 'REJETE') {
+            $signalement->setStatut('TRAITE');
+            $entityManager->flush();
+            $this->addFlash('success', 'Le ticket a été fermé.');
+        } else {
+            $this->addFlash('info', 'Le ticket est déjà rejeté et ne peut être fermé.');
+        }
 
         return $this->redirectToRoute('app_signalement_index');
     }
