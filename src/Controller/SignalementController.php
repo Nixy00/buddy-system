@@ -25,11 +25,22 @@ class SignalementController extends AbstractController
     }
 
     #[Route('/signalement/nouveau/{id}', name: 'app_signalement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, Message $message, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, Message $message, EntityManagerInterface $entityManager, SignalementRepository $signalementRepository): Response
     {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
+        }
+
+        $existingSignalement = $signalementRepository->findOneBy([
+            'message' => $message,
+            'utilisateur' => $user,
+        ]);
+
+        if ($existingSignalement) {
+            $this->addFlash('warning', 'Vous avez déjà signalé ce message.');
+
+            return $this->redirectToRoute('app_messagerie_show', ['id' => $message->getConversation()->getId()]);
         }
 
         $signalement = new Signalement();
