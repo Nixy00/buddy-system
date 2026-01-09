@@ -17,12 +17,50 @@ use Symfony\Component\Routing\Attribute\Route;
 class SignalementController extends AbstractController
 {
     #[Route('/signalements', name: 'app_signalement_index', methods: ['GET'])]
-    public function index(SignalementRepository $signalementRepository): Response
+    public function index(Request $request, SignalementRepository $signalementRepository): Response
     {
-        $signalements = $signalementRepository->findBy([], ['dateSignalement' => 'DESC']);
+        $statut = $request->query->get('statut');
+        $motif = $request->query->get('motif');
+
+        $criteria = [];
+        if ($statut) {
+            $criteria['statut'] = $statut;
+        }
+        if ($motif) {
+
+            $signalements = $signalementRepository->createQueryBuilder('s')
+                ->where('s.motif LIKE :motif')
+                ->setParameter('motif', $motif.'%')
+                ->orderBy('s.dateSignalement', 'DESC')
+                ->getQuery()
+                ->getResult();
+        } else {
+            $signalements = $signalementRepository->findBy($criteria, ['dateSignalement' => 'DESC']);
+        }
+
+        $allMotifs = $signalementRepository->createQueryBuilder('s')
+            ->select('s.motif')
+            ->distinct(true)
+            ->getQuery()
+            ->getResult();
+
+        $motifsUniques = [];
+        foreach ($allMotifs as $item) {
+            $m = $item['motif'];
+            if (preg_match('/^(.*) \(.*\)$/', $m, $matches)) {
+                $motifsUniques[] = $matches[1];
+            } else {
+                $motifsUniques[] = $m;
+            }
+        }
+        $motifsUniques = array_unique($motifsUniques);
 
         return $this->render('signalement/index.html.twig', [
             'signalements' => $signalements,
+            'statuts' => ['EN_ATTENTE', 'EN_COURS', 'TRAITE', 'REJETE'],
+            'motifs' => $motifsUniques,
+            'statut_filtre' => $statut,
+            'motif_filtre' => $motif,
         ]);
     }
 
@@ -116,6 +154,7 @@ class SignalementController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Le ticket a été rouvert.');
+
         return $this->redirectToRoute('app_signalement_show', ['id' => $signalement->getId()]);
     }
 
