@@ -22,21 +22,23 @@ class SignalementController extends AbstractController
         $statut = $request->query->get('statut');
         $motif = $request->query->get('motif');
 
-        $criteria = [];
+        $qb = $signalementRepository->createQueryBuilder('s');
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $qb->andWhere('s.utilisateur = :user')
+               ->setParameter('user', $this->getUser());
+        }
+
         if ($statut) {
-            $criteria['statut'] = $statut;
+            $qb->andWhere('s.statut = :statut')
+               ->setParameter('statut', $statut);
         }
         if ($motif) {
-
-            $signalements = $signalementRepository->createQueryBuilder('s')
-                ->where('s.motif LIKE :motif')
-                ->setParameter('motif', $motif.'%')
-                ->orderBy('s.dateSignalement', 'DESC')
-                ->getQuery()
-                ->getResult();
-        } else {
-            $signalements = $signalementRepository->findBy($criteria, ['dateSignalement' => 'DESC']);
+            $qb->andWhere('s.motif LIKE :motif')
+               ->setParameter('motif', $motif.'%');
         }
+
+        $signalements = $qb->orderBy('s.dateSignalement', 'DESC')->getQuery()->getResult();
 
         $allMotifs = $signalementRepository->createQueryBuilder('s')
             ->select('s.motif')
