@@ -46,6 +46,17 @@ class SignalementController extends AbstractController
         ]);
     }
 
+    #[Route('/signalement/{id}/fermer', name: 'app_signalement_close', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function closeTicket(Signalement $signalement, EntityManagerInterface $entityManager): Response
+    {
+        $signalement->setStatut('TRAITE');
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le ticket a été fermé.');
+
+        return $this->redirectToRoute('app_signalement_index');
+    }
+
     #[Route('/signalement/nouveau/{id}', name: 'app_signalement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Message $message, EntityManagerInterface $entityManager, SignalementRepository $signalementRepository): Response
     {
