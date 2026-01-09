@@ -19,13 +19,16 @@ class HomeController extends AbstractController
         // Récupération des statistiques réelles
         $stats = [
             'users' => $userRepository->countUsers(),
-            'events' => $evenementRepository->countEvents()
+            'events' => $evenementRepository->countEvents(),
         ];
+
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_dashboard');
+        }
 
         return $this->render('home/index.html.twig', [
             'events' => $featuredEvents,
-            'stats' => $stats
+            'stats' => $stats,
         ]);
     }
 }
-
