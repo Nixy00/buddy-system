@@ -11,9 +11,39 @@
             </div>
     </div>
 
+    {# Formulaires de filtre #}
+    <div class="card" style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--gray-200); margin-bottom: 2rem;">
+        <form method="get" action="{{ path('app_signalement_index') }}" style="display: flex; gap: 1rem; align-items: center;">
+            {# Filtre par statut #}
+            <div>
+                <label for="statut" style="font-weight: 500; margin-right: 0.5rem;">Statut :</label>
+                <select name="statut" id="statut" class="form-control" onchange="this.form.submit()">
+                    <option value="">Tous</option>
+                    {% for statut in statuts %}
+                        <option value="{{ statut }}" {{ statut == statut_filtre ? 'selected' : '' }}>{{ statut }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {# Filtre par motif #}
+            <div>
+                <label for="motif" style="font-weight: 500; margin-right: 0.5rem;">Motif :</label>
+                <select name="motif" id="motif" class="form-control" onchange="this.form.submit()">
+                    <option value="">Tous</option>
+                    {% for motif in motifs %}
+                        <option value="{{ motif }}" {{ motif == motif_filtre ? 'selected' : '' }}>{{ motif }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {# Bouton pour réinitialiser #}
+            <a href="{{ path('app_signalement_index') }}" class="btn btn--secondary">Réinitialiser</a>
+        </form>
+    </div>
+
     {% if signalements is empty %}
         <div class="card" style="text-align: center; padding: 3rem; background: var(--gray-50); border: 1px dashed var(--gray-300);">
-            <p style="color: var(--gray-500); font-size: 1.1rem;">Aucun signalement pour le moment. Tout va bien ! 🎉</p>
+            <p style="color: var(--gray-500); font-size: 1.1rem;">Aucun signalement ne correspond à vos critères. 😕</p>
         </div>
     {% else %}
         <div style="display: grid; gap: 1.5rem;">
