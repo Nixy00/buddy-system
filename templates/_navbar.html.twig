@@ -17,7 +17,7 @@
                     <li><a class="nav__link" href="{{ path('app_events') }}">Événements</a></li>
                     <li><a class="nav__link" href="{{ path('app_recherche_buddy') }}">Rechercher</a></li>
                     <li><a class="nav__link" href="{{ path('app_messagerie') }}">Messagerie</a></li>
-                    <li><a class="nav__link" href="{{ path('app_profil_edit') }}">Mon Profil</a></li>
+                    <li><a class="nav__link" href="{{ path('app_profil_show', {'id': app.user.profil.id}) }}">Mon Profil</a></li>
                 {% else %}
                     {# les visiteurs voient seulement : #}
                     <li><a class="nav__link" href="{{ path('app_home') }}">Accueil</a></li>
