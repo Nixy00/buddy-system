@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Message;
 use App\Entity\Signalement;
 use App\Form\SignalementType;
-use App\Repository\SignalementRepository; // <-- Nouvel import
+use App\Repository\SignalementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +42,13 @@ class SignalementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $details = $form->get('details')->getData();
+
+            if ($details) {
+                $motifActuel = $signalement->getMotif();
+                $signalement->setMotif($motifActuel.' ('.$details.')');
+            }
+
             $entityManager->persist($signalement);
             $entityManager->flush();
 
