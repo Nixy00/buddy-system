@@ -93,16 +93,22 @@
                         {{ form_errors(form.commentaireModeration) }}
                     </div>
 
-                    <div style="text-align: right;">
+                    <div style="display: flex; justify-content: flex-end; gap: 1rem;">
                         <button type="submit" class="btn btn--primary">Enregistrer le traitement</button>
+
+                        {% if signalement.statut != 'TRAITE' %}
+                            <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
+                                <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none;">Fermer le ticket</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             {{ form_end(form) }}
 
-            {% if signalement.statut != 'TRAITE' %}
+            {% if signalement.statut == 'TRAITE' %}
                 <div style="text-align: right; margin-top: 1rem;">
-                    <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
-                        <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none;">Fermer le ticket</button>
+                    <form method="post" action="{{ path('app_signalement_reopen', {'id': signalement.id}) }}" style="margin: 0;">
+                        <button type="submit" class="btn" style="background-color: #16a34a; color: white; border: none;">Rouvrir le ticket</button>
                     </form>
                 </div>
             {% endif %}
