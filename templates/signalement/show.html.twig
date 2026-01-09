@@ -82,7 +82,7 @@
             {% if signalement.statut == 'TRAITE' %}
                 <div style="text-align: right;">
                     <form method="post" action="{{ path('app_signalement_reopen', {'id': signalement.id}) }}" style="margin: 0;">
-                        <button type="submit" class="btn" style="background-color: #16a34a; color: white; border: none;">Rouvrir le ticket</button>
+                        <button type="submit" class="btn" style="background-color: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem;">Rouvrir le ticket</button>
                     </form>
                 </div>
             {% else %}
@@ -99,16 +99,18 @@
                             {{ form_widget(form.commentaireModeration) }}
                             {{ form_errors(form.commentaireModeration) }}
                         </div>
-
-                        <div style="display: flex; justify-content: flex-end; gap: 1rem;">
-                            <a href="{{ path('app_signalement_edit', {'id': signalement.id}) }}" class="btn" style="background-color: #6c757d; color: white; border: none;">Modifier</a>
-                            <button type="submit" class="btn btn--primary">Enregistrer le traitement</button>
-                            <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
-                                <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none;">Fermer le ticket</button>
-                            </form>
-                        </div>
                     </div>
                 {{ form_end(form) }}
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
+                    <a href="{{ path('app_signalement_edit', {'id': signalement.id}) }}" class="btn" style="background-color: #6c757d; color: white; border: none; padding: 0.75rem 1.5rem; text-decoration: none;">Modifier</a>
+
+                    <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
+                        <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none; padding: 0.75rem 1.5rem;">Fermer le ticket</button>
+                    </form>
+
+                    <button type="submit" form="form_signalement_traite" class="btn btn--primary" style="padding: 0.75rem 1.5rem;">Enregistrer</button>
+                </div>
             {% endif %}
         </div>
     </div>
