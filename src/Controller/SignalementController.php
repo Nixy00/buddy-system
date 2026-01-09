@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Entity\Signalement;
+use App\Form\SignalementTraiteType;
 use App\Form\SignalementType;
 use App\Repository\SignalementRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,6 +23,26 @@ class SignalementController extends AbstractController
 
         return $this->render('signalement/index.html.twig', [
             'signalements' => $signalements,
+        ]);
+    }
+
+    #[Route('/signalement/{id}', name: 'app_signalement_show', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function show(Request $request, Signalement $signalement, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(SignalementTraiteType::class, $signalement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le signalement a été mis à jour.');
+
+            return $this->redirectToRoute('app_signalement_index');
+        }
+
+        return $this->render('signalement/show.html.twig', [
+            'signalement' => $signalement,
+            'form' => $form->createView(),
         ]);
     }
 
