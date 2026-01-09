@@ -46,6 +46,51 @@ class SignalementController extends AbstractController
         ]);
     }
 
+    #[Route('/signalement/{id}/modifier', name: 'app_signalement_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function edit(Request $request, Signalement $signalement, EntityManagerInterface $entityManager): Response
+    {
+        $originalMotif = $signalement->getMotif();
+        $initialDetails = '';
+
+        if (preg_match('/^(.*) \((.*)\)$/', $originalMotif, $matches)) {
+            $mainMotif = $matches[1];
+            $details = $matches[2];
+
+            $signalement->setMotif($mainMotif);
+            $initialDetails = $details;
+        }
+
+        $form = $this->createForm(SignalementType::class, $signalement);
+        $form->get('details')->setData($initialDetails);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $detailsFromForm = $form->get('details')->getData();
+            $motifFromEntity = $signalement->getMotif();
+
+            if ('Autre' === $motifFromEntity && empty(trim((string) $detailsFromForm))) {
+                $form->get('details')->addError(new FormError('Veuillez préciser le motif du signalement.'));
+            } else {
+                $finalMotif = $motifFromEntity;
+                if (!empty(trim((string) $detailsFromForm))) {
+                    $finalMotif = $motifFromEntity.' ('.$detailsFromForm.')';
+                }
+                $signalement->setMotif($finalMotif);
+
+                $entityManager->flush();
+                $this->addFlash('success', 'Votre signalement a été modifié avec succès.');
+
+                return $this->redirectToRoute('app_signalement_show', ['id' => $signalement->getId()]);
+            }
+        }
+
+        return $this->render('signalement/edit.html.twig', [
+            'form' => $form->createView(),
+            'signalement' => $signalement,
+        ]);
+    }
+
     #[Route('/signalement/{id}/fermer', name: 'app_signalement_close', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function closeTicket(Signalement $signalement, EntityManagerInterface $entityManager): Response
     {
