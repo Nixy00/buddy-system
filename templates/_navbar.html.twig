@@ -28,6 +28,11 @@
 
         <div class="header__actions">
             {% if app.user %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin') }}" title="Espace Administration">
+                        <img src="{{ asset('images/modo.png') }}" alt="Admin" style="height: 35px; width: auto; display: block;">
+                    </a>
+                {% endif %}
                 <a class="btn btn--ghost" href="{{ path('app_logout') }}">Déconnexion</a>
             {% else %}
                 <a class="btn btn--ghost" href="{{ path('app_login') }}">Connexion</a>
