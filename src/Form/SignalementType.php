@@ -28,13 +28,13 @@ class SignalementType extends AbstractType
                 'attr' => ['class' => 'form-check'],
             ])
             ->add('details', TextareaType::class, [
-                'label' => 'Détails supplémentaires (optionnel)',
+                'label' => 'Détails supplémentaires (obligatoire si "Autre")',
                 'mapped' => false,
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'rows' => 3,
-                    'placeholder' => 'Vous pouvez ajouter des précisions ici...',
+                    'placeholder' => 'Veuillez décrire le problème...',
                     'style' => 'resize: none;',
                 ],
             ])
