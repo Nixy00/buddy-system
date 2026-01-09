@@ -21,6 +21,8 @@ class SignalementController extends AbstractController
     {
         $statut = $request->query->get('statut');
         $motif = $request->query->get('motif');
+        $page = $request->query->getInt('page', 1);
+        $limit = 10;
 
         $qb = $signalementRepository->createQueryBuilder('s');
 
@@ -38,7 +40,14 @@ class SignalementController extends AbstractController
                ->setParameter('motif', $motif.'%');
         }
 
-        $signalements = $qb->orderBy('s.dateSignalement', 'DESC')->getQuery()->getResult();
+        $totalSignalements = count($qb->getQuery()->getResult());
+        $totalPages = ceil($totalSignalements / $limit);
+
+        $qb->orderBy('s.dateSignalement', 'DESC')
+           ->setFirstResult(($page - 1) * $limit)
+           ->setMaxResults($limit);
+
+        $signalements = $qb->getQuery()->getResult();
 
         $allMotifs = $signalementRepository->createQueryBuilder('s')
             ->select('s.motif')
@@ -59,6 +68,8 @@ class SignalementController extends AbstractController
 
         return $this->render('signalement/index.html.twig', [
             'signalements' => $signalements,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
             'statuts' => ['EN_ATTENTE', 'EN_COURS', 'TRAITE', 'REJETE'],
             'motifs' => $motifsUniques,
             'statut_filtre' => $statut,
