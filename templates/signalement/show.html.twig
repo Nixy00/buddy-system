@@ -75,43 +75,45 @@
         </div>
 
         {# Traitement (Admin) #}
-        <div class="card" style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200);">
-            <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--gray-800);">Traitement (Admin)</h2>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="card" style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200);">
+                <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--gray-800);">Traitement (Admin)</h2>
 
-            {% if signalement.statut == 'TRAITE' %}
-                <div style="text-align: right;">
-                    <form method="post" action="{{ path('app_signalement_reopen', {'id': signalement.id}) }}" style="margin: 0;">
-                        <button type="submit" class="btn" style="background-color: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem;">Rouvrir le ticket</button>
-                    </form>
-                </div>
-            {% else %}
-                {{ form_start(form, {'attr': {'id': 'form_traitement'}}) }}
-                    <div style="display: grid; gap: 1.5rem;">
-                        <div class="form-group">
-                            {{ form_label(form.statut, null, {'label_attr': {'style': 'font-weight: 600; margin-bottom: 0.5rem; display: block;'}}) }}
-                            {{ form_widget(form.statut) }}
-                            {{ form_errors(form.statut) }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form_label(form.commentaireModeration, null, {'label_attr': {'style': 'font-weight: 600; margin-bottom: 0.5rem; display: block;'}}) }}
-                            {{ form_widget(form.commentaireModeration) }}
-                            {{ form_errors(form.commentaireModeration) }}
-                        </div>
+                {% if signalement.statut == 'TRAITE' %}
+                    <div style="text-align: right;">
+                        <form method="post" action="{{ path('app_signalement_reopen', {'id': signalement.id}) }}" style="margin: 0;">
+                            <button type="submit" class="btn" style="background-color: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem;">Rouvrir le ticket</button>
+                        </form>
                     </div>
-                {{ form_end(form) }}
+                {% else %}
+                    {{ form_start(form, {'attr': {'id': 'form_traitement'}}) }}
+                        <div style="display: grid; gap: 1.5rem;">
+                            <div class="form-group">
+                                {{ form_label(form.statut, null, {'label_attr': {'style': 'font-weight: 600; margin-bottom: 0.5rem; display: block;'}}) }}
+                                {{ form_widget(form.statut) }}
+                                {{ form_errors(form.statut) }}
+                            </div>
 
-                <div style="display: flex; justify-content: flex-end; align-items: stretch; gap: 1rem; margin-top: 1rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
-                    <a href="{{ path('app_signalement_edit', {'id': signalement.id}) }}" class="btn" style="background-color: #6c757d; color: white; border: none; padding: 0.75rem 1.5rem; text-decoration: none; display: flex; align-items: center;">Modifier</a>
+                            <div class="form-group">
+                                {{ form_label(form.commentaireModeration, null, {'label_attr': {'style': 'font-weight: 600; margin-bottom: 0.5rem; display: block;'}}) }}
+                                {{ form_widget(form.commentaireModeration) }}
+                                {{ form_errors(form.commentaireModeration) }}
+                            </div>
+                        </div>
+                    {{ form_end(form) }}
 
-                    <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
-                        <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none; padding: 0.75rem 1.5rem; height: 100%;">Fermer le ticket</button>
-                    </form>
+                    <div style="display: flex; justify-content: flex-end; align-items: stretch; gap: 1rem; margin-top: 1rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
+                        <a href="{{ path('app_signalement_edit', {'id': signalement.id}) }}" class="btn" style="background-color: #6c757d; color: white; border: none; padding: 0.75rem 1.5rem; text-decoration: none; display: flex; align-items: center;">Modifier</a>
 
-                    <button type="submit" form="form_traitement" class="btn btn--primary" style="padding: 0.75rem 1.5rem;">Enregistrer</button>
-                </div>
-            {% endif %}
-        </div>
+                        <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
+                            <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none; padding: 0.75rem 1.5rem; height: 100%;">Fermer le ticket</button>
+                        </form>
+
+                        <button type="submit" form="form_traitement" class="btn btn--primary" style="padding: 0.75rem 1.5rem;">Enregistrer</button>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
