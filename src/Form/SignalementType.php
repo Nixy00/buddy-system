@@ -27,6 +27,18 @@ class SignalementType extends AbstractType
                 'multiple' => false,
                 'attr' => ['class' => 'form-check'],
             ])
+            ->add('autreMotif', TextareaType::class, [
+                'label' => 'Précisez le motif',
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'rows' => 3,
+                    'placeholder' => 'Veuillez décrire le problème...',
+                    'style' => 'display: none; resize: none;',
+                ],
+                'label_attr' => ['style' => 'display: none;'],
+            ])
         ;
     }
 
