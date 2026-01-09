@@ -99,15 +99,16 @@
                             {{ form_widget(form.commentaireModeration) }}
                             {{ form_errors(form.commentaireModeration) }}
                         </div>
+
+                        <div style="display: flex; justify-content: flex-end; gap: 1rem;">
+                            <a href="{{ path('app_signalement_edit', {'id': signalement.id}) }}" class="btn" style="background-color: #6c757d; color: white; border: none;">Modifier</a>
+                            <button type="submit" class="btn btn--primary">Enregistrer le traitement</button>
+                            <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
+                                <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none;">Fermer le ticket</button>
+                            </form>
+                        </div>
                     </div>
                 {{ form_end(form) }}
-
-                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
-                    <button type="submit" form="form_signalement_traite" class="btn btn--primary">Enregistrer le traitement</button>
-                    <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
-                        <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none;">Fermer le ticket</button>
-                    </form>
-                </div>
             {% endif %}
         </div>
     </div>
