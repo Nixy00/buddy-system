@@ -19,7 +19,6 @@ class SignalementTraiteType extends AbstractType
                 'choices' => [
                     'En attente' => 'EN_ATTENTE',
                     'En cours' => 'EN_COURS',
-                    'Traité / Fermé' => 'TRAITE',
                     'Rejeté' => 'REJETE',
                 ],
                 'attr' => ['class' => 'form-control'],
