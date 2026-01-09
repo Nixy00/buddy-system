@@ -114,6 +114,26 @@
                 </div>
             {% endfor %}
         </div>
+
+        {# Pagination manuelle #}
+        {% if totalPages > 1 %}
+            <div class="navigation" style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem;">
+                {# Page précédente #}
+                {% if currentPage > 1 %}
+                    <a href="{{ path('app_signalement_index', app.request.query.all|merge({page: currentPage - 1})) }}" class="btn btn--secondary">&laquo; Précédent</a>
+                {% endif %}
+
+                {# Numéros de page #}
+                {% for i in 1..totalPages %}
+                    <a href="{{ path('app_signalement_index', app.request.query.all|merge({page: i})) }}" class="btn {{ i == currentPage ? 'btn--primary' : 'btn--secondary' }}">{{ i }}</a>
+                {% endfor %}
+
+                {# Page suivante #}
+                {% if currentPage < totalPages %}
+                    <a href="{{ path('app_signalement_index', app.request.query.all|merge({page: currentPage + 1})) }}" class="btn btn--secondary">Suivant &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
     {% endif %}
 </div>
 {% endblock %}
