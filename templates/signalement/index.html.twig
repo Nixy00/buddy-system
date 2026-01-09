@@ -56,6 +56,12 @@
                             </span>
                         </div>
                     </div>
+
+                    <div style="text-align: right;">
+                        <a href="{{ path('app_signalement_show', {'id': signalement.id}) }}" class="btn btn--secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                            Gérer le signalement &rarr;
+                        </a>
+                    </div>
                 </div>
             {% endfor %}
         </div>
