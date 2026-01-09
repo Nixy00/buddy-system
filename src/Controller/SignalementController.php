@@ -57,6 +57,16 @@ class SignalementController extends AbstractController
         return $this->redirectToRoute('app_signalement_index');
     }
 
+    #[Route('/signalement/{id}/rouvrir', name: 'app_signalement_reopen', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function reopenTicket(Signalement $signalement, EntityManagerInterface $entityManager): Response
+    {
+        $signalement->setStatut('EN_COURS');
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le ticket a été rouvert.');
+        return $this->redirectToRoute('app_signalement_show', ['id' => $signalement->getId()]);
+    }
+
     #[Route('/signalement/nouveau/{id}', name: 'app_signalement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Message $message, EntityManagerInterface $entityManager, SignalementRepository $signalementRepository): Response
     {
