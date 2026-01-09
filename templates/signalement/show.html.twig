@@ -75,7 +75,6 @@
         </div>
 
         {# Traitement (Admin) #}
-        {# TODO: Afficher ce bloc uniquement si l'utilisateur est admin #}
         <div class="card" style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200);">
             <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--gray-800);">Traitement (Admin)</h2>
 
@@ -86,7 +85,7 @@
                     </form>
                 </div>
             {% else %}
-                {{ form_start(form) }}
+                {{ form_start(form, {'attr': {'id': 'form_traitement'}}) }}
                     <div style="display: grid; gap: 1.5rem;">
                         <div class="form-group">
                             {{ form_label(form.statut, null, {'label_attr': {'style': 'font-weight: 600; margin-bottom: 0.5rem; display: block;'}}) }}
@@ -102,14 +101,14 @@
                     </div>
                 {{ form_end(form) }}
 
-                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
-                    <a href="{{ path('app_signalement_edit', {'id': signalement.id}) }}" class="btn" style="background-color: #6c757d; color: white; border: none; padding: 0.75rem 1.5rem; text-decoration: none;">Modifier</a>
+                <div style="display: flex; justify-content: flex-end; align-items: stretch; gap: 1rem; margin-top: 1rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
+                    <a href="{{ path('app_signalement_edit', {'id': signalement.id}) }}" class="btn" style="background-color: #6c757d; color: white; border: none; padding: 0.75rem 1.5rem; text-decoration: none; display: flex; align-items: center;">Modifier</a>
 
                     <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
-                        <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none; padding: 0.75rem 1.5rem;">Fermer le ticket</button>
+                        <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none; padding: 0.75rem 1.5rem; height: 100%;">Fermer le ticket</button>
                     </form>
 
-                    <button type="submit" form="form_signalement_traite" class="btn btn--primary" style="padding: 0.75rem 1.5rem;">Enregistrer</button>
+                    <button type="submit" form="form_traitement" class="btn btn--primary" style="padding: 0.75rem 1.5rem;">Enregistrer</button>
                 </div>
             {% endif %}
         </div>
