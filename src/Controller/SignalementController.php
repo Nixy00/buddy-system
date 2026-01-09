@@ -69,13 +69,20 @@ class SignalementController extends AbstractController
             $detailsFromForm = $form->get('details')->getData();
             $motifFromEntity = $signalement->getMotif();
 
+            $finalMotif = $motifFromEntity;
+            if (!empty(trim((string) $detailsFromForm))) {
+                $finalMotif = $motifFromEntity.' ('.$detailsFromForm.')';
+            }
+
+            if ($finalMotif === $originalMotif) {
+                $this->addFlash('warning', 'Le signalement n\'a pas été modifié car aucune information n\'a été modifiée.');
+
+                return $this->redirectToRoute('app_signalement_show', ['id' => $signalement->getId()]);
+            }
+
             if ('Autre' === $motifFromEntity && empty(trim((string) $detailsFromForm))) {
                 $form->get('details')->addError(new FormError('Veuillez préciser le motif du signalement.'));
             } else {
-                $finalMotif = $motifFromEntity;
-                if (!empty(trim((string) $detailsFromForm))) {
-                    $finalMotif = $motifFromEntity.' ('.$detailsFromForm.')';
-                }
                 $signalement->setMotif($finalMotif);
 
                 $entityManager->flush();
