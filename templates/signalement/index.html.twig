@@ -6,14 +6,63 @@
     <div class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
         <div class="page-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <h1 style="font-size: 2rem; color: var(--gray-900); margin-bottom: 0.5rem;">Signalements</h1>
-                <p style="color: var(--gray-600);">Liste de tous les signalements effectués.</p>
-            </div>
+            <h1 style="font-size: 2rem; color: var(--gray-900); margin-bottom: 0.5rem;">
+                {% if is_granted('ROLE_ADMIN') %}
+                    Signalements
+                {% else %}
+                    Mes Signalements
+                {% endif %}
+            </h1>
+            <p style="color: var(--gray-600);">
+                {% if is_granted('ROLE_ADMIN') %}
+                    Liste de tous les signalements effectués.
+                {% else %}
+                    Retrouvez ici l'historique de vos signalements.
+                {% endif %}
+            </p>
+        </div>
     </div>
+
+    {# Formulaires de filtre (uniquement pour les admins) #}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="card" style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--gray-200); margin-bottom: 2rem;">
+            <form method="get" action="{{ path('app_signalement_index') }}" style="display: flex; gap: 1rem; align-items: center;">
+                {# Filtre par statut #}
+                <div>
+                    <label for="statut" style="font-weight: 500; margin-right: 0.5rem;">Statut :</label>
+                    <select name="statut" id="statut" class="form-control" onchange="this.form.submit()">
+                        <option value="">Tous</option>
+                        {% for statut in statuts %}
+                            <option value="{{ statut }}" {{ statut == statut_filtre ? 'selected' : '' }}>{{ statut }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {# Filtre par motif #}
+                <div>
+                    <label for="motif" style="font-weight: 500; margin-right: 0.5rem;">Motif :</label>
+                    <select name="motif" id="motif" class="form-control" onchange="this.form.submit()">
+                        <option value="">Tous</option>
+                        {% for motif in motifs %}
+                            <option value="{{ motif }}" {{ motif == motif_filtre ? 'selected' : '' }}>{{ motif }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {# Bouton pour réinitialiser #}
+                <a href="{{ path('app_signalement_index') }}" class="btn btn--secondary">Réinitialiser</a>
+            </form>
+        </div>
+    {% endif %}
 
     {% if signalements is empty %}
         <div class="card" style="text-align: center; padding: 3rem; background: var(--gray-50); border: 1px dashed var(--gray-300);">
-            <p style="color: var(--gray-500); font-size: 1.1rem;">Aucun signalement pour le moment. Tout va bien ! 🎉</p>
+            {% if is_granted('ROLE_ADMIN') %}
+                <p style="color: var(--gray-500); font-size: 1.1rem;">Aucun signalement ne correspond à vos critères. 😕</p>
+            {% else %}
+                <p style="color: var(--gray-500); font-size: 1.1rem;">Vous n'avez aucun signalement actif.</p>
+                <p style="color: var(--gray-600); margin-top: 0.5rem;">Merci de contribuer à faire de cette plateforme un lieu sûr et bienveillant. 🙏</p>
+            {% endif %}
         </div>
     {% else %}
         <div style="display: grid; gap: 1.5rem;">
@@ -65,6 +114,26 @@
                 </div>
             {% endfor %}
         </div>
+
+        {# Pagination manuelle #}
+        {% if totalPages > 1 %}
+            <div class="navigation" style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem;">
+                {# Page précédente #}
+                {% if currentPage > 1 %}
+                    <a href="{{ path('app_signalement_index', app.request.query.all|merge({page: currentPage - 1})) }}" class="btn btn--secondary">&laquo; Précédent</a>
+                {% endif %}
+
+                {# Numéros de page #}
+                {% for i in 1..totalPages %}
+                    <a href="{{ path('app_signalement_index', app.request.query.all|merge({page: i})) }}" class="btn {{ i == currentPage ? 'btn--primary' : 'btn--secondary' }}">{{ i }}</a>
+                {% endfor %}
+
+                {# Page suivante #}
+                {% if currentPage < totalPages %}
+                    <a href="{{ path('app_signalement_index', app.request.query.all|merge({page: currentPage + 1})) }}" class="btn btn--secondary">Suivant &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
     {% endif %}
 </div>
 {% endblock %}

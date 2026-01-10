@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Faire un signalement - Buddy System{% endblock %}
+
+{% block main %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 4rem; max-width: 800px;">
+    <div class="page-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1 style="font-size: 2rem; color: var(--gray-900); margin-bottom: 0.5rem;">Faire un signalement</h1>
+            <p style="color: var(--gray-600);">Aidez-nous à maintenir un environnement sûr et respectueux.</p>
+        </div>
+        {# Lien pour voir ses propres signalements #}
+        <a href="{{ path('app_signalement_index') }}" class="btn btn--secondary">Voir mes signalements</a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+
+        {# Carte 1: Signaler un Message #}
+        <div class="card" style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200);">
+            <h2 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--gray-800);">Signaler un Message</h2>
+            <p style="color: var(--gray-600); margin-bottom: 1.5rem;">
+                Pour signaler un message inapproprié, rendez-vous dans la conversation et cliquez sur le drapeau 🚩 à côté du message concerné.
+            </p>
+            <a href="{{ path('app_messagerie') }}" class="btn btn--primary">Aller à la messagerie</a>
+        </div>
+
+        {# Carte 2: Signaler un Buddy (Désactivé) #}
+        <div class="card" style="background: var(--gray-50); padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200); opacity: 0.6;">
+            <h2 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--gray-800);">Signaler un Buddy</h2>
+            <p style="color: var(--gray-600); margin-bottom: 1.5rem;">
+                Si vous avez eu un problème avec un buddy (comportement, non-respect des engagements, etc.).
+            </p>
+            <span class="btn btn--secondary" style="cursor: not-allowed;">Bientôt disponible</span>
+        </div>
+
+        {# Carte 3: Signaler un Événement (Désactivé) #}
+        <div class="card" style="background: var(--gray-50); padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200); opacity: 0.6;">
+            <h2 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--gray-800);">Signaler un Événement</h2>
+            <p style="color: var(--gray-600); margin-bottom: 1.5rem;">
+                Si un événement vous semble inapproprié, dangereux ou frauduleux.
+            </p>
+            <span class="btn btn--secondary" style="cursor: not-allowed;">Bientôt disponible</span>
+        </div>
+
+    </div>
+
+    {# Lien pour les admins vers la liste des signalements #}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div style="text-align: center; margin-top: 3rem; border-top: 1px solid var(--gray-200); padding-top: 2rem;">
+            <p style="color: var(--gray-600);">En tant qu'administrateur, vous pouvez consulter la liste de tous les signalements.</p>
+            <a href="{{ path('app_signalement_index') }}" class="btn btn--primary" style="background-color: #dc3545;">Accéder à la modération</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

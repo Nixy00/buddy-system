@@ -16,13 +16,70 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SignalementController extends AbstractController
 {
-    #[Route('/signalements', name: 'app_signalement_index', methods: ['GET'])]
-    public function index(SignalementRepository $signalementRepository): Response
+    #[Route('/signalement', name: 'app_signalement_hub', methods: ['GET'])]
+    public function hub(): Response
     {
-        $signalements = $signalementRepository->findBy([], ['dateSignalement' => 'DESC']);
+        return $this->render('signalement/hub.html.twig');
+    }
+
+    #[Route('/signalement/liste', name: 'app_signalement_index', methods: ['GET'])]
+    public function index(Request $request, SignalementRepository $signalementRepository): Response
+    {
+        $statut = $request->query->get('statut');
+        $motif = $request->query->get('motif');
+        $page = $request->query->getInt('page', 1);
+        $limit = 10;
+
+        $qb = $signalementRepository->createQueryBuilder('s');
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $qb->andWhere('s.utilisateur = :user')
+               ->setParameter('user', $this->getUser());
+        }
+
+        if ($statut) {
+            $qb->andWhere('s.statut = :statut')
+               ->setParameter('statut', $statut);
+        }
+        if ($motif) {
+            $qb->andWhere('s.motif LIKE :motif')
+               ->setParameter('motif', $motif.'%');
+        }
+
+        $totalSignalements = count($qb->getQuery()->getResult());
+        $totalPages = ceil($totalSignalements / $limit);
+
+        $qb->orderBy('s.dateSignalement', 'DESC')
+           ->setFirstResult(($page - 1) * $limit)
+           ->setMaxResults($limit);
+
+        $signalements = $qb->getQuery()->getResult();
+
+        $allMotifs = $signalementRepository->createQueryBuilder('s')
+            ->select('s.motif')
+            ->distinct(true)
+            ->getQuery()
+            ->getResult();
+
+        $motifsUniques = [];
+        foreach ($allMotifs as $item) {
+            $m = $item['motif'];
+            if (preg_match('/^(.*) \(.*\)$/', $m, $matches)) {
+                $motifsUniques[] = $matches[1];
+            } else {
+                $motifsUniques[] = $m;
+            }
+        }
+        $motifsUniques = array_unique($motifsUniques);
 
         return $this->render('signalement/index.html.twig', [
             'signalements' => $signalements,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'statuts' => ['EN_ATTENTE', 'EN_COURS', 'TRAITE', 'REJETE'],
+            'motifs' => $motifsUniques,
+            'statut_filtre' => $statut,
+            'motif_filtre' => $motif,
         ]);
     }
 
@@ -101,10 +158,13 @@ class SignalementController extends AbstractController
     #[Route('/signalement/{id}/fermer', name: 'app_signalement_close', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function closeTicket(Signalement $signalement, EntityManagerInterface $entityManager): Response
     {
-        $signalement->setStatut('TRAITE');
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Le ticket a été fermé.');
+        if ($signalement->getStatut() !== 'REJETE') {
+            $signalement->setStatut('TRAITE');
+            $entityManager->flush();
+            $this->addFlash('success', 'Le ticket a été fermé.');
+        } else {
+            $this->addFlash('info', 'Le ticket est déjà rejeté et ne peut être fermé.');
+        }
 
         return $this->redirectToRoute('app_signalement_index');
     }
@@ -116,10 +176,11 @@ class SignalementController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Le ticket a été rouvert.');
+
         return $this->redirectToRoute('app_signalement_show', ['id' => $signalement->getId()]);
     }
 
-    #[Route('/signalement/nouveau/{id}', name: 'app_signalement_new', methods: ['GET', 'POST'])]
+    #[Route('/signalement/nouveau/message/{id}', name: 'app_signalement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Message $message, EntityManagerInterface $entityManager, SignalementRepository $signalementRepository): Response
     {
         $user = $this->getUser();
