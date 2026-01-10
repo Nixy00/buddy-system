@@ -16,7 +16,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SignalementController extends AbstractController
 {
-    #[Route('/signalements', name: 'app_signalement_index', methods: ['GET'])]
+    #[Route('/signalement', name: 'app_signalement_hub', methods: ['GET'])]
+    public function hub(): Response
+    {
+        return $this->render('signalement/hub.html.twig');
+    }
+
+    #[Route('/signalement/liste', name: 'app_signalement_index', methods: ['GET'])]
     public function index(Request $request, SignalementRepository $signalementRepository): Response
     {
         $statut = $request->query->get('statut');
@@ -174,7 +180,7 @@ class SignalementController extends AbstractController
         return $this->redirectToRoute('app_signalement_show', ['id' => $signalement->getId()]);
     }
 
-    #[Route('/signalement/nouveau/{id}', name: 'app_signalement_new', methods: ['GET', 'POST'])]
+    #[Route('/signalement/nouveau/message/{id}', name: 'app_signalement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Message $message, EntityManagerInterface $entityManager, SignalementRepository $signalementRepository): Response
     {
         $user = $this->getUser();
