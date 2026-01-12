@@ -461,6 +461,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    /**
+     * @return Collection<int, Evenement>
+     */
+    public function getEvenementsCrees(): Collection
+    {
+        return $this->evenementsCrees;
+    }
+
     /**
      * identifiant visuel qui représente cet utilisateur.
      *
