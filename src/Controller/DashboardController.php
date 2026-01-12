@@ -45,14 +45,15 @@ class DashboardController extends AbstractController
 
         if (!$user || !$this->isCsrfTokenValid('delete-account', $request->request->get('_token'))) {
             $this->addFlash('danger', 'La suppression du compte a échoué.');
+
             return $this->redirectToRoute('app_dashboard');
         }
 
-        $tokenStorage->setToken(null);
-        $request->getSession()->invalidate();
-
         $entityManager->remove($user);
         $entityManager->flush();
+
+        $tokenStorage->setToken(null);
+        $request->getSession()->invalidate();
 
         $this->addFlash('success', 'Votre compte a été supprimé avec succès.');
 
