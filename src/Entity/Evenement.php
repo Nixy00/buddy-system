@@ -63,7 +63,7 @@ class Evenement
     #[Assert\NotBlank(message: 'Veuillez choisir une catégorie.')]
     private ?string $categorie = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'evenementsCrees')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $createur = null;
 
