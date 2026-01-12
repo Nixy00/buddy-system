@@ -1,8 +1,12 @@
-function initChatbot() {
+window.initChatbot = function() {
     // elements du DOM
     const toggler = document.getElementById('chatbot-toggler');
 
     if (!toggler) return;
+
+    // sécurité
+    if (toggler.dataset.chatbotInitialized === "true") return;
+    toggler.dataset.chatbotInitialized = "true";
 
     const chatWindow = document.getElementById('chatbot-window');
     const closeBtn = document.getElementById('chatbot-close');
@@ -115,8 +119,10 @@ function initChatbot() {
             sendMessage();
         }
     });
-
 }
-
-document.addEventListener('turbo:load', initChatbot);
-document.addEventListener('DOMContentLoaded', initChatbot);
+// activation
+document.addEventListener('DOMContentLoaded', window.initChatbot);
+document.addEventListener('turbo:load', window.initChatbot);
+if (document.getElementById('chatbot-toggler')) {
+    window.initChatbot();
+}
