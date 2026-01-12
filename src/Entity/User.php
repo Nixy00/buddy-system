@@ -470,6 +470,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->evenementsCrees;
     }
 
+    public function addEvenementsCree(Evenement $evenementsCree): static
+    {
+        if (!$this->evenementsCrees->contains($evenementsCree)) {
+            $this->evenementsCrees->add($evenementsCree);
+            $evenementsCree->setCreateur($this);
+        }
+
+        return $this;
+    }
+
     /**
      * identifiant visuel qui représente cet utilisateur.
      *
