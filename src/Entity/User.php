@@ -480,6 +480,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function removeEvenementsCree(Relation $evenementsCree): static
+    {
+        if ($this->relationsRecues->removeElement($evenementsCree)) {
+            // set the owning side to null (unless already changed)
+            if ($evenementsCree->getReceveur() === $this) {
+                $evenementsCree->setReceveur(null);
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * identifiant visuel qui représente cet utilisateur.
      *
