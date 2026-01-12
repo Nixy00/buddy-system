@@ -1,6 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initChatbot() {
     // elements du DOM
     const toggler = document.getElementById('chatbot-toggler');
+
+    if (!toggler) return;
+
     const chatWindow = document.getElementById('chatbot-window');
     const closeBtn = document.getElementById('chatbot-close');
     const inputField = document.getElementById('chatbot-input');
@@ -113,4 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-});
+}
+
+document.addEventListener('turbo:load', initChatbot);
+document.addEventListener('DOMContentLoaded', initChatbot);
