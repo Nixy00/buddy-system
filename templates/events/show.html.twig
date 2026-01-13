@@ -170,6 +170,15 @@
                     </div>
                 {% endif %}
                 {% endif %}
+
+                {# Bouton de signalement #}
+                {% if app.user %}
+                    <div style="margin-top: 1.5rem; text-align: center;">
+                        <a href="{{ path('app_signalement_new_event', {'id': event.id}) }}" class="btn btn--danger-outline" style="font-size: 0.9rem; padding: 0.5rem 1rem; width: 100%;">
+                            <i class="fas fa-flag"></i> Signaler cet événement
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
