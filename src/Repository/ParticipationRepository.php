@@ -16,6 +16,21 @@ class ParticipationRepository extends ServiceEntityRepository
         parent::__construct($registry, Participation::class);
     }
 
+    public function findUpcomingEventsByUser($user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.evenement', 'e')
+            ->where('p.utilisateur = :user')
+            ->andWhere('p.statut = :statut')
+            ->andWhere('e.dateDebut >= :now')
+            ->setParameter('user', $user)
+            ->setParameter('statut', 'INSCRIT')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('e.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Participation[] Returns an array of Participation objects
     //     */
