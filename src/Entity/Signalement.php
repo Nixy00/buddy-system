@@ -131,4 +131,11 @@ class Signalement
         return $this;
     }
 
+
+    public function setReportedEvent(?Evenement $reportedEvent): static
+    {
+        $this->reportedEvent = $reportedEvent;
+
+        return $this;
+    }
 }
