@@ -61,26 +61,13 @@
                         Vous participez à {{ mesParticipations|length }} événement{{ mesParticipations|length > 1 ? 's' : '' }}.
                     {% endif %}
                 </p>
-                <a href="{{ path('app_events') }}" class="card__link"
+                <a href="{{ path('app_dashboard_mes_evenements') }}" class="card__link"
                    style="color: var(--color-accent); text-decoration: none; font-weight: 500;">
-                    Voir les événements →
+                    Voir mes événements →
                 </a>
             </li>
 
         </ul>
-
-        {% if mesParticipations is not empty %}
-            <section class="mes-evenements" style="margin-top: 3rem;">
-                <h2 class="h2" style="margin-bottom: 1.5rem;">📅 Prochains événements</h2>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
-                    {% for participation in mesParticipations %}
-                        {% set evenement = participation.evenement %}
-                        {% include 'events/_event_card.html.twig' with {'event': evenement} %}
-                    {% endfor %}
-                </div>
-            </section>
-        {% endif %}
 
         {# Lien vers la page de confirmation de suppression #}
         <div style="text-align: right; margin-top: 3rem;">

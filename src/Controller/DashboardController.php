@@ -29,6 +29,22 @@ class DashboardController extends AbstractController
         ]);
     }
 
+    #[Route('/dashboard/mes-evenements', name: 'app_dashboard_mes_evenements')]
+    public function mesEvenements(ParticipationRepository $participationRepository): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $mesParticipations = $participationRepository->findUpcomingEventsByUser($user);
+
+        return $this->render('dashboard/mes_evenements.html.twig', [
+            'mesParticipations' => $mesParticipations,
+        ]);
+    }
+
     #[Route('/dashboard/confirm-delete', name: 'app_account_confirm_delete', methods: ['GET'])]
     public function confirmDelete(): Response
     {

@@ -24,7 +24,7 @@ class ParticipationRepository extends ServiceEntityRepository
             ->andWhere('p.statut = :statut')
             ->andWhere('e.dateDebut >= :now')
             ->setParameter('user', $user)
-            ->setParameter('statut', 'confirmee')
+            ->setParameter('statut', 'INSCRIT')
             ->setParameter('now', new \DateTime())
             ->orderBy('e.dateDebut', 'ASC')
             ->getQuery()
