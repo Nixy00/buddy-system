@@ -119,10 +119,16 @@ class Signalement
         return $this;
     }
 
+    public function getReportedUser(): ?User
+    {
+        return $this->reportedUser;
+    }
+
     public function setReportedUser(?User $reportedUser): static
     {
         $this->reportedUser = $reportedUser;
 
         return $this;
     }
+
 }
