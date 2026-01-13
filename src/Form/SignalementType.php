@@ -15,7 +15,7 @@ class SignalementType extends AbstractType
     {
         $builder
             ->add('motif', ChoiceType::class, [
-                'label' => 'Pourquoi signalez-vous ce message ?',
+                'label' => 'Quel est le motif de votre signalement ?',
                 'choices' => [
                     'Contenu inapproprié / Offensant' => 'Contenu inapproprié',
                     'Harcèlement / Intimidation' => 'Harcèlement',

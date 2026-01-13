@@ -4,12 +4,12 @@
 
 {% block main %}
     <h1 class="h1">Trouvez votre Buddy</h1>
-    
+
     <div class="search-container" style="margin-bottom: 32px;">
         <form method="get" class="search-bar" style="display: flex; gap: 12px; margin-bottom: 16px;">
             <div style="flex: 1; position: relative;">
-                <input type="text" name="search" value="{{ app.request.query.get('search', '') }}" 
-                       placeholder="Rechercher un buddy..." 
+                <input type="text" name="search" value="{{ app.request.query.get('search', '') }}"
+                       placeholder="Rechercher un buddy..."
                        style="width: 100%; padding: 12px 16px; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 1rem;">
             </div>
             <button type="submit" class="btn btn--primary">
@@ -17,10 +17,18 @@
             </button>
         </form>
     </div>
-    
+
     <div class="buddies-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
         {% for profil in profils %}
-            <div class="buddy-card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden;">
+            <div class="buddy-card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; position: relative;">
+
+                {# Bouton de signalement en haut à gauche #}
+                {% if app.user and profil.utilisateur and app.user != profil.utilisateur %}
+                    <a href="{{ path('app_signalement_new_buddy', {'id': profil.utilisateur.id}) }}" title="Signaler ce profil" style="position: absolute; top: 10px; left: 10px; z-index: 1; color: #dc3545; font-size: 1.2rem; text-decoration: none; background: rgba(255,255,255,0.7); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                        🚩
+                    </a>
+                {% endif %}
+
                 <div style="height: 120px; background: var(--gray-100); position: relative;">
                     <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--gray-300); position: absolute; bottom: -40px; left: 20px; border: 4px solid white; overflow: hidden; display: flex; align-items: center; justify-content: center;">
                         {% include '_components/_avatar.html.twig' with {'profil': profil} %}

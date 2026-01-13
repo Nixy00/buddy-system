@@ -175,9 +175,18 @@
                     Sur Buddy System depuis le {{ profil.dateCrea|date('d/m/Y') }}
                 </p>
                 {% if profil.utilisateur %}
-                    <p style="margin: 0; opacity: 0.7; font-size: 0.8rem;">
+                    <p style="margin: 0 0 15px; opacity: 0.7; font-size: 0.8rem;">
                         ID Utilisateur: #{{ profil.utilisateur.id }}
                     </p>
+                {% endif %}
+
+                {# Bouton de signalement #}
+                {% if app.user and profil.utilisateur and app.user != profil.utilisateur %}
+                    <div style="margin-top: 10px;">
+                        <a href="{{ path('app_signalement_new_buddy', {'id': profil.utilisateur.id}) }}" class="btn btn--secondary" style="padding: 8px 16px; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid #dc3545; color: #dc3545; font-size: 0.85rem;">
+                            <i class="fas fa-flag"></i> Signaler ce profil
+                        </a>
+                    </div>
                 {% endif %}
             </div>
         </div>

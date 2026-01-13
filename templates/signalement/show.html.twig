@@ -41,27 +41,43 @@
             </div>
         </div>
 
-        {# Message incriminé #}
+        {# Contenu signalé (Message, Utilisateur) #}
         <div class="card" style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200); border-left: 4px solid var(--color-accent);">
-            <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--gray-800);">Message signalé</h2>
-
-            <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
-                <p style="margin: 0; font-size: 1.1rem; line-height: 1.6; color: var(--gray-900);">"{{ signalement.message.contenu }}"</p>
-            </div>
-
-            <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--gray-600);">
-                Envoyé par
-                <strong>
-                    {% if signalement.message.utilisateur and signalement.message.utilisateur.profil %}
-                        <a href="{{ path('app_profil_show', {'id': signalement.message.utilisateur.profil.id}) }}">
-                            {{ signalement.message.utilisateur.profil.prenom }} {{ signalement.message.utilisateur.profil.nom }}
-                        </a>
-                    {% else %}
-                        Utilisateur inconnu
-                    {% endif %}
-                </strong>
-                le {{ signalement.message.dateEnvoi|date('d/m/Y à H:i') }}
-            </div>
+            {% if signalement.message %}
+                <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--gray-800);">Message signalé</h2>
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
+                    <p style="margin: 0; font-size: 1.1rem; line-height: 1.6; color: var(--gray-900);">"{{ signalement.message.contenu }}"</p>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--gray-600);">
+                    Envoyé par
+                    <strong>
+                        {% if signalement.message.utilisateur and signalement.message.utilisateur.profil %}
+                            <a href="{{ path('app_profil_show', {'id': signalement.message.utilisateur.profil.id}) }}">
+                                {{ signalement.message.utilisateur.profil.prenom }} {{ signalement.message.utilisateur.profil.nom }}
+                            </a>
+                        {% else %}
+                            Utilisateur inconnu
+                        {% endif %}
+                    </strong>
+                    le {{ signalement.message.dateEnvoi|date('d/m/Y à H:i') }}
+                </div>
+            {% elseif signalement.reportedUser %}
+                <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--gray-800);">Utilisateur signalé</h2>
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
+                    <p style="margin: 0; font-size: 1.1rem; line-height: 1.6; color: var(--gray-900);">
+                        Profil de :
+                        <strong>
+                            {% if signalement.reportedUser.profil %}
+                                <a href="{{ path('app_profil_show', {'id': signalement.reportedUser.profil.id}) }}">
+                                    {{ signalement.reportedUser.profil.prenom }} {{ signalement.reportedUser.profil.nom }}
+                                </a>
+                            {% else %}
+                                Utilisateur inconnu
+                            {% endif %}
+                        </strong>
+                    </p>
+                </div>
+            {% endif %}
         </div>
 
         {# Réponse de la modération #}
@@ -79,7 +95,7 @@
             <div class="card" style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200);">
                 <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--gray-800);">Traitement (Admin)</h2>
 
-                {% if signalement.statut == 'TRAITE' %}
+                {% if signalement.statut == 'TRAITE' or signalement.statut == 'REJETE' %}
                     <div style="text-align: right;">
                         <form method="post" action="{{ path('app_signalement_reopen', {'id': signalement.id}) }}" style="margin: 0;">
                             <button type="submit" class="btn" style="background-color: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem;">Rouvrir le ticket</button>
