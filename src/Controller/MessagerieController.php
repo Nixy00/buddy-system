@@ -29,14 +29,14 @@ class MessagerieController extends AbstractController
         // On récupère aussi les demandes pour afficher une notification
         $buddyRequests = $relationRepository->findBy([
             'receveur' => $user->getId(),
-            'statut' => 'en_attente'
+            'statut' => 'en_attente',
         ]);
 
         $conversations = $conversationRepository->findConversationsByUser($user);
 
         return $this->render('messagerie/index.html.twig', [
             'conversations' => $conversations,
-            'buddyRequestCount' => count($buddyRequests)
+            'buddyRequestCount' => count($buddyRequests),
         ]);
     }
 
@@ -107,6 +107,7 @@ class MessagerieController extends AbstractController
 
         if ($user === $target) {
             $this->addFlash('warning', 'Vous ne pouvez pas lancer une conversation avec vous-même.');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -124,5 +125,37 @@ class MessagerieController extends AbstractController
         }
 
         return $this->redirectToRoute('app_messagerie_show', ['id' => $conversation->getId()]);
+    }
+
+    #[Route('/{id}/ajax-send', name: 'app_messagerie_ajax_send', methods: ['POST'])]
+    public function sendAjax(Conversation $conversation, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        // vérifier que l'utilisateur participe à la conversation
+        if ($conversation->getInitiateur() !== $user && $conversation->getInterlocuteur() !== $user) {
+            return $this->json(['error' => 'Accès interdit'], 403);
+        }
+
+        $message = new Message();
+        // on utilise le même formulaire pour gérer validation et CSRF
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message->setUtilisateur($user);
+            $message->setConversation($conversation);
+            $message->setDateEnvoi(new \DateTime());
+
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            // on renvoie le html du message créé
+            return $this->render('messagerie/_message.html.twig', [
+                'message' => $message,
+            ]);
+        }
+
+        return $this->json(['error' => 'Formulaire invalide'], 400);
     }
 }
