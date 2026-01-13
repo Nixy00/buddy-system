@@ -83,9 +83,9 @@
                     </div>
 
                     <div style="background: var(--gray-50); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--color-accent);">
-                        <p style="margin: 0; color: var(--gray-800); font-style: italic;">"{{ signalement.message.contenu }}"</p>
-                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--gray-500); display: flex; justify-content: space-between;">
-                            <span>
+                        {% if signalement.message %}
+                            <p style="margin: 0; color: var(--gray-800); font-style: italic;">"{{ signalement.message.contenu }}"</p>
+                            <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--gray-500);">
                                 Auteur du message :
                                 <strong>
                                     {% if signalement.message.utilisateur and signalement.message.utilisateur.profil %}
@@ -94,16 +94,21 @@
                                         Utilisateur inconnu
                                     {% endif %}
                                 </strong>
-                            </span>
-                            <span>
-                                Signalé par :
-                                {% if signalement.utilisateur and signalement.utilisateur.profil %}
-                                    {{ signalement.utilisateur.profil.prenom }} {{ signalement.utilisateur.profil.nom }}
-                                {% else %}
-                                    Utilisateur inconnu
-                                {% endif %}
-                            </span>
-                        </div>
+                            </div>
+                        {% elseif signalement.reportedUser %}
+                            <p style="margin: 0; color: var(--gray-800);">
+                                Signalement du profil de :
+                                <strong>
+                                    {% if signalement.reportedUser.profil %}
+                                        <a href="{{ path('app_profil_show', {'id': signalement.reportedUser.profil.id}) }}">
+                                            {{ signalement.reportedUser.profil.prenom }} {{ signalement.reportedUser.profil.nom }}
+                                        </a>
+                                    {% else %}
+                                        Utilisateur inconnu
+                                    {% endif %}
+                                </strong>
+                            </p>
+                        {% endif %}
                     </div>
 
                     <div style="text-align: right;">
