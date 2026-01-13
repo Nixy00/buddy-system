@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ParticipationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,19 +13,19 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class DashboardController extends AbstractController
 {
     #[Route('/dashboard', name: 'app_dashboard')]
-    public function index(): Response
+    public function index(ParticipationRepository $participationRepository): Response
     {
-        // On récupère l'utilisateur connecté
         $user = $this->getUser();
 
-        // Si pas connecté, on redirige vers la page de connexion
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        // On affiche le dashboard avec les informations de l'utilisateur
+        $mesParticipations = $participationRepository->findUpcomingEventsByUser($user);
+
         return $this->render('dashboard/index.html.twig', [
             'user' => $user,
+            'mesParticipations' => $mesParticipations,
         ]);
     }
 
