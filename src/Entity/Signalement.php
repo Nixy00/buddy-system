@@ -38,6 +38,10 @@ class Signalement
     #[ORM\JoinColumn(nullable: true)]
     private ?User $reportedUser = null;
 
+    #[ORM\ManyToOne(targetEntity: Evenement::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Evenement $reportedEvent = null;
+
     public function getId(): ?int
     {
         return $this->id;
