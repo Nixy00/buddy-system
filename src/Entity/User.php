@@ -89,6 +89,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'receveur', targetEntity: Relation::class, orphanRemoval: true)]
     private Collection $relationsRecues;
 
+    /**
+     * @var Collection<int, Evenement>
+     */
+    #[ORM\OneToMany(mappedBy: 'createur', targetEntity: Evenement::class, orphanRemoval: true)]
+    private Collection $evenementsCrees;
+
     public function __construct()
     {
         $this->possessions = new ArrayCollection();
@@ -100,6 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->signalements = new ArrayCollection();
         $this->relationsEnvoyees = new ArrayCollection();
         $this->relationsRecues = new ArrayCollection();
+        $this->evenementsCrees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -448,6 +455,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($relationsRecue->getReceveur() === $this) {
                 $relationsRecue->setReceveur(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, Evenement>
+     */
+    public function getEvenementsCrees(): Collection
+    {
+        return $this->evenementsCrees;
+    }
+
+    public function addEvenementsCree(Evenement $evenementsCree): static
+    {
+        if (!$this->evenementsCrees->contains($evenementsCree)) {
+            $this->evenementsCrees->add($evenementsCree);
+            $evenementsCree->setCreateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvenementsCree(Relation $evenementsCree): static
+    {
+        if ($this->relationsRecues->removeElement($evenementsCree)) {
+            // set the owning side to null (unless already changed)
+            if ($evenementsCree->getReceveur() === $this) {
+                $evenementsCree->setReceveur(null);
             }
         }
 
