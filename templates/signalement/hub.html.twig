@@ -33,13 +33,13 @@
             <a href="{{ path('app_recherche_buddy') }}" class="btn btn--primary">Rechercher un buddy</a>
         </div>
 
-        {# Carte 3: Signaler un Événement (Désactivé) #}
-        <div class="card" style="background: var(--gray-50); padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200); opacity: 0.6;">
+        {# Carte 3: Signaler un Événement #}
+        <div class="card" style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200);">
             <h2 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--gray-800);">Signaler un Événement</h2>
             <p style="color: var(--gray-600); margin-bottom: 1.5rem;">
-                Si un événement vous semble inapproprié, dangereux ou frauduleux.
+                Pour signaler un événement, cliquez sur le drapeau 🚩 sur la carte de l'événement ou sur le bouton "Signaler cet événement" sur sa page de détail.
             </p>
-            <span class="btn btn--secondary" style="cursor: not-allowed;">Bientôt disponible</span>
+            <a href="{{ path('app_events') }}" class="btn btn--primary">Voir les événements</a>
         </div>
 
     </div>
