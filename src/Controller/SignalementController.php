@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Evenement;
 use App\Entity\Message;
 use App\Entity\Signalement;
 use App\Entity\User;
@@ -293,6 +294,62 @@ class SignalementController extends AbstractController
             'signalement' => $signalement,
             'form' => $form->createView(),
             'buddy' => $buddy,
+        ]);
+    }
+
+    #[Route('/signalement/nouveau/event/{id}', name: 'app_signalement_new_event', methods: ['GET', 'POST'])]
+    public function newEvent(Request $request, Evenement $event, EntityManagerInterface $entityManager, SignalementRepository $signalementRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $existingSignalement = $signalementRepository->findOneBy([
+            'reportedEvent' => $event,
+            'utilisateur' => $user,
+            'statut' => ['EN_ATTENTE', 'EN_COURS']
+        ]);
+
+        if ($existingSignalement) {
+            $this->addFlash('warning', 'Vous avez déjà un signalement en cours pour cet événement.');
+            return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
+        }
+
+        $signalement = new Signalement();
+        $signalement->setReportedEvent($event);
+        $signalement->setUtilisateur($user);
+        $signalement->setDateSignalement(new \DateTime());
+        $signalement->setStatut('EN_ATTENTE');
+
+        $form = $this->createForm(SignalementType::class, $signalement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $details = $form->get('details')->getData();
+
+            if ('Autre' === $signalement->getMotif() && empty(trim((string) $details))) {
+                $this->addFlash('danger', 'Veuillez préciser le motif du signalement dans le champ détails.');
+                $form->get('details')->addError(new FormError('Veuillez préciser le motif.'));
+                $form->addError(new FormError('Le formulaire contient des erreurs.'));
+            } else {
+                if ($details) {
+                    $motifActuel = $signalement->getMotif();
+                    $signalement->setMotif($motifActuel.' ('.$details.')');
+                }
+
+                $entityManager->persist($signalement);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Le signalement a bien été pris en compte.');
+                return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
+            }
+        }
+
+        return $this->render('signalement/new_event.html.twig', [
+            'signalement' => $signalement,
+            'form' => $form->createView(),
+            'event' => $event,
         ]);
     }
 }
