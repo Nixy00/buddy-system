@@ -3,9 +3,9 @@
 {% block title %}Liste des signalements - Buddy System{% endblock %}
 
 {% block main %}
-    <div class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
-        <div class="page-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
-            <div>
+<div class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
+    <div class="page-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+        <div>
             <h1 style="font-size: 2rem; color: var(--gray-900); margin-bottom: 0.5rem;">
                 {% if is_granted('ROLE_ADMIN') %}
                     Signalements
@@ -106,6 +106,15 @@
                                     {% else %}
                                         Utilisateur inconnu
                                     {% endif %}
+                                </strong>
+                            </p>
+                        {% elseif signalement.reportedEvent %}
+                            <p style="margin: 0; color: var(--gray-800);">
+                                Signalement de l'événement :
+                                <strong>
+                                    <a href="{{ path('app_event_show', {'id': signalement.reportedEvent.id}) }}">
+                                        "{{ signalement.reportedEvent.titre }}"
+                                    </a>
                                 </strong>
                             </p>
                         {% endif %}
