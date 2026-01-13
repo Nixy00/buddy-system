@@ -27,12 +27,20 @@ class Signalement
     private ?string $commentaireModeration = null;
 
     #[ORM\ManyToOne(inversedBy: 'signalements')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Message $message = null;
 
     #[ORM\ManyToOne(inversedBy: 'signalements')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $utilisateur = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $reportedUser = null;
+
+    #[ORM\ManyToOne(targetEntity: Evenement::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Evenement $reportedEvent = null;
 
     public function getId(): ?int
     {
@@ -107,6 +115,30 @@ class Signalement
     public function setUtilisateur(?User $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    public function getReportedUser(): ?User
+    {
+        return $this->reportedUser;
+    }
+
+    public function setReportedUser(?User $reportedUser): static
+    {
+        $this->reportedUser = $reportedUser;
+
+        return $this;
+    }
+
+    public function getReportedEvent(): ?Evenement
+    {
+        return $this->reportedEvent;
+    }
+
+    public function setReportedEvent(?Evenement $reportedEvent): static
+    {
+        $this->reportedEvent = $reportedEvent;
 
         return $this;
     }
