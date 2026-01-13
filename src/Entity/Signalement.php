@@ -27,12 +27,16 @@ class Signalement
     private ?string $commentaireModeration = null;
 
     #[ORM\ManyToOne(inversedBy: 'signalements')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Message $message = null;
 
     #[ORM\ManyToOne(inversedBy: 'signalements')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $utilisateur = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $reportedUser = null;
 
     public function getId(): ?int
     {
