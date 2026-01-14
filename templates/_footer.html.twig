@@ -5,13 +5,17 @@
             <div class="brand brand--footer">
                 <span class="brand__name">Buddy System</span>
             </div>
-            <p class="muted">URCA — Université de Reims Champagne-Ardenne</p>
+            <p class="muted">
+                <a href="https://www.univ-reims.fr/accueil/accueil,1,19021.html" target="_blank" rel="noopener noreferrer">
+                    URCA — Université de Reims Champagne-Ardenne
+                </a>
+            </p>
         </div>
         <nav aria-label="Liens utiles">
             <ul class="footer__links">
-                <li><a href="#">CGU</a></li>
-                <li><a href="#">Confidentialité</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="{{ path('app_cgu') }}">CGU</a></li>
+                <li><a href="{{ path('app_confidentialite') }}">Confidentialité</a></li>
+                <li><a href="{{ path('app_contact') }}">Contact</a></li>
             </ul>
         </nav>
     </div>
