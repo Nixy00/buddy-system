@@ -43,7 +43,16 @@
                 <div style="flex-grow: 1;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
                         <h3 style="margin: 0; font-size: 1.1rem;">{{ contact.profil.prenom }} {{ contact.profil.nom }}</h3>
-                        <span class="muted" style="font-size: 0.85rem;">{{ conversation.dateCrea|date('d/m/Y') }}</span>
+                        {% set lastMessage = conversation.messages|last %}
+                        {% set displayDate = lastMessage ? lastMessage.dateEnvoi : conversation.dateCrea %}
+                        <span class="muted" style="font-size: 0.85rem;">
+                            {% if displayDate|date('Y-m-d') == "now"|date('Y-m-d') %}
+                                {{ displayDate|buddyduration }}
+                            {% else %}
+                                {{ displayDate|buddysmartdate }}
+                            {% endif %}
+                        </span>
+
                     </div>
                     <p class="muted" style="margin: 0; font-size: 0.95rem;">Cliquez pour voir les messages...</p>
                 </div>
