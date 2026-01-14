@@ -1,34 +1,34 @@
+// Script pour le menu burger sur mobile
 
-// On attend que la page soit chargée
-document.addEventListener('DOMContentLoaded', function () {
-
-    // On récupère les éléments
+function initBurgerMenu() {
     const burgerBtn = document.getElementById('burger-toggle');
     const mainNav = document.getElementById('main-nav');
 
-    // Si les éléments existent
-    if (burgerBtn && mainNav) {
+    if (!burgerBtn || !mainNav) return;
 
-        // Quand on clique sur le burger
-        burgerBtn.addEventListener('click', function () {
+    // Quand on clique sur le burger
+    burgerBtn.onclick = function () {
+        burgerBtn.classList.toggle('active');
+        mainNav.classList.toggle('open');
 
-            // On ajoute/enlève la classe "active" et "open"
-            burgerBtn.classList.toggle('active');
-            mainNav.classList.toggle('open');
+        const isOpen = mainNav.classList.contains('open');
+        burgerBtn.setAttribute('aria-expanded', String(isOpen));
+    };
 
-            // On met à jour l'attribut aria-expanded pour l'accessibilité
-            const isOpen = mainNav.classList.contains('open');
-            burgerBtn.setAttribute('aria-expanded', isOpen);
-        });
+    // Fermer le menu quand on clique sur un lien
+    const allLinks = mainNav.querySelectorAll('a');
+    allLinks.forEach(function (link) {
+        link.onclick = function (e) {
+            // On laisse le lien fonctionner normalement
+            burgerBtn.classList.remove('active');
+            mainNav.classList.remove('open');
+            burgerBtn.setAttribute('aria-expanded', 'false');
+        };
+    });
+}
 
-        // Quand on clique sur un lien, on ferme le menu
-        const navLinks = mainNav.querySelectorAll('.nav__link');
-        navLinks.forEach(function (link) {
-            link.addEventListener('click', function () {
-                burgerBtn.classList.remove('active');
-                mainNav.classList.remove('open');
-                burgerBtn.setAttribute('aria-expanded', 'false');
-            });
-        });
-    }
-});
+// Initialiser au chargement
+document.addEventListener('DOMContentLoaded', initBurgerMenu);
+
+// Réinitialiser après navigation Turbo
+document.addEventListener('turbo:load', initBurgerMenu);
