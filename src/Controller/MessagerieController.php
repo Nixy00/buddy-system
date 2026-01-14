@@ -71,6 +71,22 @@ class MessagerieController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/archive', name: 'app_conversation_archive')]
+    public function archiveConversation(Conversation $conversation, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if ($conversation->getInitiateur() !== $user && $conversation->getInterlocuteur() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $conversation->addArchivePar($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Conversation archivée.');
+
+        return $this->redirectToRoute('app_messagerie');
+    }
+
     #[Route('/{id}', name: 'app_messagerie_show', requirements: ['id' => '\d+'])]
     public function show(Conversation $conversation, Request $request, EntityManagerInterface $entityManager): Response
     {
