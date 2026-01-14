@@ -42,6 +42,9 @@ class Message
     #[ORM\Column(nullable: true)]
     private ?\DateTime $dateModif = null;
 
+    #[ORM\Column]
+    private ?bool $estSupprime = null;
+
     public function __construct()
     {
         $this->signalements = new ArrayCollection();
@@ -154,5 +157,15 @@ class Message
         return $this;
     }
 
+    public function isEstSupprime(): ?bool
+    {
+        return $this->estSupprime;
+    }
 
+    public function setEstSupprime(bool $estSupprime): static
+    {
+        $this->estSupprime = $estSupprime;
+
+        return $this;
+    }
 }
