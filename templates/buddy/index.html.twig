@@ -90,6 +90,31 @@
                 </div>
             {% endfor %}
         </div>
+
+        <!-- Pagination -->
+        {% if totalPages > 1 %}
+            <div class="pagination">
+                {% if currentPage > 1 %}
+                    <a href="{{ path('app_recherche_buddy', {page: currentPage - 1, search: search_filtre, langues: langues_filtre|first, disponibilites: disponibilites_filtre|first}) }}" class="btn btn--ghost">&laquo; Précédent</a>
+                {% else %}
+                    <span class="btn btn--ghost" style="opacity: 0.5; pointer-events: none;">&laquo; Précédent</span>
+                {% endif %}
+
+                {% for page in 1..totalPages %}
+                    {% if page == currentPage %}
+                        <a href="#" class="btn btn--primary" style="pointer-events: none;">{{ page }}</a>
+                    {% else %}
+                        <a href="{{ path('app_recherche_buddy', {page: page, search: search_filtre, langues: langues_filtre|first, disponibilites: disponibilites_filtre|first}) }}" class="btn btn--ghost">{{ page }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if currentPage < totalPages %}
+                    <a href="{{ path('app_recherche_buddy', {page: currentPage + 1, search: search_filtre, langues: langues_filtre|first, disponibilites: disponibilites_filtre|first}) }}" class="btn btn--ghost">Suivant &raquo;</a>
+                {% else %}
+                    <span class="btn btn--ghost" style="opacity: 0.5; pointer-events: none;">Suivant &raquo;</span>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 
