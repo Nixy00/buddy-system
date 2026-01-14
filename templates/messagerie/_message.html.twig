@@ -7,7 +7,7 @@
 
     {# 1. AJOUT : BOUTON POUBELLE #}
     {# On le place AVANT la bulle pour qu'il s'affiche à sa GAUCHE #}
-    {% if isMe and not message.estSupprime %}
+    {% if isMe and not message.estSupprime and not (isArchived|default(false)) %}
         <a href="{{ path('app_message_delete', {'id': message.id}) }}"
            onclick="return confirm('Êtes-vous sur de vouloir supprimer ce message ?');"
            title="Supprimer"

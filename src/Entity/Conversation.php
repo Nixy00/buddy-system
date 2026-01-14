@@ -35,9 +35,25 @@ class Conversation
     #[ORM\OneToMany(mappedBy: 'conversation', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'conversationsSupprimees')]
+    #[ORM\JoinTable(name: 'conversation_suppressions')]
+    private Collection $supprimePar;
+
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'conversationsArchivees')]
+    #[ORM\JoinTable(name: 'conversation_archives')]
+    private Collection $archivePar;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->supprimePar = new ArrayCollection();
+        $this->archivePar = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +135,54 @@ class Conversation
                 $message->setConversation(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getSupprimePar(): Collection
+    {
+        return $this->supprimePar;
+    }
+
+    public function addSupprimePar(User $supprimePar): static
+    {
+        if (!$this->supprimePar->contains($supprimePar)) {
+            $this->supprimePar->add($supprimePar);
+        }
+
+        return $this;
+    }
+
+    public function removeSupprimePar(User $supprimePar): static
+    {
+        $this->supprimePar->removeElement($supprimePar);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getArchivePar(): Collection
+    {
+        return $this->archivePar;
+    }
+
+    public function addArchivePar(User $archivePar): static
+    {
+        if (!$this->archivePar->contains($archivePar)) {
+            $this->archivePar->add($archivePar);
+        }
+
+        return $this;
+    }
+
+    public function removeArchivePar(User $archivePar): static
+    {
+        $this->archivePar->removeElement($archivePar);
 
         return $this;
     }

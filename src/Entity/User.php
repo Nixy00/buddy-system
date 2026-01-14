@@ -95,6 +95,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'createur', targetEntity: Evenement::class, orphanRemoval: true)]
     private Collection $evenementsCrees;
 
+    /**
+     * @var Collection<int, Conversation>
+     */
+    #[ORM\ManyToMany(targetEntity: Conversation::class, mappedBy: 'supprimePar')]
+    private Collection $conversationsSupprimees;
+
+    /**
+     * @var Collection<int, Conversation>
+     */
+    #[ORM\ManyToMany(targetEntity: Conversation::class, mappedBy: 'archivePar')]
+    private Collection $conversationsArchivees;
+
     public function __construct()
     {
         $this->possessions = new ArrayCollection();
@@ -107,6 +119,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->relationsEnvoyees = new ArrayCollection();
         $this->relationsRecues = new ArrayCollection();
         $this->evenementsCrees = new ArrayCollection();
+        $this->conversationsSupprimees = new ArrayCollection();
+        $this->conversationsArchivees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -527,5 +541,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // permet de nettoyer des données sensibles temporaires si nécessaire pour la suite
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversationsSupprimees(): Collection
+    {
+        return $this->conversationsSupprimees;
+    }
+
+    public function addConversationsSupprimee(Conversation $conversationsSupprimee): static
+    {
+        if (!$this->conversationsSupprimees->contains($conversationsSupprimee)) {
+            $this->conversationsSupprimees->add($conversationsSupprimee);
+            $conversationsSupprimee->addSupprimePar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversationsSupprimee(Conversation $conversationsSupprimee): static
+    {
+        if ($this->conversationsSupprimees->removeElement($conversationsSupprimee)) {
+            $conversationsSupprimee->removeSupprimePar($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversationsArchivees(): Collection
+    {
+        return $this->conversationsArchivees;
+    }
+
+    public function addConversationsArchivee(Conversation $conversationsArchivee): static
+    {
+        if (!$this->conversationsArchivees->contains($conversationsArchivee)) {
+            $this->conversationsArchivees->add($conversationsArchivee);
+            $conversationsArchivee->addArchivePar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversationsArchivee(Conversation $conversationsArchivee): static
+    {
+        if ($this->conversationsArchivees->removeElement($conversationsArchivee)) {
+            $conversationsArchivee->removeArchivePar($this);
+        }
+
+        return $this;
     }
 }

@@ -58,6 +58,65 @@ class MessagerieController extends AbstractController
         ]);
     }
 
+    #[Route('/archives', name: 'app_messagerie_archives')]
+    public function archives(ConversationRepository $conversationRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('messagerie/archives.html.twig', [
+            'conversations' => $conversationRepository->findArchivedConversationsByUser($user),
+        ]);
+    }
+
+    #[Route('/{id}/archive', name: 'app_conversation_archive')]
+    public function archiveConversation(Conversation $conversation, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if ($conversation->getInitiateur() !== $user && $conversation->getInterlocuteur() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $conversation->addArchivePar($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Conversation archivée.');
+
+        return $this->redirectToRoute('app_messagerie');
+    }
+
+    #[Route('/{id}/unarchive', name: 'app_conversation_unarchive')]
+    public function unarchiveConversation(Conversation $conversation, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if ($conversation->getInitiateur() !== $user && $conversation->getInterlocuteur() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $conversation->removeArchivePar($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Conversation désarchivée.');
+        return $this->redirectToRoute('app_messagerie_archives');
+    }
+
+    #[Route('/{id}/delete-conversation', name: 'app_conversation_delete')]
+    public function deleteConversation(Conversation $conversation, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if ($conversation->getInitiateur() !== $user && $conversation->getInterlocuteur() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $conversation->addSupprimePar($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Conversation supprimée.');
+        return $this->redirectToRoute('app_messagerie');
+    }
+
     #[Route('/{id}', name: 'app_messagerie_show', requirements: ['id' => '\d+'])]
     public function show(Conversation $conversation, Request $request, EntityManagerInterface $entityManager): Response
     {
