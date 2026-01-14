@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de Confidentialité{% endblock %}
+
+{% block main %}
+<div class="legal-page">
+    <h1>Politique de Confidentialité</h1>
+    
+    <section>
+        <h2>1. Données collectées</h2>
+        <p>Dans le cadre de l'utilisation de Buddy System, nous collectons les données suivantes :</p>
+        <ul>
+            <li>Nom, prénom et adresse email</li>
+            <li>Informations de profil (pays, langues, centres d'intérêt)</li>
+            <li>Données de connexion (login, mot de passe haché)</li>
+            <li>Messages et participations aux événements</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>2. Utilisation des données</h2>
+        <p>Vos données personnelles sont utilisées pour :</p>
+        <ul>
+            <li>Permettre la mise en relation avec d'autres étudiants</li>
+            <li>Gérer votre compte utilisateur</li>
+            <li>Vous permettre de participer aux événements</li>
+            <li>Améliorer le fonctionnement de la plateforme</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>3. Sécurité des données</h2>
+        <p>Nous mettons en œuvre les mesures techniques appropriées pour protéger vos données personnelles. Les mots de passe sont stockés de manière sécurisée (hashage).</p>
+    </section>
+
+    <section>
+        <h2>4. Vos droits</h2>
+        <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+        <ul>
+            <li>Droit d'accès à vos données</li>
+            <li>Droit de rectification</li>
+            <li>Droit à l'effacement (suppression de compte)</li>
+            <li>Droit d'opposition</li>
+        </ul>
+        <p>Pour exercer ces droits, <a href="{{ path('app_contact') }}">contactez-nous</a>.</p>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conditions Générales d'Utilisation{% endblock %}
+
+{% block main %}
+<div class="legal-page">
+    <h1>Conditions Générales d'Utilisation</h1>
+    
+    <section>
+        <h2>1. Objet</h2>
+        <p>Buddy System est une plateforme développée dans le cadre du projet SAÉ 3.01 visant à faciliter l'intégration des étudiants internationaux à l'URCA.</p>
+    </section>
+
+    <section>
+        <h2>2. Acceptation des CGU</h2>
+        <p>L'utilisation de la plateforme implique l'acceptation pleine et entière des présentes conditions générales d'utilisation.</p>
+    </section>
+
+    <section>
+        <h2>3. Utilisation de la plateforme</h2>
+        <p>La plateforme est réservée aux étudiants de l'URCA. Chaque utilisateur s'engage à :</p>
+        <ul>
+            <li>Fournir des informations exactes lors de l'inscription</li>
+            <li>Respecter les autres utilisateurs</li>
+            <li>Ne pas publier de contenu inapproprié</li>
+            <li>Utiliser la plateforme conformément à sa finalité</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>4. Propriété intellectuelle</h2>
+        <p>Ce projet a été réalisé par des étudiants de l'IUT de Reims dans le cadre de leur formation.</p>
+    </section>
+
+    <section>
+        <h2>5. Contact</h2>
+        <p>Pour toute question concernant ces CGU, veuillez nous <a href="{{ path('app_contact') }}">contacter</a>.</p>
+    </section>
+</div>
+{% endblock %}
