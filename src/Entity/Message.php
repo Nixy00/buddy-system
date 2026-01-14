@@ -43,7 +43,7 @@ class Message
     private ?\DateTime $dateModif = null;
 
     #[ORM\Column]
-    private ?bool $estSupprime = null;
+    private ?bool $estSupprime = false;
 
     public function __construct()
     {
