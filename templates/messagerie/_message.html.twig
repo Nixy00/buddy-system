@@ -11,9 +11,22 @@
         position: relative;
         ">
         <p style="margin: 0; line-height: 1.4;">{{ message.contenu|nl2br }}</p>
-        <small style="display: block; margin-top: 0.25rem; font-size: 0.7rem; opacity: 0.8; text-align: right;">
-            {{ message.dateEnvoi|buddyduration }}
-        </small>
+        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 0.25rem;">
+            <small style="font-size: 0.7rem; opacity: 0.8;">
+                {{ message.dateEnvoi|buddyduration }}
+            </small>
+
+            {# statut de lecture #}
+            {% if isMe %}
+                <span style="font-size: 0.7rem; opacity: 0.9;" title="{{ message.dateLecture ? 'Lu le ' ~ message.dateLecture|date('d/m/Y H:i') : 'Envoyé' }}">
+                    {% if message.dateLecture %}
+                        <i class="fas fa-check-double"></i>
+                    {% else %}
+                        <i class="fas fa-check"></i>
+                    {% endif %}
+                </span>
+            {% endif %}
+        </div>
     </div>
 
     {% if not isMe %}
