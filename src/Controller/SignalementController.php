@@ -62,6 +62,8 @@ class SignalementController extends AbstractController
                 $qb->andWhere('s.reportedUser IS NOT NULL');
             } elseif ('event' === $type) {
                 $qb->andWhere('s.reportedEvent IS NOT NULL');
+            } elseif ('autre' === $type) {
+                $qb->andWhere('s.motif LIKE :autre')->setParameter('autre', 'Autre%');
             }
         }
 
@@ -96,6 +98,7 @@ class SignalementController extends AbstractController
             'totalPages' => $totalPages,
             'currentPage' => $page,
             'statuts' => ['EN_ATTENTE', 'EN_COURS', 'TRAITE', 'REJETE'],
+            'types' => ['message', 'buddy', 'event', 'autre'],
             'motifs' => $motifsUniques,
             'statut_filtre' => $statut,
             'motif_filtre' => $motif,
