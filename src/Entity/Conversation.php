@@ -39,14 +39,19 @@ class Conversation
      * @var Collection<int, User>
      */
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'conversationsSupprimees')]
-    #[ORM\JoinTable(name: 'conversation_suppressions')]
     private Collection $supprimePar;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'conversationsArchivees')]
+    private Collection $archivePar;
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
         $this->supprimePar = new ArrayCollection();
+        $this->archivePar = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,5 +161,27 @@ class Conversation
         return $this;
     }
 
+    /**
+     * @return Collection<int, User>
+     */
+    public function getArchivePar(): Collection
+    {
+        return $this->archivePar;
+    }
 
+    public function addArchivePar(User $archivePar): static
+    {
+        if (!$this->archivePar->contains($archivePar)) {
+            $this->archivePar->add($archivePar);
+        }
+
+        return $this;
+    }
+
+    public function removeArchivePar(User $archivePar): static
+    {
+        $this->archivePar->removeElement($archivePar);
+
+        return $this;
+    }
 }

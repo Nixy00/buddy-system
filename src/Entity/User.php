@@ -101,6 +101,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Conversation::class, mappedBy: 'supprimePar')]
     private Collection $conversationsSupprimees;
 
+    /**
+     * @var Collection<int, Conversation>
+     */
+    #[ORM\ManyToMany(targetEntity: Conversation::class, mappedBy: 'archivePar')]
+    private Collection $conversationsArchivees;
+
     public function __construct()
     {
         $this->possessions = new ArrayCollection();
@@ -114,6 +120,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->relationsRecues = new ArrayCollection();
         $this->evenementsCrees = new ArrayCollection();
         $this->conversationsSupprimees = new ArrayCollection();
+        $this->conversationsArchivees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -563,4 +570,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversationsArchivees(): Collection
+    {
+        return $this->conversationsArchivees;
+    }
+
+    public function addConversationsArchivee(Conversation $conversationsArchivee): static
+    {
+        if (!$this->conversationsArchivees->contains($conversationsArchivee)) {
+            $this->conversationsArchivees->add($conversationsArchivee);
+            $conversationsArchivee->addArchivePar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversationsArchivee(Conversation $conversationsArchivee): static
+    {
+        if ($this->conversationsArchivees->removeElement($conversationsArchivee)) {
+            $conversationsArchivee->removeArchivePar($this);
+        }
+
+        return $this;
+    }
 }
