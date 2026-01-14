@@ -20,6 +20,7 @@ class ConversationRepository extends ServiceEntityRepository
 
     /**
      * Récupère les conversations d'un utilisateur triées par date de création récente.
+     *
      * @return Conversation[]
      */
     public function findConversationsByUser(User $user): array
@@ -35,7 +36,23 @@ class ConversationRepository extends ServiceEntityRepository
     }
 
     /**
+     * Récupère les conversations ARCHIVÉES (et pas supprimées).
+     */
+    public function findArchivedConversationsByUser(User $user): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.initiateur = :user OR c.interlocuteur = :user')
+            ->andWhere(':user NOT MEMBER OF c.supprimePar')
+            ->andWhere(':user MEMBER OF c.archivePar')
+            ->setParameter('user', $user)
+            ->orderBy('c.dateCrea', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Trouve une conversation existante entre deux utilisateurs.
+     *
      * @throws NonUniqueResultException
      */
     public function findConversationBetween(User $user1, User $user2): ?Conversation
