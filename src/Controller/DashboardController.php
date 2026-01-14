@@ -38,7 +38,7 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $mesParticipations = $participationRepository->findUpcomingEventsByUser($user);
+        $mesParticipations = $participationRepository->findBy(['utilisateur' => $user]);
 
         return $this->render('dashboard/mes_evenements.html.twig', [
             'mesParticipations' => $mesParticipations,
