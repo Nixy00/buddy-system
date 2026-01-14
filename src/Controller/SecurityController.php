@@ -51,7 +51,7 @@ class SecurityController extends AbstractController
             }
             $existingSignalement = $signalementRepository->findOneBy([
                 'reportedUser' => $user,
-                'statut' => 'EN_ATTENTE',
+                'statut' => ['EN_ATTENTE', 'EN_COURS'],
                 'motif' => 'Autre (Mot de passe oublié)',
             ]);
 
