@@ -39,6 +39,12 @@ class Message
     #[ORM\OneToMany(mappedBy: 'message', targetEntity: Signalement::class, orphanRemoval: true)]
     private Collection $signalements;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $dateModif = null;
+
+    #[ORM\Column]
+    private ?bool $estSupprime = false;
+
     public function __construct()
     {
         $this->signalements = new ArrayCollection();
@@ -135,6 +141,30 @@ class Message
                 $signalement->setMessage(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateModif(): ?\DateTime
+    {
+        return $this->dateModif;
+    }
+
+    public function setDateModif(?\DateTime $dateModif): static
+    {
+        $this->dateModif = $dateModif;
+
+        return $this;
+    }
+
+    public function isEstSupprime(): ?bool
+    {
+        return $this->estSupprime;
+    }
+
+    public function setEstSupprime(bool $estSupprime): static
+    {
+        $this->estSupprime = $estSupprime;
 
         return $this;
     }

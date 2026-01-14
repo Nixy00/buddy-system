@@ -70,6 +70,15 @@ class MessagerieController extends AbstractController
             throw $this->createAccessDeniedException('Vous n\'avez pas accès à cette conversation.');
         }
 
+        foreach ($conversation->getMessages() as $msg) {
+            // si le message n'est pas de moi et n'a pas encore été lu
+            if ($msg->getUtilisateur() !== $user && null === $msg->getDateLecture()) {
+                $msg->setDateLecture(new \DateTime());
+                $entityManager->persist($msg);
+            }
+        }
+        $entityManager->flush();
+
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
@@ -157,5 +166,20 @@ class MessagerieController extends AbstractController
         }
 
         return $this->json(['error' => 'Formulaire invalide'], 400);
+    }
+
+    #[Route('/messagerie/message/{id}/delete', name: 'app_message_delete')]
+    public function delete(Message $message, EntityManagerInterface $entityManager): Response
+    {
+        // vérifier que c'est bien MON message
+        if ($message->getUtilisateur() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas supprimer ce message.');
+        }
+
+        // on ne supprime pas, on marque comme supprimé
+        $message->setEstSupprime(true);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_messagerie_show', ['id' => $message->getConversation()->getId()]);
     }
 }

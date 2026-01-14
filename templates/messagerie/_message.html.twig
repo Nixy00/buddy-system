@@ -1,22 +1,55 @@
 {% set isMe = (message.utilisateur == app.user) %}
 
+{% set bubbleBg = (isMe and not message.estSupprime) ? 'var(--color-accent)' : 'var(--gray-100)' %}
+{% set bubbleColor = (isMe and not message.estSupprime) ? 'white' : 'var(--gray-900)' %}
+
 <div class="message-wrapper" style="display: flex; justify-content: {{ isMe ? 'flex-end' : 'flex-start' }}; align-items: flex-end; gap: 8px;">
+
+    {# 1. AJOUT : BOUTON POUBELLE #}
+    {# On le place AVANT la bulle pour qu'il s'affiche à sa GAUCHE #}
+    {% if isMe and not message.estSupprime %}
+        <a href="{{ path('app_message_delete', {'id': message.id}) }}"
+           onclick="return confirm('Êtes-vous sur de vouloir supprimer ce message ?');"
+           title="Supprimer"
+           style="color: #adb5bd; padding-bottom: 12px; font-size: 0.85rem; transition: color 0.2s;">
+            <i class="fas fa-trash"></i>
+        </a>
+    {% endif %}
+
     <div class="message-bubble" style="
         max-width: 70%;
         padding: 0.75rem 1rem;
         border-radius: 1rem;
-        background-color: {{ isMe ? 'var(--color-accent)' : 'var(--gray-100)' }};
-        color: {{ isMe ? 'white' : 'var(--gray-900)' }};
+        background-color: {{ bubbleBg }};
+        color: {{ bubbleColor }};
         border-bottom-{{ isMe ? 'right' : 'left' }}-radius: 0.25rem;
         position: relative;
         ">
-        <p style="margin: 0; line-height: 1.4;">{{ message.contenu|nl2br }}</p>
-        <small style="display: block; margin-top: 0.25rem; font-size: 0.7rem; opacity: 0.8; text-align: right;">
-            {{ message.dateEnvoi|buddyduration }}
-        </small>
+
+        {% if message.estSupprime %}
+            <p style="margin: 0; font-style: italic; opacity: 0.6;">🚫 Message supprimé</p>
+        {% else %}
+            <p style="margin: 0; line-height: 1.4;">{{ message.contenu|nl2br }}</p>
+            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 0.25rem;">
+                <small style="font-size: 0.7rem; opacity: 0.8;">
+                    {{ message.dateEnvoi|buddyduration }}
+                </small>
+
+                {# statut de lecture #}
+                {% if isMe %}
+                    <span style="font-size: 0.7rem; font-weight: bold; opacity: 1; display: flex; align-items: center; gap: 4px;" title="{{ message.dateLecture ? 'Lu le ' ~ message.dateLecture|date('d/m/Y H:i') : 'En attente de lecture' }}">
+                        {% if message.dateLecture %}
+                            <i class="fas fa-check-double"></i> Vu
+                        {% else %}
+                            <i class="fas fa-check"></i> Envoyé
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 
-    {% if not isMe %}
+    {% if not isMe and not message.estSupprime %}
         <a href="{{ path('app_signalement_new', {'id': message.id}) }}"
            title="Signaler ce message"
            style="color: #dc3545 !important; font-size: 1rem; padding: 5px; text-decoration: none !important; display: inline-block;">
@@ -25,3 +58,8 @@
     {% endif %}
 
 </div>
+
+{# css pour rendre la poubelle rouge au survol #}
+<style>
+    .message-wrapper a .fa-trash:hover { color: #dc3545; cursor: pointer; }
+</style>
