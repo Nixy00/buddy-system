@@ -167,4 +167,28 @@ class MessagerieController extends AbstractController
 
         return $this->json(['error' => 'Formulaire invalide'], 400);
     }
+
+    #[Route('/messagerie/message/{id}/edit', name: 'app_message_edit')]
+    public function edit(Request $request, Message $message, EntityManagerInterface $entityManager): Response
+    {
+        // vérifier que c'est bien MON message
+        if ($message->getUtilisateur() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas modifier ce message.');
+        }
+
+        // création du formulaire
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message->setDateModif(new \DateTime());
+            $entityManager->flush();
+            return $this->redirectToRoute('app_messagerie_show', ['id' => $message->getConversation()->getId()]);
+        }
+
+        return $this->render('messagerie/edit.html.twig', [
+            'form' => $form->createView(),
+            'message' => $message,
+        ]);
+    }
 }
