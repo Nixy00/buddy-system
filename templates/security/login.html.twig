@@ -49,4 +49,22 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const img = this.querySelector('img');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    img.src = "{{ asset('images/eye-password-see-view.svg') }}";
+                } else {
+                    input.type = 'password';
+                    img.src = "{{ asset('images/eye-key-look-password-security-see.svg') }}";
+                }
+            });
+        });
+    </script>
 {% endblock %}
