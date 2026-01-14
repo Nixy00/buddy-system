@@ -183,6 +183,7 @@ class MessagerieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $message->setDateModif(new \DateTime());
             $entityManager->flush();
+
             return $this->redirectToRoute('app_messagerie_show', ['id' => $message->getConversation()->getId()]);
         }
 
@@ -190,5 +191,20 @@ class MessagerieController extends AbstractController
             'form' => $form->createView(),
             'message' => $message,
         ]);
+    }
+
+    #[Route('/messagerie/message/{id}/delete', name: 'app_message_delete')]
+    public function delete(Message $message, EntityManagerInterface $entityManager): Response
+    {
+        // vérifier que c'est bien MON message
+        if ($message->getUtilisateur() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas supprimer ce message.');
+        }
+
+        // on ne supprime pas, on marque comme supprimé
+        $message->setEstSupprime(true);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_messagerie_show', ['id' => $message->getConversation()->getId()]);
     }
 }
