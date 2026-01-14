@@ -70,6 +70,15 @@ class MessagerieController extends AbstractController
             throw $this->createAccessDeniedException('Vous n\'avez pas accès à cette conversation.');
         }
 
+        foreach ($conversation->getMessages() as $msg) {
+            // si le message n'est pas de moi et n'a pas encore été lu
+            if ($msg->getUtilisateur() !== $user && null === $msg->getDateLecture()) {
+                $msg->setDateLecture(new \DateTime());
+                $entityManager->persist($msg);
+            }
+        }
+        $entityManager->flush();
+
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
