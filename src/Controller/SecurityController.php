@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Signalement;
+use App\Repository\SignalementRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +35,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/mot-de-passe-oublie', name: 'app_forgot_password', methods: ['GET', 'POST'])]
-    public function forgotPassword(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function forgotPassword(Request $request, UserRepository $userRepository, SignalementRepository $signalementRepository, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
             $email = $request->request->get('email');
@@ -47,22 +48,32 @@ class SecurityController extends AbstractController
                 $this->addFlash('danger', 'Aucun compte trouvé avec cet email.');
 
                 return $this->redirectToRoute('app_forgot_password');
-            } else {
-                $signalement = new Signalement();
-                $signalement->setUtilisateur($user);
-                $signalement->setDateSignalement(new \DateTime());
-                $signalement->setStatut('EN_ATTENTE');
-                $signalement->setMotif('Autre (Mot de passe oublié)');
-
-                $signalement->setReportedUser($user);
-
-                $entityManager->persist($signalement);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Votre demande a été envoyée aux administrateurs. Ils vous contacteront sur votre e-mail étudiant prochainement.');
-
-                return $this->redirectToRoute('app_login');
             }
+            $existingSignalement = $signalementRepository->findOneBy([
+                'reportedUser' => $user,
+                'statut' => 'EN_ATTENTE',
+                'motif' => 'Autre (Mot de passe oublié)',
+            ]);
+
+            if ($existingSignalement) {
+                $this->addFlash('warning', 'Une demande de réinitialisation est déjà en cours pour ce compte.');
+
+                return $this->redirectToRoute('app_forgot_password');
+            }
+
+            $signalement = new Signalement();
+            $signalement->setUtilisateur($user);
+            $signalement->setDateSignalement(new \DateTime());
+            $signalement->setStatut('EN_ATTENTE');
+            $signalement->setMotif('Autre (Mot de passe oublié)');
+            $signalement->setReportedUser($user);
+
+            $entityManager->persist($signalement);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre demande a été envoyée aux administrateurs. Ils vous contacteront prochainement.');
+
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('security/forgot_password.html.twig');
