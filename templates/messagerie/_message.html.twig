@@ -18,11 +18,11 @@
 
             {# statut de lecture #}
             {% if isMe %}
-                <span style="font-size: 0.7rem; opacity: 0.9;" title="{{ message.dateLecture ? 'Lu le ' ~ message.dateLecture|date('d/m/Y H:i') : 'Envoyé' }}">
+                <span style="font-size: 0.7rem; font-weight: bold; opacity: 1; display: flex; align-items: center; gap: 4px;" title="{{ message.dateLecture ? 'Lu le ' ~ message.dateLecture|date('d/m/Y H:i') : 'En attente de lecture' }}">
                     {% if message.dateLecture %}
-                        <i class="fas fa-check-double"></i>
+                        <i class="fas fa-check-double"></i> Vu
                     {% else %}
-                        <i class="fas fa-check"></i>
+                        <i class="fas fa-check"></i> Envoyé
                     {% endif %}
                 </span>
             {% endif %}
