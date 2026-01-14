@@ -24,6 +24,12 @@ class SignalementController extends AbstractController
         return $this->render('signalement/hub.html.twig');
     }
 
+    #[Route('/signalement/voir', name: 'app_signalement_hub_view', methods: ['GET'])]
+    public function hubView(): Response
+    {
+        return $this->render('signalement/hub_view.html.twig');
+    }
+
     #[Route('/signalement/liste', name: 'app_signalement_index', methods: ['GET'])]
     public function index(Request $request, SignalementRepository $signalementRepository): Response
     {
