@@ -18,6 +18,7 @@ class EventController extends AbstractController
 {
     #[Route('/evenements', name: 'app_events')]
     public function index(
+        Request $request,
         EvenementRepository $evenementRepository,
         #[MapQueryParameter] string $statut = '',
         #[MapQueryParameter] string $category = '',
@@ -71,8 +72,26 @@ class EventController extends AbstractController
             return $a['date_debut'] <=> $b['date_debut'];
         });
 
+        // Pagination : 15 événements par page
+        $itemsPerPage = 15;
+        $currentPage = max(1, $request->query->getInt('page', 1));
+        $totalItems = count($events);
+        $totalPages = ceil($totalItems / $itemsPerPage);
+
+        // Vérifier que la page demandée est valide
+        if ($currentPage > $totalPages && $totalPages > 0) {
+            $currentPage = $totalPages;
+        }
+
+        // Extraire les événements de la page actuelle
+        $startIndex = ($currentPage - 1) * $itemsPerPage;
+        $pagedEvents = array_slice($events, $startIndex, $itemsPerPage);
+
         return $this->render('events/index.html.twig', [
-            'events' => $events,
+            'events' => $pagedEvents,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+            'totalItems' => $totalItems,
             'statut_filtre' => $statut,
             'category_filtre' => $category,
             'search_filtre' => $search,

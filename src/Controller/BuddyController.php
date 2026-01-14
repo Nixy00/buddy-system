@@ -31,13 +31,31 @@ final class BuddyController extends AbstractController
 
         $profils = $profilRepository->searchWithFilters($search, $langues, $disponibilites);
 
+        // Pagination : 15 buddies par page
+        $itemsPerPage = 15;
+        $currentPage = max(1, $request->query->getInt('page', 1));
+        $totalItems = count($profils);
+        $totalPages = ceil($totalItems / $itemsPerPage);
+
+        // Vérifier que la page demandée est valide
+        if ($currentPage > $totalPages && $totalPages > 0) {
+            $currentPage = $totalPages;
+        }
+
+        // Extraire les buddies de la page actuelle
+        $startIndex = ($currentPage - 1) * $itemsPerPage;
+        $pagedProfils = array_slice($profils, $startIndex, $itemsPerPage);
+
         return $this->render('buddy/index.html.twig', [
-            'profils' => $profils,
+            'profils' => $pagedProfils,
             'search_filtre' => $search,
             'langues_filtre' => $langues,
             'disponibilites_filtre' => $disponibilites,
             'all_langues' => $allLangues,
             'all_disponibilites' => $allDisponibilites,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+            'totalItems' => $totalItems,
         ]);
     }
 }
