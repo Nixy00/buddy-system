@@ -272,22 +272,19 @@ class SignalementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $details = $form->get('details')->getData();
 
-            if ('Autre' === $signalement->getMotif() && empty(trim((string) $details))) {
-                $this->addFlash('danger', 'Veuillez préciser le motif du signalement dans le champ détails.');
-                $form->get('details')->addError(new FormError('Veuillez préciser le motif.'));
-                $form->addError(new FormError('Le formulaire contient des erreurs.'));
-            } else {
-                if ($details) {
-                    $motifActuel = $signalement->getMotif();
-                    $signalement->setMotif($motifActuel.' ('.$details.')');
-                }
-
-                $entityManager->persist($signalement);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Le signalement a bien été pris en compte.');
-                return $this->redirectToRoute('app_profil_show', ['id' => $buddy->getProfil()->getId()]);
+            if (empty(trim((string) $details))) {
+                $this->addFlash('warning', 'Veuillez fournir des détails pour expliquer votre signalement.');
+                return $this->redirectToRoute('app_signalement_new_buddy', ['id' => $buddy->getId()]);
             }
+
+            $motifActuel = $signalement->getMotif();
+            $signalement->setMotif($motifActuel.' ('.$details.')');
+
+            $entityManager->persist($signalement);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le signalement a bien été pris en compte.');
+            return $this->redirectToRoute('app_profil_show', ['id' => $buddy->getProfil()->getId()]);
         }
 
         return $this->render('signalement/new_buddy.html.twig', [
