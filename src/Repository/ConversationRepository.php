@@ -25,8 +25,9 @@ class ConversationRepository extends ServiceEntityRepository
     public function findConversationsByUser(User $user): array
     {
         return $this->createQueryBuilder('c')
-            ->where('c.initiateur = :user')
-            ->orWhere('c.interlocuteur = :user')
+            ->where('c.initiateur = :user OR c.interlocuteur = :user')
+            ->andWhere(':user NOT MEMBER OF c.supprimePar')
+            ->andWhere(':user NOT MEMBER OF c.archivePar')
             ->setParameter('user', $user)
             ->orderBy('c.dateCrea', 'DESC')
             ->getQuery()
