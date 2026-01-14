@@ -24,6 +24,10 @@
                 Signalements d'Événements
             </a>
 
+            <a href="{{ path('app_signalement_index', {'type': 'autre'}) }}" class="btn btn--primary" style="text-align: center; padding: 1rem;">
+                Signalements Autres (Mot de passe oublié)
+            </a>
+
             {# Ce bouton n'est visible que pour les utilisateurs normaux #}
             {% if not is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('app_signalement_index') }}" class="btn btn--secondary" style="text-align: center; padding: 1rem; margin-top: 1rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
