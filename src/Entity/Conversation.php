@@ -46,7 +46,7 @@ class Conversation
      * @var Collection<int, User>
      */
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'conversationsArchivees')]
-
+    #[ORM\JoinTable(name: 'conversation_archives')]
     private Collection $archivePar;
 
     public function __construct()
