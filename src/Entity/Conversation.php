@@ -35,9 +35,18 @@ class Conversation
     #[ORM\OneToMany(mappedBy: 'conversation', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'conversationsSupprimees')]
+    #[ORM\JoinTable(name: 'conversation_suppressions')]
+    private Collection $supprimePar;
+
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->supprimePar = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,4 +131,30 @@ class Conversation
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getSupprimePar(): Collection
+    {
+        return $this->supprimePar;
+    }
+
+    public function addSupprimePar(User $supprimePar): static
+    {
+        if (!$this->supprimePar->contains($supprimePar)) {
+            $this->supprimePar->add($supprimePar);
+        }
+
+        return $this;
+    }
+
+    public function removeSupprimePar(User $supprimePar): static
+    {
+        $this->supprimePar->removeElement($supprimePar);
+
+        return $this;
+    }
+
+
 }
