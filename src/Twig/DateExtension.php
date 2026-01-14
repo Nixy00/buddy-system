@@ -15,6 +15,25 @@ class DateExtension extends AbstractExtension
         ];
     }
 
+    // l'heure dans la bulle de message (ex: "14:30" ou "Il y a 2 min")
+    public function formatDuration(\DateTimeInterface $date): string
+    {
+        $now = new \DateTime();
+        $diff = $now->getTimestamp() - $date->getTimestamp();
+
+        if ($diff < 60) {
+            return "À l'instant";
+        }
+
+        if ($diff < 3600) {
+            $minutes = floor($diff / 60);
+
+            return "Il y a {$minutes} min";
+        }
+
+        return $date->format('H:i');
+    }
+
     // méthode pour avoir les mois en francais
     private function frenchDate(\DateTimeInterface $date, bool $withYear): string
     {
