@@ -37,6 +37,8 @@ final class MessageFactory extends PersistentProxyObjectFactory
             'dateEnvoi' => self::faker()->dateTimeBetween('-30 days', 'now'),
             'dateLecture' => null,
             'utilisateur' => UserFactory::new(),
+            'estSupprime' => false,
+            'dateModif' => null,
         ];
     }
 
