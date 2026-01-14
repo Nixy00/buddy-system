@@ -101,6 +101,24 @@
 
                 passwordInput.addEventListener('input', checkPasswords);
                 passwordConfirmInput.addEventListener('input', checkPasswords);
+
+                document.querySelectorAll('.toggle-password').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const targetId = this.getAttribute('data-target');
+                        const input = document.getElementById(targetId);
+                        const img = this.querySelector('img');
+
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            img.src = "{{ asset('images/eye-password-see-view.svg') }}";
+                            img.style.opacity = '1';
+                        } else {
+                            input.type = 'password';
+                            img.src = "{{ asset('images/eye-key-look-password-security-see.svg') }}";
+                            img.style.opacity = '0.6';
+                        }
+                    });
+                });
             </script>
 
             <div class="form-group" style="margin-bottom: 2rem;">
