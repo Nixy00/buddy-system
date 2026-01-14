@@ -24,11 +24,22 @@
                 Signalements d'Événements
             </a>
 
-            <a href="{{ path('app_signalement_index') }}" class="btn btn--secondary" style="text-align: center; padding: 1rem; margin-top: 1rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
-                Voir tous mes signalements
-            </a>
+            {# Ce bouton n'est visible que pour les utilisateurs normaux #}
+            {% if not is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('app_signalement_index') }}" class="btn btn--secondary" style="text-align: center; padding: 1rem; margin-top: 1rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
+                    Voir tous mes signalements
+                </a>
+            {% endif %}
 
         </div>
     </div>
+
+    {# Lien pour les admins vers la liste complète des signalements #}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div style="text-align: center; margin-top: 3rem; border-top: 1px solid var(--gray-200); padding-top: 2rem;">
+            <p style="color: var(--gray-600);">En tant qu'administrateur, vous pouvez consulter la liste de tous les signalements.</p>
+            <a href="{{ path('app_signalement_index') }}" class="btn btn--primary" style="background-color: #dc3545;">Accéder à la modération</a>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
