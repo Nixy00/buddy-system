@@ -1,0 +1,6 @@
+actor: ControllerTester
+modules:
+    enabled:
+        - Symfony:
+            app_path: 'src'
+            environment: 'test'
