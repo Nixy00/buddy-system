@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Signalement;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,8 +34,35 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/mot-de-passe-oublie', name: 'app_forgot_password', methods: ['GET', 'POST'])]
-    public function forgotPassword(Request $request): Response
+    public function forgotPassword(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
+        if ($request->isMethod('POST')) {
+            $email = $request->request->get('email');
+            $prenom = $request->request->get('prenom');
+            $nom = $request->request->get('nom');
+
+            $user = $userRepository->findOneBy(['email' => $email]);
+
+            if (!$user) {
+                $this->addFlash('danger', 'Aucun compte trouvé avec cet email.');
+            } else {
+                $signalement = new Signalement();
+                $signalement->setUtilisateur($user);
+                $signalement->setDateSignalement(new \DateTime());
+                $signalement->setStatut('EN_ATTENTE');
+                $signalement->setMotif('Autre (Mot de passe oublié)');
+
+                $signalement->setReportedUser($user);
+
+                $entityManager->persist($signalement);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Votre demande a été envoyée aux administrateurs. Ils vous contacteront sur votre e-mail étudiant prochainement.');
+
+                return $this->redirectToRoute('app_login');
+            }
+        }
+
         return $this->render('security/forgot_password.html.twig');
     }
 
