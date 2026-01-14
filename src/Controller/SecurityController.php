@@ -45,6 +45,8 @@ class SecurityController extends AbstractController
 
             if (!$user) {
                 $this->addFlash('danger', 'Aucun compte trouvé avec cet email.');
+
+                return $this->redirectToRoute('app_forgot_password');
             } else {
                 $signalement = new Signalement();
                 $signalement->setUtilisateur($user);
