@@ -24,7 +24,11 @@
 
                 <div class="form-group">
                     <label for="inputPassword" class="form-label">Mot de passe</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="Votre mot de passe">
+                    <div style="position: relative;">
+                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="Votre mot de passe" style="padding-right: 40px;">
+                        <button type="button" class="toggle-password" data-target="inputPassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
+                        </button>
+                    </div>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.875rem;">
