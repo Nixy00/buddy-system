@@ -3,73 +3,94 @@
 {% block title %}Rechercher un Buddy{% endblock %}
 
 {% block main %}
-    <h1 class="h1">Trouvez votre Buddy</h1>
+    <div class="container" style="padding: 2rem 0 4rem 0;">
+        <div class="page-header">
+            <h1>Trouvez votre Buddy</h1>
+            <p class="muted">Connectez-vous avec un buddy et découvrez Reims ensemble !</p>
+        </div>
 
-    <div class="search-container" style="margin-bottom: 32px;">
-        <form method="get" class="search-bar" style="display: flex; gap: 12px; margin-bottom: 16px;">
-            <div style="flex: 1; position: relative;">
-                <input type="text" name="search" value="{{ app.request.query.get('search', '') }}"
-                       placeholder="Rechercher un buddy..."
-                       style="width: 100%; padding: 12px 16px; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 1rem;">
-            </div>
-            <button type="submit" class="btn btn--primary">
-                <span>Rechercher</span>
-            </button>
-        </form>
-    </div>
+        <div class="filters-bar">
+            <form action="{{ path('app_recherche_buddy') }}" method="get" class="filters-grid">
+                <div class="form-group">
+                    <input type="text" name="search" placeholder="Rechercher un buddy..." class="form-control" value="{{ search_filtre|default('') }}">
+                </div>
+                <div class="form-group">
+                    <select name="langues" class="form-control">
+                        <option value="" {% if langues_filtre|length == 0 %}selected{% endif %}>Toutes les langues</option>
+                        {% for langue in all_langues %}
+                            <option value="{{ langue }}" {% if langue in langues_filtre %}selected{% endif %}>{{ langue }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="disponibilites" class="form-control">
+                        <option value="" {% if disponibilites_filtre|length == 0 %}selected{% endif %}>Toutes les disponibilités</option>
+                        {% for disponibilite in all_disponibilites %}
+                            <option value="{{ disponibilite }}" {% if disponibilite in disponibilites_filtre %}selected{% endif %}>{{ disponibilite }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn--primary" style="width: 100%;">Filtrer</button>
+                </div>
+            </form>
+        </div>
 
-    <div class="buddies-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
-        {% for profil in profils %}
-            <div class="buddy-card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; position: relative;">
+        <div class="buddies-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
+            {% for profil in profils %}
+                <div class="buddy-card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; position: relative;">
 
-                {# Bouton de signalement en haut à gauche #}
-                {% if app.user and profil.utilisateur and app.user != profil.utilisateur %}
-                    <a href="{{ path('app_signalement_new_buddy', {'id': profil.utilisateur.id}) }}" title="Signaler ce profil" style="position: absolute; top: 10px; left: 10px; z-index: 1; color: #dc3545; font-size: 1.2rem; text-decoration: none; background: rgba(255,255,255,0.7); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
-                        🚩
-                    </a>
-                {% endif %}
+                    {# Bouton de signalement en haut à gauche #}
+                    {% if app.user and profil.utilisateur and app.user != profil.utilisateur %}
+                        <a href="{{ path('app_signalement_new_buddy', {'id': profil.utilisateur.id}) }}" title="Signaler ce profil" style="position: absolute; top: 10px; left: 10px; z-index: 1; color: #dc3545; font-size: 1.2rem; text-decoration: none; background: rgba(255,255,255,0.7); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                            🚩
+                        </a>
+                    {% endif %}
 
-                <div style="height: 120px; background: var(--gray-100); position: relative;">
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--gray-300); position: absolute; bottom: -40px; left: 20px; border: 4px solid white; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                        {% include '_components/_avatar.html.twig' with {'profil': profil} %}
+                    <div style="height: 120px; background: var(--gray-100); position: relative;">
+                        <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--gray-300); position: absolute; bottom: -40px; left: 20px; border: 4px solid white; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                            {% include '_components/_avatar.html.twig' with {'profil': profil} %}
+                        </div>
+                    </div>
+                    <div style="padding: 50px 20px 20px;">
+                        <h3 style="margin: 0 0 4px; font-size: 1.25rem;">{{ profil.nom }} {{ profil.prenom }}</h3>
+                        <p style="color: var(--gray-600); margin: 0 0 12px;">
+                            {% if profil.ville and profil.pays %}
+                                {{ profil.ville }}, {{ profil.pays }}
+                            {% elseif profil.ville %}
+                                {{ profil.ville }}
+                            {% elseif profil.pays %}
+                                {{ profil.pays }}
+                            {% else %}
+                                Localisation non renseignée
+                            {% endif %}
+                        </p>
+                        {% if profil.langues %}
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+                                {% for langue in profil.langues|split(',') %}
+                                    <span style="background: var(--gray-100); color: var(--gray-700); padding: 4px 10px; border-radius: 12px; font-size: 0.85rem;">
+                                        {{ langue|trim }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if profil.biographie %}
+                            <p style="color: var(--gray-700); margin: 0 0 16px; font-size: 0.95rem;">
+                                {{ profil.biographie|length > 100 ? profil.biographie|slice(0, 100) ~ '...' : profil.biographie }}
+                            </p>
+                        {% endif %}
+                        <a href="{{ path('app_profil_show', {id: profil.id}) }}" class="btn btn--primary btn--sm" style="display: block; text-align: center;">
+                            <i class="fas fa-eye"></i> Voir le profil
+                        </a>
                     </div>
                 </div>
-                <div style="padding: 50px 20px 20px;">
-                    <h3 style="margin: 0 0 4px; font-size: 1.25rem;">{{ profil.nom }} {{ profil.prenom }}</h3>
-                    <p style="color: var(--gray-600); margin: 0 0 12px;">
-                        {% if profil.ville and profil.pays %}
-                            {{ profil.ville }}, {{ profil.pays }}
-                        {% elseif profil.ville %}
-                            {{ profil.ville }}
-                        {% elseif profil.pays %}
-                            {{ profil.pays }}
-                        {% else %}
-                            Localisation non renseignée
-                        {% endif %}
-                    </p>
-                    {% if profil.langues %}
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
-                            {% for langue in profil.langues|split(',') %}
-                                <span style="background: var(--gray-100); color: var(--gray-700); padding: 4px 10px; border-radius: 12px; font-size: 0.85rem;">
-                                    {{ langue|trim }}
-                                </span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    {% if profil.biographie %}
-                        <p style="color: var(--gray-700); margin: 0 0 16px; font-size: 0.95rem;">
-                            {{ profil.biographie|length > 100 ? profil.biographie|slice(0, 100) ~ '...' : profil.biographie }}
-                        </p>
-                    {% endif %}
-                    <a href="{{ path('app_profil_show', {id: profil.id}) }}" class="btn btn--primary btn--sm" style="display: block; text-align: center;">
-                        <i class="fas fa-eye"></i> Voir le profil
-                    </a>
+            {% else %}
+                <div class="no-buddies" style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #F9FAFB; border-radius: var(--radius-lg);">
+                    <p class="muted">Aucun buddy ne correspond à vos critères.</p>
                 </div>
-            </div>
-        {% else %}
-            <p style="color: var(--gray-600); text-align: center; grid-column: 1 / -1; padding: 40px;">
-                Aucun buddy trouvé. Essayez une autre recherche.
-            </p>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
+
+
