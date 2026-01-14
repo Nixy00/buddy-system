@@ -4,6 +4,14 @@
 
 {% block main %}
     <div class="container" style="padding-top: 2rem; max-width: 800px;">
+
+        {% set isArchived = false %}
+        {% for u in conversation.archivePar %}
+            {% if u == app.user %}
+                {% set isArchived = true %}
+            {% endif %}
+        {% endfor %}
+
         {# en-tête #}
         <div class="chat-header" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">
             <a href="{{ path('app_messagerie') }}" class="btn btn--ghost" style="padding: 0.5rem;">&larr; Retour</a>
@@ -35,7 +43,7 @@
                     {% set lastDate = currentDate %}
                 {% endif %}
 
-                {% include 'messagerie/_message.html.twig' with {'message': message} %}
+                {% include 'messagerie/_message.html.twig' with {'message': message, 'isArchived': isArchived} %}
 
             {% else %}
                 <div id="empty-message" style="text-align: center; color: var(--gray-500); padding: 2rem;">
@@ -46,25 +54,32 @@
 
         {# zone formulaire #}
         <div class="chat-input-area" style="background: white; padding: 1rem; border-top: 1px solid var(--gray-200); position: sticky; bottom: 0;">
-            {{ form_start(form, {
-                'attr': {
-                    'id': 'chat-form',
-                    'data-url': path('app_messagerie_ajax_send', {id: conversation.id})
-                }
-            }) }}
 
-            <div style="display: flex; gap: 10px; align-items: flex-start;">
-                <div style="flex-grow: 1;">
-                    {{ form_widget(form.contenu) }}
-                    <div style="color: red; font-size: 0.85rem; margin-top: 5px;">
-                        {{ form_errors(form.contenu) }}
-                    </div>
+            {% if isArchived %}
+                <div style="text-align: center; color: var(--gray-500); padding: 0.5rem;">
+                    <p style="margin-bottom: 10px; font-size: 0.9rem;">
+                        <i class="fas fa-lock"></i> Cette conversation est archivée (lecture seule).
+                    </p>
+                    <a href="{{ path('app_conversation_unarchive', {'id': conversation.id}) }}" class="btn btn--primary-outline btn-sm">
+                        <i class="fas fa-box-open"></i> Désarchiver pour répondre
+                    </a>
                 </div>
-                <button type="submit" class="btn btn--primary" style="height: 100%; padding: 0.8rem 1.5rem; border-radius: 8px;">
-                    <i class="fas fa-paper-plane"></i> Envoyer
-                </button>
-            </div>
-            {{ form_end(form) }}
+            {% else %}
+                {{ form_start(form, {'attr': {'id': 'chat-form', 'data-url': path('app_messagerie_ajax_send', {id: conversation.id})}}) }}
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <div style="flex-grow: 1;">
+                        {{ form_widget(form.contenu) }}
+                        <div style="color: red; font-size: 0.85rem; margin-top: 5px;">
+                            {{ form_errors(form.contenu) }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn--primary" style="height: 100%; padding: 0.8rem 1.5rem; border-radius: 8px;">
+                        <i class="fas fa-paper-plane"></i> Envoyer
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            {% endif %}
+
         </div>
     </div>
 
