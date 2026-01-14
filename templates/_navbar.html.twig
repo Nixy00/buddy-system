@@ -3,12 +3,18 @@
     <div class="container header__inner">
         <a class="brand" href="{{ path('app_home') }}" aria-label="Buddy System — Accueil">
             <img src="{{ asset('images/logo-urca.png') }}" alt="Logo URCA" style="height: 50px; width: auto; margin-right: 15px;">
-            <img src="{{ asset('images/buddy_system_logo.png') }}" alt="Buddy System Logo" class="brand__logo" style="height: 50px; width: auto; margin-right: 15px;">
-            <span class="brand__name">Buddy System</span>
+            <img src="{{ asset('images/buddy_system_logo.png') }}" alt="Buddy System Logo" class="brand__logo" style="height: 50px; width: auto;">
         </a>
 
-        <nav class="nav" aria-label="Navigation principale">
-            <ul id="menu-principal" class="nav__list">
+        {# Bouton burger mobile #}
+        <button class="burger-btn" id="burger-toggle" aria-label="Menu" aria-expanded="false">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+        </button>
+
+        <nav class="nav" id="main-nav" aria-label="Navigation principale">
+            <ul class="nav__list">
 
 
                 {# filtrage des liens selon la connexion #}
@@ -25,8 +31,25 @@
                     <li><a class="nav__link" href="{{ path('app_recherche_buddy') }}">Rechercher</a></li>
                 {% endif %}
             </ul>
+
+            {# Actions dans le menu mobile #}
+            <div class="nav__actions-mobile">
+                {% if app.user %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin') }}" class="btn btn--ghost" title="Espace Administration">
+                            <img src="{{ asset('images/modo.png') }}" alt="Admin" style="height: 24px; width: auto; margin-right: 8px;">
+                            Administration
+                        </a>
+                    {% endif %}
+                    <a class="btn btn--ghost" href="{{ path('app_logout') }}">Déconnexion</a>
+                {% else %}
+                    <a class="btn btn--ghost" href="{{ path('app_login') }}">Connexion</a>
+                    <a class="btn btn--primary" href="{{ path('app_register') }}">Inscription</a>
+                {% endif %}
+            </div>
         </nav>
 
+        {# Actions desktop (cachées sur mobile) #}
         <div class="header__actions">
             {% if app.user %}
                 {% if is_granted('ROLE_ADMIN') %}
