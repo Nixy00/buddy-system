@@ -34,6 +34,30 @@ class DateExtension extends AbstractExtension
         return $date->format('H:i');
     }
 
+    // le séparateur central (ex: "Aujourd'hui", "Hier", "3 octobre 2024")
+    public function formatSmartDate(\DateTimeInterface $date): string
+    {
+        $now = new \DateTime();
+        $dateDay = $date->format('Y-m-d');
+        $nowDay = $now->format('Y-m-d');
+
+        $yesterday = (clone $now)->modify('-1 day')->format('Y-m-d');
+
+        if ($dateDay === $nowDay) {
+            return "Aujourd'hui";
+        }
+
+        if ($dateDay === $yesterday) {
+            return 'Hier';
+        }
+
+        if ($date->format('Y') === $now->format('Y')) {
+            return $this->frenchDate($date, false);
+        }
+
+        return $this->frenchDate($date, true);
+    }
+
     // méthode pour avoir les mois en francais
     private function frenchDate(\DateTimeInterface $date, bool $withYear): string
     {
