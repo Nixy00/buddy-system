@@ -4,13 +4,11 @@
 
 {% block main %}
 <div class="container" style="padding-top: 3rem; padding-bottom: 4rem; max-width: 800px;">
-    <div class="page-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <div class="page-header" style="margin-bottom: 2rem;">
         <div>
             <h1 style="font-size: 2rem; color: var(--gray-900); margin-bottom: 0.5rem;">Faire un signalement</h1>
             <p style="color: var(--gray-600);">Aidez-nous à maintenir un environnement sûr et respectueux.</p>
         </div>
-        {# Lien pour voir ses propres signalements #}
-        <a href="{{ path('app_signalement_index') }}" class="btn btn--secondary">Voir mes signalements</a>
     </div>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
