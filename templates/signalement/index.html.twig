@@ -27,18 +27,6 @@
     {% if is_granted('ROLE_ADMIN') %}
         <div class="card" style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--gray-200); margin-bottom: 2rem;">
             <form method="get" action="{{ path('app_signalement_index') }}" style="display: flex; gap: 1rem; align-items: center;">
-                {# Filtre par type #}
-                <div>
-                    <label for="type" style="font-weight: 500; margin-right: 0.5rem;">Type :</label>
-                    <select name="type" id="type" class="form-control" onchange="this.form.submit()">
-                        <option value="">Tous</option>
-                        <option value="message" {{ type_filtre == 'message' ? 'selected' : '' }}>Message</option>
-                        <option value="buddy" {{ type_filtre == 'buddy' ? 'selected' : '' }}>Buddy</option>
-                        <option value="event" {{ type_filtre == 'event' ? 'selected' : '' }}>Événement</option>
-                    </select>
-                </div>
-
-                {# Filtre par statut #}
                 <div>
                     <label for="statut" style="font-weight: 500; margin-right: 0.5rem;">Statut :</label>
                     <select name="statut" id="statut" class="form-control" onchange="this.form.submit()">
@@ -49,7 +37,16 @@
                     </select>
                 </div>
 
-                {# Filtre par motif #}
+                <div>
+                    <label for="type" style="font-weight: 500; margin-right: 0.5rem;">Type :</label>
+                    <select name="type" id="type" class="form-control" onchange="this.form.submit()">
+                        <option value="">Tous</option>
+                        {% for type in types %}
+                            <option value="{{ type }}" {{ type == type_filtre ? 'selected' : '' }}>{{ type|capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
                 <div>
                     <label for="motif" style="font-weight: 500; margin-right: 0.5rem;">Motif :</label>
                     <select name="motif" id="motif" class="form-control" onchange="this.form.submit()">
@@ -143,17 +140,14 @@
         {# Pagination manuelle #}
         {% if totalPages > 1 %}
             <div class="navigation" style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem;">
-                {# Page précédente #}
                 {% if currentPage > 1 %}
                     <a href="{{ path('app_signalement_index', app.request.query.all|merge({page: currentPage - 1})) }}" class="btn btn--secondary">&laquo; Précédent</a>
                 {% endif %}
 
-                {# Numéros de page #}
                 {% for i in 1..totalPages %}
                     <a href="{{ path('app_signalement_index', app.request.query.all|merge({page: i})) }}" class="btn {{ i == currentPage ? 'btn--primary' : 'btn--secondary' }}">{{ i }}</a>
                 {% endfor %}
 
-                {# Page suivante #}
                 {% if currentPage < totalPages %}
                     <a href="{{ path('app_signalement_index', app.request.query.all|merge({page: currentPage + 1})) }}" class="btn btn--secondary">Suivant &raquo;</a>
                 {% endif %}
