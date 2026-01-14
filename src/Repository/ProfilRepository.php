@@ -58,4 +58,51 @@ class ProfilRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function searchWithFilters(string $text = '', array $langues = [], array $disponibilites = []): array
+    {
+        $profils = $this->findAll();
+
+        if (!empty($text)) {
+            $profils = array_filter($profils, function ($profil) use ($text) {
+                return false !== stripos($profil->getNom(), $text)
+                    || false !== stripos($profil->getPrenom(), $text)
+                    || false !== stripos($profil->getBiographie() ?? '', $text);
+            });
+        }
+
+        if (!empty($langues)) {
+            $profils = array_filter($profils, function ($profil) use ($langues) {
+                $profilLangues = array_map('trim', explode(',', $profil->getLangues() ?? ''));
+                foreach ($langues as $langue) {
+                    if (in_array(trim($langue), $profilLangues)) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+
+        if (!empty($disponibilites)) {
+            $profils = array_filter($profils, function ($profil) use ($disponibilites) {
+                $profilDisponibilites = array_map('trim', explode(',', $profil->getDisponibilites() ?? ''));
+                foreach ($disponibilites as $disponibilite) {
+                    if (in_array(trim($disponibilite), $profilDisponibilites)) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+
+        usort($profils, function ($a, $b) {
+            $cmp = strcmp($a->getNom(), $b->getNom());
+            if ($cmp !== 0) {
+                return $cmp;
+            }
+            return strcmp($a->getPrenom(), $b->getPrenom());
+        });
+
+        return $profils;
+    }
 }
