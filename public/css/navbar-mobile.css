@@ -1,0 +1,147 @@
+/* Menu burger pour mobile */
+
+/* Bouton burger - caché sur desktop, visible sur mobile */
+.burger-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+.burger-line {
+    width: 25px;
+    height: 3px;
+    background-color: #111827;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+/* Animation en X quand on clique que j'ai repris sur un tutoriel*/
+.burger-btn.active .burger-line:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px);
+}
+
+.burger-btn.active .burger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-btn.active .burger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* === MOBILE (moins de 720px) === */
+@media (max-width: 720px) {
+
+    /* On affiche le burger */
+    .burger-btn {
+        display: flex;
+    }
+
+    /* Le header */
+    .header__inner {
+        justify-content: space-between;
+    }
+
+    /* Le menu de navigation */
+    .nav {
+        position: fixed;
+        top: 72px;
+        left: 0;
+        width: 100%;
+        background: white;
+        border-bottom: 1px solid #E5E7EB;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s;
+        z-index: 1000;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Quand le menu est ouvert */
+    .nav.open {
+        max-height: 700px;
+    }
+
+    /* Forcer l'affichage des liens (car app.css les cache) */
+    .nav.open .nav__list {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 1rem 0 !important;
+        gap: 0 !important;
+    }
+
+    /* Chaque lien */
+    .nav__list li {
+        border-bottom: 1px solid #E5E7EB;
+    }
+
+    .nav__link {
+        display: block;
+        padding: 1rem 1.5rem;
+    }
+
+    .nav__link:hover {
+        background: #F3F4F6;
+    }
+
+    /* Les boutons en bas du menu (déconnexion, etc.) */
+    .nav__actions-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        border-top: 2px solid #E5E7EB;
+    }
+
+    .nav__actions-mobile .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* On cache les boutons du header sur mobile */
+    .header__actions {
+        display: none !important;
+    }
+
+    /* Logos plus petits sur mobile */
+    .brand img {
+        height: 40px !important;
+    }
+}
+
+/* === DESKTOP (plus de 720px) === */
+@media (min-width: 721px) {
+
+    /* Pas de burger sur desktop */
+    .burger-btn {
+        display: none !important;
+    }
+
+    /* Menu normal */
+    .nav {
+        display: block;
+        position: static;
+    }
+
+    .nav__list {
+        display: flex !important;
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    /* Pas d'actions mobiles sur desktop */
+    .nav__actions-mobile {
+        display: none !important;
+    }
+
+    /* Boutons normaux */
+    .header__actions {
+        display: flex !important;
+        gap: 8px;
+    }
+}
