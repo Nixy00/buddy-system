@@ -29,6 +29,7 @@ class SignalementController extends AbstractController
     {
         $statut = $request->query->get('statut');
         $motif = $request->query->get('motif');
+        $type = $request->query->get('type');
         $page = $request->query->getInt('page', 1);
         $limit = 10;
 
@@ -46,6 +47,16 @@ class SignalementController extends AbstractController
         if ($motif) {
             $qb->andWhere('s.motif LIKE :motif')
                ->setParameter('motif', $motif.'%');
+        }
+
+        if ($type) {
+            if ('message' === $type) {
+                $qb->andWhere('s.message IS NOT NULL');
+            } elseif ('buddy' === $type) {
+                $qb->andWhere('s.reportedUser IS NOT NULL');
+            } elseif ('event' === $type) {
+                $qb->andWhere('s.reportedEvent IS NOT NULL');
+            }
         }
 
         $totalSignalements = count($qb->getQuery()->getResult());
@@ -82,6 +93,7 @@ class SignalementController extends AbstractController
             'motifs' => $motifsUniques,
             'statut_filtre' => $statut,
             'motif_filtre' => $motif,
+            'type_filtre' => $type,
         ]);
     }
 
@@ -160,7 +172,7 @@ class SignalementController extends AbstractController
     #[Route('/signalement/{id}/fermer', name: 'app_signalement_close', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function closeTicket(Signalement $signalement, EntityManagerInterface $entityManager): Response
     {
-        if ($signalement->getStatut() !== 'REJETE') {
+        if ('REJETE' !== $signalement->getStatut()) {
             $signalement->setStatut('TRAITE');
             $entityManager->flush();
             $this->addFlash('success', 'Le ticket a été fermé.');
@@ -252,11 +264,12 @@ class SignalementController extends AbstractController
         $existingSignalement = $signalementRepository->findOneBy([
             'reportedUser' => $buddy,
             'utilisateur' => $user,
-            'statut' => ['EN_ATTENTE', 'EN_COURS']
+            'statut' => ['EN_ATTENTE', 'EN_COURS'],
         ]);
 
         if ($existingSignalement) {
             $this->addFlash('warning', 'Vous avez déjà un signalement en cours pour cet utilisateur.');
+
             return $this->redirectToRoute('app_profil_show', ['id' => $buddy->getProfil()->getId()]);
         }
 
@@ -274,6 +287,7 @@ class SignalementController extends AbstractController
 
             if (empty(trim((string) $details))) {
                 $this->addFlash('warning', 'Veuillez fournir des détails pour expliquer votre signalement.');
+
                 return $this->redirectToRoute('app_signalement_new_buddy', ['id' => $buddy->getId()]);
             }
 
@@ -284,6 +298,7 @@ class SignalementController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Le signalement a bien été pris en compte.');
+
             return $this->redirectToRoute('app_profil_show', ['id' => $buddy->getProfil()->getId()]);
         }
 
@@ -305,11 +320,12 @@ class SignalementController extends AbstractController
         $existingSignalement = $signalementRepository->findOneBy([
             'reportedEvent' => $event,
             'utilisateur' => $user,
-            'statut' => ['EN_ATTENTE', 'EN_COURS']
+            'statut' => ['EN_ATTENTE', 'EN_COURS'],
         ]);
 
         if ($existingSignalement) {
             $this->addFlash('warning', 'Vous avez déjà un signalement en cours pour cet événement.');
+
             return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
         }
 
@@ -327,6 +343,7 @@ class SignalementController extends AbstractController
 
             if (empty(trim((string) $details))) {
                 $this->addFlash('warning', 'Veuillez fournir des détails pour expliquer votre signalement.');
+
                 return $this->redirectToRoute('app_signalement_new_event', ['id' => $event->getId()]);
             }
 
@@ -337,6 +354,7 @@ class SignalementController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Le signalement a bien été pris en compte.');
+
             return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
         }
 
