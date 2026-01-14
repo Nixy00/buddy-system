@@ -39,6 +39,9 @@ class Message
     #[ORM\OneToMany(mappedBy: 'message', targetEntity: Signalement::class, orphanRemoval: true)]
     private Collection $signalements;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $dateModif = null;
+
     public function __construct()
     {
         $this->signalements = new ArrayCollection();
@@ -138,4 +141,18 @@ class Message
 
         return $this;
     }
+
+    public function getDateModif(): ?\DateTime
+    {
+        return $this->dateModif;
+    }
+
+    public function setDateModif(?\DateTime $dateModif): static
+    {
+        $this->dateModif = $dateModif;
+
+        return $this;
+    }
+
+
 }
