@@ -7,6 +7,7 @@
         <title>{% block title %}Buddy System{% endblock %} - URCA</title>
         <link rel="icon" type="image/png" href="{{ asset('images/buddy_system_logo.png') }}">
         <link rel="stylesheet" href="{{ asset('css/chatbot.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/navbar-mobile.css') }}">
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
@@ -30,5 +31,6 @@
         {% include '_footer.html.twig' %}
         {% include 'partials/_chatbot.html.twig' %}
         <script src="{{ asset('js/chatbot.js') }}"></script>
+        <script src="{{ asset('js/burger-menu.js') }}"></script>
     </body>
 </html>
