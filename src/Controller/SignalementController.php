@@ -24,11 +24,18 @@ class SignalementController extends AbstractController
         return $this->render('signalement/hub.html.twig');
     }
 
+    #[Route('/signalement/voir', name: 'app_signalement_hub_view', methods: ['GET'])]
+    public function hubView(): Response
+    {
+        return $this->render('signalement/hub_view.html.twig');
+    }
+
     #[Route('/signalement/liste', name: 'app_signalement_index', methods: ['GET'])]
     public function index(Request $request, SignalementRepository $signalementRepository): Response
     {
         $statut = $request->query->get('statut');
         $motif = $request->query->get('motif');
+        $type = $request->query->get('type');
         $page = $request->query->getInt('page', 1);
         $limit = 10;
 
@@ -46,6 +53,16 @@ class SignalementController extends AbstractController
         if ($motif) {
             $qb->andWhere('s.motif LIKE :motif')
                ->setParameter('motif', $motif.'%');
+        }
+
+        if ($type) {
+            if ('message' === $type) {
+                $qb->andWhere('s.message IS NOT NULL');
+            } elseif ('buddy' === $type) {
+                $qb->andWhere('s.reportedUser IS NOT NULL');
+            } elseif ('event' === $type) {
+                $qb->andWhere('s.reportedEvent IS NOT NULL');
+            }
         }
 
         $totalSignalements = count($qb->getQuery()->getResult());
@@ -82,6 +99,7 @@ class SignalementController extends AbstractController
             'motifs' => $motifsUniques,
             'statut_filtre' => $statut,
             'motif_filtre' => $motif,
+            'type_filtre' => $type,
         ]);
     }
 
@@ -160,7 +178,7 @@ class SignalementController extends AbstractController
     #[Route('/signalement/{id}/fermer', name: 'app_signalement_close', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function closeTicket(Signalement $signalement, EntityManagerInterface $entityManager): Response
     {
-        if ($signalement->getStatut() !== 'REJETE') {
+        if ('REJETE' !== $signalement->getStatut()) {
             $signalement->setStatut('TRAITE');
             $entityManager->flush();
             $this->addFlash('success', 'Le ticket a été fermé.');
@@ -252,11 +270,12 @@ class SignalementController extends AbstractController
         $existingSignalement = $signalementRepository->findOneBy([
             'reportedUser' => $buddy,
             'utilisateur' => $user,
-            'statut' => ['EN_ATTENTE', 'EN_COURS']
+            'statut' => ['EN_ATTENTE', 'EN_COURS'],
         ]);
 
         if ($existingSignalement) {
             $this->addFlash('warning', 'Vous avez déjà un signalement en cours pour cet utilisateur.');
+
             return $this->redirectToRoute('app_profil_show', ['id' => $buddy->getProfil()->getId()]);
         }
 
@@ -272,22 +291,21 @@ class SignalementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $details = $form->get('details')->getData();
 
-            if ('Autre' === $signalement->getMotif() && empty(trim((string) $details))) {
-                $this->addFlash('danger', 'Veuillez préciser le motif du signalement dans le champ détails.');
-                $form->get('details')->addError(new FormError('Veuillez préciser le motif.'));
-                $form->addError(new FormError('Le formulaire contient des erreurs.'));
-            } else {
-                if ($details) {
-                    $motifActuel = $signalement->getMotif();
-                    $signalement->setMotif($motifActuel.' ('.$details.')');
-                }
+            if (empty(trim((string) $details))) {
+                $this->addFlash('warning', 'Veuillez fournir des détails pour expliquer votre signalement.');
 
-                $entityManager->persist($signalement);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Le signalement a bien été pris en compte.');
-                return $this->redirectToRoute('app_profil_show', ['id' => $buddy->getProfil()->getId()]);
+                return $this->redirectToRoute('app_signalement_new_buddy', ['id' => $buddy->getId()]);
             }
+
+            $motifActuel = $signalement->getMotif();
+            $signalement->setMotif($motifActuel.' ('.$details.')');
+
+            $entityManager->persist($signalement);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le signalement a bien été pris en compte.');
+
+            return $this->redirectToRoute('app_profil_show', ['id' => $buddy->getProfil()->getId()]);
         }
 
         return $this->render('signalement/new_buddy.html.twig', [
@@ -308,11 +326,12 @@ class SignalementController extends AbstractController
         $existingSignalement = $signalementRepository->findOneBy([
             'reportedEvent' => $event,
             'utilisateur' => $user,
-            'statut' => ['EN_ATTENTE', 'EN_COURS']
+            'statut' => ['EN_ATTENTE', 'EN_COURS'],
         ]);
 
         if ($existingSignalement) {
             $this->addFlash('warning', 'Vous avez déjà un signalement en cours pour cet événement.');
+
             return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
         }
 
@@ -328,22 +347,21 @@ class SignalementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $details = $form->get('details')->getData();
 
-            if ('Autre' === $signalement->getMotif() && empty(trim((string) $details))) {
-                $this->addFlash('danger', 'Veuillez préciser le motif du signalement dans le champ détails.');
-                $form->get('details')->addError(new FormError('Veuillez préciser le motif.'));
-                $form->addError(new FormError('Le formulaire contient des erreurs.'));
-            } else {
-                if ($details) {
-                    $motifActuel = $signalement->getMotif();
-                    $signalement->setMotif($motifActuel.' ('.$details.')');
-                }
+            if (empty(trim((string) $details))) {
+                $this->addFlash('warning', 'Veuillez fournir des détails pour expliquer votre signalement.');
 
-                $entityManager->persist($signalement);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Le signalement a bien été pris en compte.');
-                return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
+                return $this->redirectToRoute('app_signalement_new_event', ['id' => $event->getId()]);
             }
+
+            $motifActuel = $signalement->getMotif();
+            $signalement->setMotif($motifActuel.' ('.$details.')');
+
+            $entityManager->persist($signalement);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le signalement a bien été pris en compte.');
+
+            return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
         }
 
         return $this->render('signalement/new_event.html.twig', [

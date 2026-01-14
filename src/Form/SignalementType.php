@@ -28,7 +28,7 @@ class SignalementType extends AbstractType
                 'attr' => ['class' => 'form-check'],
             ])
             ->add('details', TextareaType::class, [
-                'label' => 'Détails supplémentaires (obligatoire si "Autre")',
+                'label' => 'Détails supplémentaires',
                 'mapped' => false,
                 'required' => false,
                 'attr' => [
