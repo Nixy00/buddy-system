@@ -19,24 +19,36 @@
         <div class="card" style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid var(--gray-200);">
             <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--gray-800);">Informations</h2>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            {% set motif_parts = signalement.motif|split(' (', 2) %}
+            {% set main_motif = motif_parts[0] %}
+            {% set details = motif_parts[1] is defined ? motif_parts[1]|trim(')') : null %}
+
+            <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
                 <div>
                     <strong style="display: block; color: var(--gray-500); font-size: 0.9rem; margin-bottom: 0.25rem;">Motif</strong>
-                    <span style="color: #dc3545; font-weight: 600;">{{ signalement.motif }}</span>
+                    <span style="color: #dc3545; font-weight: 600;">{{ main_motif }}</span>
                 </div>
+                {% if details %}
                 <div>
-                    <strong style="display: block; color: var(--gray-500); font-size: 0.9rem; margin-bottom: 0.25rem;">Date</strong>
-                    <span>{{ signalement.dateSignalement|date('d/m/Y à H:i') }}</span>
+                    <strong style="display: block; color: var(--gray-500); font-size: 0.9rem; margin-bottom: 0.25rem;">Détails fournis</strong>
+                    <p style="background: var(--gray-50); padding: 1rem; border-radius: 8px; margin: 0;">{{ details }}</p>
                 </div>
-                <div>
-                    <strong style="display: block; color: var(--gray-500); font-size: 0.9rem; margin-bottom: 0.25rem;">Signalé par</strong>
-                    {% if signalement.utilisateur and signalement.utilisateur.profil %}
-                        <a href="{{ path('app_profil_show', {'id': signalement.utilisateur.profil.id}) }}">
-                            {{ signalement.utilisateur.profil.prenom }} {{ signalement.utilisateur.profil.nom }}
-                        </a>
-                    {% else %}
-                        Utilisateur inconnu
-                    {% endif %}
+                {% endif %}
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; border-top: 1px solid var(--gray-100); padding-top: 1.5rem;">
+                    <div>
+                        <strong style="display: block; color: var(--gray-500); font-size: 0.9rem; margin-bottom: 0.25rem;">Date</strong>
+                        <span>{{ signalement.dateSignalement|date('d/m/Y à H:i') }}</span>
+                    </div>
+                    <div>
+                        <strong style="display: block; color: var(--gray-500); font-size: 0.9rem; margin-bottom: 0.25rem;">Signalé par</strong>
+                        {% if signalement.utilisateur and signalement.utilisateur.profil %}
+                            <a href="{{ path('app_profil_show', {'id': signalement.utilisateur.profil.id}) }}">
+                                {{ signalement.utilisateur.profil.prenom }} {{ signalement.utilisateur.profil.nom }}
+                            </a>
+                        {% else %}
+                            Utilisateur inconnu
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
