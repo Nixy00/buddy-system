@@ -58,6 +58,19 @@ class MessagerieController extends AbstractController
         ]);
     }
 
+    #[Route('/archives', name: 'app_messagerie_archives')]
+    public function archives(ConversationRepository $conversationRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('messagerie/archives.html.twig', [
+            'conversations' => $conversationRepository->findArchivedConversationsByUser($user),
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_messagerie_show', requirements: ['id' => '\d+'])]
     public function show(Conversation $conversation, Request $request, EntityManagerInterface $entityManager): Response
     {
