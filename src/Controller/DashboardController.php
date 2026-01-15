@@ -32,6 +32,19 @@ class DashboardController extends AbstractController
         ]);
     }
 
+    #[Route('/dashboard/mes-buddies', name: 'app_dashboard_mes_buddies')]
+    public function mesBuddies(RelationRepository $relationRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) return $this->redirectToRoute('app_login');
+
+        $mesRelations = $relationRepository->findAcceptedRelationsByUser($user);
+
+        return $this->render('dashboard/mes_buddies.html.twig', [
+            'mesRelations' => $mesRelations,
+        ]);
+    }
+
     #[Route('/dashboard/mes-evenements', name: 'app_dashboard_mes_evenements')]
     public function mesEvenements(ParticipationRepository $participationRepository): Response
     {
