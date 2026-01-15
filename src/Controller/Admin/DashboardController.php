@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\User;
 use App\Entity\Evenement;
 use App\Entity\Signalement;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;

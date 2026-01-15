@@ -4,11 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Signalement;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class SignalementCrudController extends AbstractCrudController
 {
@@ -32,7 +32,7 @@ class SignalementCrudController extends AbstractCrudController
                 ->setChoices([
                     'En attente' => 'en_attente',
                     'Validé' => 'valide',
-                    'Rejeté' => 'rejete'
+                    'Rejeté' => 'rejete',
                 ])
                 ->hideOnIndex(),
             DateTimeField::new('dateSignalement', 'Date signalement')->hideOnForm(),
