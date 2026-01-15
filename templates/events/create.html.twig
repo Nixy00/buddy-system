@@ -75,21 +75,21 @@
 
                     <div style="display: grid; gap: 20px;">
                         <div class="form-group">
-                            {{ form_label(form.titre, null, {'label_attr': {'style': 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
-                            {{ form_widget(form.titre, {'attr': {'style': 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;'}}) }}
+                            {{ form_label(form.titre, null, {label_attr: {style: 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
+                            {{ form_widget(form.titre, {attr: {style: 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;'}}) }}
                             {{ form_errors(form.titre) }}
                         </div>
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div class="form-group">
-                                {{ form_label(form.categorie, null, {'label_attr': {'style': 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
-                                {{ form_widget(form.categorie, {'attr': {'style': 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; background-color: white;'}}) }}
+                                {{ form_label(form.categorie, null, {label_attr: {style: 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
+                                {{ form_widget(form.categorie, {attr: {style: 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; background-color: white;'}}) }}
                                 {{ form_errors(form.categorie) }}
                             </div>
 
                             <div class="form-group">
-                                {{ form_label(form.image, null, {'label_attr': {'style': 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
-                                {{ form_widget(form.image, {'attr': {'style': 'width: 100%; padding: 7px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; background: white;'}}) }}
+                                {{ form_label(form.image, null, {label_attr: {style: 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
+                                {{ form_widget(form.image, {attr: {style: 'width: 100%; padding: 7px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; background: white;'}}) }}
                                 {{ form_errors(form.image) }}
                             </div>
                         </div>
@@ -105,16 +105,16 @@
 
                     <div style="display: grid; gap: 20px;">
                         <div class="form-group">
-                            {{ form_label(form.description, null, {'label_attr': {'style': 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
-                            {{ form_widget(form.description, {'attr': {'style': 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; resize: vertical; min-height: 120px; font-family: inherit;'}}) }}
+                            {{ form_label(form.description, null, {label_attr: {style: 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
+                            {{ form_widget(form.description, {attr: {style: 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; resize: vertical; min-height: 120px; font-family: inherit;'}}) }}
                             {{ form_errors(form.description) }}
                         </div>
 
                         <div class="form-group">
-                            {{ form_label(form.lieu, null, {'label_attr': {'style': 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
+                            {{ form_label(form.lieu, null, {label_attr: {style: 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
                             <div style="position: relative;">
                                 <i class="fas fa-map-marker-alt" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-400);"></i>
-                                {{ form_widget(form.lieu, {'attr': {'style': 'width: 100%; padding: 10px 14px 10px 40px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;'}}) }}
+                                {{ form_widget(form.lieu, {attr: {style: 'width: 100%; padding: 10px 14px 10px 40px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;'}}) }}
                             </div>
                             {{ form_errors(form.lieu) }}
                         </div>
@@ -131,28 +131,28 @@
                     <div style="display: grid; gap: 20px;">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div class="form-group">
-                                {{ form_label(form.dateDebut, null, {'label_attr': {'style': 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
-                                {{ form_widget(form.dateDebut, {'attr': {'style': 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; font-family: inherit;'}}) }}
+                                {{ form_label(form.dateDebut, null, {label_attr: {style: 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
+                                {{ form_widget(form.dateDebut, {attr: {style: 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; font-family: inherit;'}}) }}
                                 {{ form_errors(form.dateDebut) }}
                             </div>
 
                             <div class="form-group">
-                                {{ form_label(form.dateFin, null, {'label_attr': {'style': 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
-                                {{ form_widget(form.dateFin, {'attr': {'style': 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; font-family: inherit;'}}) }}
+                                {{ form_label(form.dateFin, null, {label_attr: {style: 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
+                                {{ form_widget(form.dateFin, {attr: {style: 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; font-family: inherit;'}}) }}
                                 {{ form_errors(form.dateFin) }}
                             </div>
                         </div>
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div class="form-group">
-                                {{ form_label(form.dateLimiteInscr, null, {'label_attr': {'style': 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
-                                {{ form_widget(form.dateLimiteInscr, {'attr': {'style': 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; font-family: inherit;'}}) }}
+                                {{ form_label(form.dateLimiteInscr, null, {label_attr: {style: 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
+                                {{ form_widget(form.dateLimiteInscr, {attr: {style: 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; font-family: inherit;'}}) }}
                                 {{ form_errors(form.dateLimiteInscr) }}
                             </div>
 
                             <div class="form-group">
-                                {{ form_label(form.capacite, null, {'label_attr': {'style': 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
-                                {{ form_widget(form.capacite, {'attr': {'style': 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;'}}) }}
+                                {{ form_label(form.capacite, null, {label_attr: {style: 'display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray-700);'}}) }}
+                                {{ form_widget(form.capacite, {attr: {style: 'width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;'}}) }}
                                 {{ form_errors(form.capacite) }}
                             </div>
                         </div>
