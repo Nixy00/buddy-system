@@ -111,7 +111,7 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $evenement->setStatut('OUVERT');
+            $evenement->setStatut('EN_ATTENTE');
             $evenement->setDateCrea(new \DateTime());
             $evenement->setDateModif(new \DateTime());
 
@@ -120,7 +120,7 @@ class EventController extends AbstractController
             $entityManager->persist($evenement);
             $entityManager->flush();
 
-            $this->addFlash('success', 'L\'événement a été créé avec succès !');
+            $this->addFlash('success', 'Votre événement a été enregistré ! Il sera visible une fois validé par un modérateur.');
 
             return $this->redirectToRoute('app_events');
         }
