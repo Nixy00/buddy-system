@@ -22,8 +22,30 @@
                     <li><a class="nav__link" href="{{ path('app_dashboard') }}">Dashboard</a></li>
                     <li><a class="nav__link" href="{{ path('app_events') }}">Événements</a></li>
                     <li><a class="nav__link" href="{{ path('app_recherche_buddy') }}">Rechercher</a></li>
-                    <li><a class="nav__link" href="{{ path('app_messagerie') }}">Messagerie</a></li>
-                    <li><a class="nav__link" href="{{ path('app_profil_show', {'id': app.user.profil.id}) }}">Mon Profil</a></li>
+                    <li>
+                        <a class="nav__link" href="{{ path('app_messagerie') }}" style="display: flex; align-items: center; gap: 5px;">
+                            Messagerie
+                            {% set notifCount = get_global_notif_count(app.user) %}
+                            {% if notifCount > 0 %}
+                                <span style="
+                                    background-color: #dc3545;
+                                    color: white;
+                                    font-size: 0.7rem;
+                                    font-weight: bold;
+                                    padding: 2px 6px;
+                                    border-radius: 50%;
+                                    min-width: 18px;
+                                    height: 18px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    line-height: 1;
+                                ">
+                                    {{ notifCount }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>                    <li><a class="nav__link" href="{{ path('app_profil_show', {'id': app.user.profil.id}) }}">Mon Profil</a></li>
                 {% else %}
                     {# les visiteurs voient seulement : #}
                     <li><a class="nav__link" href="{{ path('app_home') }}">Accueil</a></li>
