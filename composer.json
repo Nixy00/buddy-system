@@ -111,7 +111,8 @@
         ],
         "test": [
             "@test:phpcs",
-            "@test:twigcs"
+            "@test:twigcs",
+            "@test:codeception"
         ],
         "fix": [
             "@fix:phpcs",
