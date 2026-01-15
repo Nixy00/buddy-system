@@ -99,6 +99,7 @@ class MessagerieController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Conversation désarchivée.');
+
         return $this->redirectToRoute('app_messagerie_archives');
     }
 
@@ -114,6 +115,7 @@ class MessagerieController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Conversation supprimée.');
+
         return $this->redirectToRoute('app_messagerie');
     }
 

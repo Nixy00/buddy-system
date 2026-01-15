@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Relation;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_USER')]
@@ -22,6 +21,7 @@ class RelationController extends AbstractController
 
         if ($sender === $receiver) {
             $this->addFlash('error', 'Vous ne pouvez pas vous ajouter vous-même.');
+
             return $this->redirectToRoute('app_profil_show', ['id' => $receiver->getProfil()->getId()]);
         }
 
@@ -44,6 +44,7 @@ class RelationController extends AbstractController
     {
         if ($this->getUser() !== $relation->getReceveur()) {
             $this->addFlash('error', 'Action non autorisée.');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -52,7 +53,7 @@ class RelationController extends AbstractController
 
         $em->flush();
 
-        $this->addFlash('success', 'Vous êtes maintenant buddy avec ' . $relation->getEnvoyeur()->getProfil()->getPrenom() . ' !');
+        $this->addFlash('success', 'Vous êtes maintenant buddy avec '.$relation->getEnvoyeur()->getProfil()->getPrenom().' !');
 
         return $this->redirectToRoute('app_profil_show', ['id' => $relation->getEnvoyeur()->getProfil()->getId()]);
     }
@@ -62,6 +63,7 @@ class RelationController extends AbstractController
     {
         if ($this->getUser() !== $relation->getReceveur()) {
             $this->addFlash('error', 'Action non autorisée.');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -79,6 +81,7 @@ class RelationController extends AbstractController
     {
         if ($this->getUser() !== $relation->getEnvoyeur()) {
             $this->addFlash('error', 'Action non autorisée.');
+
             return $this->redirectToRoute('app_home');
         }
 

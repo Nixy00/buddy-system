@@ -111,7 +111,6 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             if ($this->isGranted('ROLE_ADMIN')) {
                 // Si c'est l'admin, on publie direct
                 $evenement->setStatut('OUVERT');
