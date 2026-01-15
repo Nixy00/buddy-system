@@ -111,7 +111,17 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $evenement->setStatut('EN_ATTENTE');
+
+            if ($this->isGranted('ROLE_ADMIN')) {
+                // Si c'est l'admin, on publie direct
+                $evenement->setStatut('OUVERT');
+                $message = 'Votre événement a été créé et publié !';
+            } else {
+                // Si c'est un étudiant, on met en attente
+                $evenement->setStatut('EN_ATTENTE');
+                $message = 'Votre événement a été enregistré ! Il sera visible une fois validé par un modérateur.';
+            }
+
             $evenement->setDateCrea(new \DateTime());
             $evenement->setDateModif(new \DateTime());
 
@@ -120,7 +130,7 @@ class EventController extends AbstractController
             $entityManager->persist($evenement);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Votre événement a été enregistré ! Il sera visible une fois validé par un modérateur.');
+            $this->addFlash('success', $message);
 
             return $this->redirectToRoute('app_events');
         }
