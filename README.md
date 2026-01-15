@@ -4,20 +4,21 @@
 
 Buddy System est une application web permettant de faciliter l'intégration des étudiants internationaux à l'Université de Reims Champagne-Ardenne. L'application permet aux étudiants locaux de se mettre en relation avec des étudiants internationaux via un système de parrainage, d'événements et de messagerie.
 
-## 🗂️ Table of Contents
+## 📂 Sommaire
 
-- [Contributors](#-contributors)
-- [Project Context](#-project-context)
-- [Features](#-features)
-- [Requirements](#-requirements)
+- [Contributeurs](#-contributeurs)
+- [Contexte du Projet](#-contexte-du-projet)
+- [Fonctionnalités](#-fonctionnalités)
+- [Prérequis](#-prérequis)
 - [Technologies](#-technologies)
-- [Testing the application](#-testing-the-application)
+- [Tests de l'application](#-tests-de-lapplication)
 - [Installation / Configuration](#-installation--configuration)
-- [Composer scripts](#-composer-scripts)
-- [Project Architecture](#-project-architecture)
-- [Screenshots](#-screenshots)
+- [Scripts Composer](#-scripts-composer)
+- [Architecture du Projet](#-architecture-du-projet)
+- [Captures d'écran](#-captures-décran)
+- [Licence & Droits](#-licence--droits)
 
-## 👥 Contributors
+## 👥 Contributeurs
 
 - **Ayoub SEGHIR**     (segh0010)
 - **Yacine MOUNSI**    (moun0023)
@@ -25,14 +26,14 @@ Buddy System est une application web permettant de faciliter l'intégration des 
 - **Sacha DEUTSCHE**   (deut0005)
 - **Iyed BOUZENADA**   (bouz0078)
 
-## 📌 Project Context
+## 📌 Contexte du Projet
 
 - Ce projet a été réalisé dans le cadre d'une SAÉ (Situation d'Apprentissage et d'Évaluation) du BUT Informatique.
 - Durée : Octobre 2025 - Janvier 2026
 - Objectif principal : Développer une application web en utilisant le framework Symfony.
 - Enseignants : M. Desjardin, Mme Zahia Guessoum
 
-## ✨ Features
+## ✨ Fonctionnalités
 
 - Consulter la liste des événements (Sport, Culture, Loisirs).
 - S'inscrire ou se désinscrire aux événements.
@@ -49,7 +50,7 @@ Buddy System est une application web permettant de faciliter l'intégration des 
 - Gérer les utilisateurs, événements et signalements (CRUD).
 - Dashboard avec statistiques (nombre d'utilisateurs, événements populaires, etc.).
 
-## ⚙️ Requirements
+## ⚙️ Prérequis
 
 - **PHP** >= 8.2
 - **Symfony CLI**
@@ -63,7 +64,7 @@ Buddy System est une application web permettant de faciliter l'intégration des 
 - Database: **MySQL**
 - Tests: **Codeception**
 
-## 🛠️ Testing the application
+## 🛠️ Tests de l'application
 
 Vous pouvez tester l'application en local en suivant les instructions d'installation ci-dessous.
 
@@ -76,18 +77,33 @@ Dans le contexte de développement, voici quelques utilisateurs que vous pouvez 
 
 Les fixtures génèrent automatiquement :
 
-- **+183 utilisateurs** (profils complets avec bio, langues, centres d'intérêt)
-- **+34 événements** (Sport, Culture, Loisirs avec dates variées)
-- **+50 conversations** entre utilisateurs  
-- **+200 messages** répartis dans les conversations
-- **+32 signalements** de messages et utilisateurs
+- **+100 utilisateurs** (profils complets avec bio, langues, centres d'intérêt)
+- **+30 événements** (Sport, Culture, Loisirs avec dates variées)
+- **+15 conversations** entre utilisateurs
+- **+80 messages** répartis dans les conversations
+- **+30 signalements** de messages et utilisateurs
+- **+25 demandes de relations** (entre deux utilisateurs)
 
 ### Procédures de test suggérées
 
-1. **Authentification** : Se connecter avec `user@example.com` / `test`
-2. **Inscription événement** : Aller sur `/evenements`, s'inscrire à un événement ouvert
-3. **Messagerie** : Rechercher un buddy (`/buddy`), lui envoyer un message
-4. **Administration** : Se connecter avec `root@example.com` / `test`, accéder à `/admin`
+Voici les parcours clés pour tester les fonctionnalités principales :
+
+1.  **Authentification**
+    * **Utilisateur :** `user@example.com` / `test`
+    * **Admin :** `root@example.com` / `test`
+
+2.  **Cycle de vie d'un Événement**
+    * Connectez-vous en tant qu'**Utilisateur** et proposez un événement (il passera en statut "En attente").
+    * Connectez-vous en tant qu'**Admin**, allez dans la page **Evenements** puis **Voir les demandes en attente** et vous pourrez alors gérer le statut des événements en attente comme vous le souhaitez.
+    * L'événement est désormais visible et ouvert aux inscriptions.
+
+3.  **Messagerie & Social**
+    * Recherchez un buddy et envoyez une demande.
+    * Échangez des messages (observez le compteur de notifications en haut).
+    * Testez l'**archivage** d'une conversation pour vérifier le mode "lecture seule".
+
+4.  **Administration**
+    * Accédez à `/admin` pour gérer les utilisateurs, les signalements et modérer les contenus.
 
 ## 🚀 Installation / Configuration
 
@@ -126,7 +142,7 @@ DATABASE_URL="mysql://USER:PASSWORD@127.0.0.1:3306/buddy_system?serverVersion=ma
 
 **Remplacez `USER` et `PASSWORD` par vos identifiants MySQL.**
 
-> 💡 **Note** : La base de données sera créée automatiquement lors de l'exécution du script `composer db`.
+💡 **Note** : La base de données sera créée automatiquement lors de l'exécution du script `composer db`.
 
 ### Créer et initialiser la base de données
 
@@ -144,7 +160,7 @@ Cette commande va :
 
 *Veuillez avoir une bonne connexion internet pour que la commande fonctionne correctement*
 
-> ⚠️ **Attention** : Cette commande supprime toutes les données existantes !
+⚠️ **Attention** : Cette commande supprime toutes les données existantes !
 
 
 
@@ -156,7 +172,7 @@ Exécutez la commande suivante :
 composer start
 ```
 
-## 📝 Composer scripts
+## 📝 Scripts Composer
 
 Pour exécuter un script composer, utilisez la commande suivante :
 
@@ -175,7 +191,7 @@ Voici les scripts disponibles :
 - `"test:codeception"` : Lance tous les tests Codeception
 - `"test"` : Exécute tous les scripts de test (Twig, PHP, Codeception)
 
-## 🏗️ Project Architecture
+## 🏗️ Architecture du Projet
 
 ### 📁 Structure Principale
 
@@ -209,8 +225,10 @@ Voici les scripts disponibles :
 - **Signalement** : Représente un signalement de message ou d'utilisateur.
 - **Relation** : Représente une relation buddy (parrainage).
 - **Role** : Représente un rôle utilisateur (ROLE_USER, ROLE_ADMIN).
+- **Organisation** : Représente le lien entre un utilisateur organisateur et un événement.
+- **Possession** : Représente l'attribution d'un rôle spécifique à un utilisateur.
 
-## 📸 Screenshots
+## 📸 Captures d'écran
 
 ### Page d'Accueil
 
@@ -218,7 +236,7 @@ Voici les scripts disponibles :
 
 La page d'accueil présente Buddy System avec un design moderne et épuré :
 - **Hero section** : Slogan "Trouvez votre binôme idéal à l'URCA"
-- **Call-to-action** : Boutons "Explorez gratuitement" et "Découvrez les événements"
+- **Call-to-action** : Boutons "S'inscrire gratuitement" et "Découvrir les événements"
 - **Navigation** : Accès aux principales sections (Accueil, Événements, Rechercher)
 - **Section "Comment ça marche ?"** : Explication en 3 étapes du processus
 - **Prochains événements** : Aperçu des événements à venir
@@ -239,7 +257,7 @@ La page d'accueil présente Buddy System avec un design moderne et épuré :
 **Formulaire d'inscription** complet :
 - Informations personnelles (Prénom, Nom, Email, Âge)
 - Mot de passe avec confirmation
-- **Type de compte** : Local ou International
+- **Type d'étudiant** : Local ou International
 - Acceptation des CGU (CGU accessibles depuis le footer)
 
 ---
@@ -250,9 +268,9 @@ La page d'accueil présente Buddy System avec un design moderne et épuré :
 
 **Dashboard personnel** avec 4 raccourcis principaux :
 - **Mon Profil** : Gérer ses informations
-- **Recherche** : Trouver un buddy
+- **Mes Buddies** : Accès rapide à toutes nos relations Buddy
 - **Messagerie** : Conversations actives
-- **Mes Événements** : Inscriptions aux événements
+- **Mes Événements** : Accès rapide aux événement dans lesquels nous sommes inscrits
 
 Un bouton "Supprimer mon compte" est disponible pour la suppression du compte.
 
@@ -267,18 +285,11 @@ Un bouton "Supprimer mon compte" est disponible pour la suppression du compte.
 ![Liste des événements (vue utilisateur)](screenshots/events_list.png)
 
 **Page de découverte des événements** avec :
-- Bouton **"Créer un événement"** pour les utilisateurs connectés
+- Bouton **"Faire une demande de création"** pour les utilisateurs connectés
 - **Filtres** par catégorie et statut
 - **Barre de recherche** pour trouver rapidement un événement
 - **Cartes événements** affichant : titre, catégorie, date, lieu, places disponibles
-- **États visuels** : Ouvert (vert), Fermé (rouge), Date dépassée
-
-![Liste des événements (vue admin)](screenshots/events_list_admin.png)
-
-**Vue administrative des événements** avec :
-- **Boutons d'action** : "Créer un événement" et "Voir les demandes en attente"
-- **Filtres avancés** par catégorie et statut
-- Même système de cartes avec états visuels clairs
+- **États visuels** : Ouvert (vert), Fermé(Complet/Expiré) (rouge)
 
 ![Création d'événement](screenshots/creation_event.png)
 
@@ -296,19 +307,26 @@ Un bouton "Supprimer mon compte" est disponible pour la suppression du compte.
 - **Bouton d'inscription/désinscription**
 - **Liste des participants** (liens cliquables vers profils)
 
-![Modification d'événement (admin)](screenshots/admin_event_edit.png)
+![Liste des événements (vue admin)](screenshots/events_list_admin.png)
 
-**Interface EasyAdmin** pour modifier un événement :
-- Formulaire complet en mode sombre
-- Tous les champs éditables (titre, description, lieu, dates, capacité, statut)
-- Sélection du statut avec dropdown
+**Vue administrative des événements** avec :
+- **Boutons d'action** : "Créer un événement" et "Voir les demandes en attente"
+- **Filtres avancés** par catégorie et statut
+- Même système de cartes avec états visuels clairs
+- Le bouton "Voir les demandes en attente" redirige directement automatiquement vers la page suivante.
 
 ![Gestion des demandes en attente (admin)](screenshots/admin_event_attente.png)
 
 **Panel admin** pour gérer les événements en attente de validation :
-- Tableau avec ID, Titre, Lieu, Dates, Capacité et Statut
-- Filtrage par statut "EN_ATTENTE" (jaune)
+- Tableau avec ID, Titre, Lieu, Dates, Capacité et **surtout** Statut
+- Filtrage par statut "EN_ATTENTE" (automatique en cliquant sur le lien de la page précèdente "Voir les demandes en attente")
 - Actions : Éditer, Supprimer
+
+![Modification d'événement (admin)](screenshots/admin_event_edit.png)
+
+**Interface EasyAdmin** pour publier et modifier un événement :
+- Pour publier, modifier le statut : **EN_ATTENTE** --> **OUVERT**
+- Tous les champs éditables (titre, description, lieu, dates, capacité, statut)
 
 ---
 
@@ -317,7 +335,7 @@ Un bouton "Supprimer mon compte" est disponible pour la suppression du compte.
 ![Mon profil](screenshots/my_profil.png)
 
 **Page profil personnel** affichant :
-- Photo de profil (avatar)
+- Photo de profil (avatar BLOB)
 - Informations (nom, prénom, âge)
 - Biographie personnelle
 - Langues parlées
@@ -336,8 +354,8 @@ Un bouton "Supprimer mon compte" est disponible pour la suppression du compte.
 
 **Consultation d'un profil public** avec :
 - Informations visibles publiquement
-- Bouton **"Envoyer un message"** 
-- Bouton **"Signaler"**
+- Bouton **"Envoyer un message"**
+- Bouton **"Demander en Buddy"**
 
 
 ---
@@ -358,9 +376,10 @@ Un bouton "Supprimer mon compte" est disponible pour la suppression du compte.
 ![Liste des conversations](screenshots/messagerie.png)
 
 **Vue d'ensemble** des conversations :
-- Photo et nom du contact
+- Photo et nom/prénom du contact
 - Date du dernier message
-- Badge pour messages non lus
+- Possibilité de supprimer/archiver une conversation
+- Accéder a ses conversations archivées
 
 ![Conversation](screenshots/messagerie2.png)
 
@@ -368,7 +387,9 @@ Un bouton "Supprimer mon compte" est disponible pour la suppression du compte.
 - Historique des messages
 - Messages alignés (gauche = reçus, droite = envoyés)
 - Formulaire d'envoi
-- Bouton "Signaler"
+- Bouton "Signaler" pour les messages reçus
+- Bouton "Supprimer" pour les messages envoyés
+- icône check + "Envoyé" **ou** icone double-check + "Vu" selon l'état du message
 
 ---
 
@@ -381,13 +402,13 @@ Un bouton "Supprimer mon compte" est disponible pour la suppression du compte.
 - Événements problématiques
 - Utilisateurs à comportement inapproprié
 
-Champs : Raison (menu déroulant) + Description détaillée
+Champs : Motif (plusieurs choix proposés) + Description détaillée
 
 ---
 
 ### Chatbot
 
-![Chatbot](screenshots/chatbot.png)
+![Chatbot](screenshots/chatbot.png) | ![Chatbot2](screenshots/chatbot2.png)
 
 **Assistant virtuel** accessible via le bouton bleu en bas à droite pour aider à la navigation.
 
@@ -426,3 +447,12 @@ Application entièrement **responsive** (mobile-first) :
 - Cartes empilées verticalement
 - Formulaires adaptés
 - Expérience fluide sur tous écrans
+
+## 📝 Licence & Droits
+
+Ce projet a été développé dans un cadre universitaire pour l'**IUT de Reims**.
+Tous droits réservés aux auteurs.
+
+---
+
+# FIN
