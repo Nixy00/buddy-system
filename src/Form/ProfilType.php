@@ -118,6 +118,7 @@ class ProfilType extends AbstractType
                     if (null === $languesAsString) {
                         return [];
                     }
+
                     return explode(', ', $languesAsString);
                 },
                 function ($languesAsArray): ?string {
