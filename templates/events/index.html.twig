@@ -7,8 +7,29 @@
     <div class="page-header">
         <h1>Découvrez nos Événements</h1>
         <p class="muted">Participez à la vie étudiante et rencontrez vos futurs parrains/filleuls !</p>
-        <div style="margin-top: 1.5rem;">
-            <a href="{{ path('app_event_create') }}" class="btn btn--primary">Créer un événement</a>
+        <div style="text-align: center; margin-bottom: 2rem;">
+            {# Bouton pour les users  #}
+            {% if app.user %}
+                <a href="{{ path('app_event_create') }}" class="btn btn--primary">
+                    <i class="fas fa-plus-circle"></i>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        Créer un événement
+                    {% else %}
+                        Faire une demande de création
+                    {% endif %}
+                </a>
+            {% endif %}
+
+            {# Bouton réservé aux admins #}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin', {
+                    'crudAction': 'index',
+                    'crudControllerFqcn': 'App\\Controller\\Admin\\EvenementCrudController',
+                    'query': 'EN_ATTENTE'
+                }) }}" class="btn btn--secondary" style="margin-left: 10px; background-color: #ffc107; color: #000; border: none;">
+                    <i class="fas fa-user-shield"></i> Voir les demandes en attente
+                </a>
+            {% endif %}
         </div>
     </div>
 

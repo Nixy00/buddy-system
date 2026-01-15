@@ -39,4 +39,17 @@ class EvenementRepository extends ServiceEntityRepository
     {
         return $this->count([]);
     }
+
+    /**
+     * Récupère tous les événements publiés (Ouvert ou Complet) pour l'affichage public
+     */
+    public function findPublished(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.statut IN (:statuses)')
+            ->setParameter('statuses', ['OUVERT', 'COMPLET']) // On exclut 'EN_ATTENTE', 'ANNULE', 'REJETE'
+            ->orderBy('e.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
