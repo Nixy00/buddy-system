@@ -35,10 +35,11 @@ class EvenementCrudController extends AbstractCrudController
             // Pour le formulaire (création/édition)
             ChoiceField::new('statut')
                 ->setChoices([
-                    'Ouvert' => 'ouvert',
-                    'Complet' => 'complet',
-                    'Annulé' => 'annule',
-                    'Terminé' => 'termine'
+                    'Ouvert' => 'OUVERT',
+                    'Complet' => 'COMPLET',
+                    'Annulé' => 'ANNULE',
+                    'Terminé' => 'TERMINE',
+                    'En attente' => 'EN_ATTENTE',
                 ])
                 ->hideOnIndex(),
         ];
