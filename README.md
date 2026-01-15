@@ -137,7 +137,7 @@ Puis exécutez la commande que vous pouvez trouver sur le site Symfony : [Symfon
 À la racine de votre projet, créez un fichier `.env.local` et ajoutez-y votre URL de connexion à la base de données :
 
 ```env
-DATABASE_URL="mysql://USER:PASSWORD@127.0.0.1:3306/buddy_system?serverVersion=mariadb-10.6.0&charset=utf8mb4"
+DATABASE_URL="mysql://USER:PASSWORD@mysql:3306/buddy_system?serverVersion=mariadb-10.6.0&charset=utf8mb4"
 ```
 
 **Remplacez `USER` et `PASSWORD` par vos identifiants MySQL.**
