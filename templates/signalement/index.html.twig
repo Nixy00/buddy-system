@@ -108,7 +108,7 @@
                                 Signalement du profil de :
                                 <strong>
                                     {% if signalement.reportedUser.profil %}
-                                        <a href="{{ path('app_profil_show', {'id': signalement.reportedUser.profil.id}) }}">
+                                        <a href="{{ path('app_profil_show', {id: signalement.reportedUser.profil.id}) }}">
                                             {{ signalement.reportedUser.profil.prenom }} {{ signalement.reportedUser.profil.nom }}
                                         </a>
                                     {% else %}
@@ -120,7 +120,7 @@
                             <p style="margin: 0; color: var(--gray-800);">
                                 Signalement de l'événement :
                                 <strong>
-                                    <a href="{{ path('app_event_show', {'id': signalement.reportedEvent.id}) }}">
+                                    <a href="{{ path('app_event_show', {id: signalement.reportedEvent.id}) }}">
                                         "{{ signalement.reportedEvent.titre }}"
                                     </a>
                                 </strong>
@@ -129,7 +129,7 @@
                     </div>
 
                     <div style="text-align: right;">
-                        <a href="{{ path('app_signalement_show', {'id': signalement.id}) }}" class="btn btn--secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                        <a href="{{ path('app_signalement_show', {id: signalement.id}) }}" class="btn btn--secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
                             Gérer le signalement &rarr;
                         </a>
                     </div>
