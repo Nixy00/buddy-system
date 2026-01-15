@@ -25,7 +25,7 @@ class EventController extends AbstractController
         #[MapQueryParameter] string $search = '',
     ): Response {
         // Récupération depuis la BDD
-        $evenementsEntities = $evenementRepository->findAll();
+        $evenementsEntities = $evenementRepository->findPublished();
 
         // Conversion en tableaux pour compatibilité template
         $events = [];
