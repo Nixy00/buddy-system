@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Buddies - Buddy System{% endblock %}
+
+{% block main %}
+    <section class="section">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h1 class="h1" style="margin: 1;">Mes Buddies</h1>
+                <a href="{{ path('app_dashboard') }}" class="btn btn--ghost">Retour au dashboard</a>
+            </div>
+
+            {% if mesRelations is empty %}
+                <div style="text-align: center; padding: 3rem; background: #f8f9fa; border-radius: 8px; margin-top: 2rem;">
+                    <p style="color: #6c757d; font-size: 1.1rem; margin-bottom: 1.5rem;">
+                        Vous n'avez pas encore de buddy dans votre réseau.
+                    </p>
+                    <a href="{{ path('app_recherche_buddy') }}" class="btn btn--primary" style="text-decoration: none;">
+                        <i class="fas fa-search me-2"></i> Trouver des buddies
+                    </a>
+                </div>
+            {% else %}
+                <p class="lead" style="margin-bottom: 2rem;">
+                    Retrouvez ici toutes les personnes avec qui vous êtes en contact.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+                    {% for relation in mesRelations %}
+                        {# on détermine qui est "l'autre" personne #}
+                        {% set buddy = (relation.envoyeur == app.user) ? relation.receveur : relation.envoyeur %}
+
+                        <div class="card buddy-card" style="border: 1px solid var(--gray-200); border-radius: 12px; padding: 1.5rem; background: white; display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.2s;">
+                            <div class="avatar" style="width: 80px; height: 80px; margin-bottom: 1rem;">
+                                {% if buddy.profil.avatar %}
+                                    <img src="{{ path('app_profil_avatar', {id: buddy.profil.id}) }}" alt="{{ buddy.profil.prenom }}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                {% else %}
+                                    <div style="width: 100%; height: 100%; background: var(--gray-200); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--gray-600); font-size: 1.5rem;">
+                                        {{ buddy.profil.prenom|first }}{{ buddy.profil.nom|first }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <h3 style="margin: 0 0 0.25rem;">{{ buddy.profil.prenom }} {{ buddy.profil.nom }}</h3>
+                            <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">
+                                Buddy depuis le {{ relation.dateReponse|date('d/m/Y') }}
+                            </p>
+
+                            <div style="display: flex; gap: 10px; width: 100%;">
+                                <a href="{{ path('app_profil_show', {id: buddy.profil.id}) }}" class="btn btn--secondary" style="flex: 1; font-size: 0.9rem;">
+                                    Profil
+                                </a>
+                                <a href="{{ path('app_messagerie_start', {id: buddy.id}) }}" class="btn btn--primary" style="flex: 1; font-size: 0.9rem;">
+                                    <i class="fas fa-comment"></i> Message
+                                </a>
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <style>
+        .buddy-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+    </style>
+{% endblock %}
