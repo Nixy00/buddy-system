@@ -38,23 +38,6 @@ class EvenementType extends AbstractType
                 'placeholder' => 'Choisir une catégorie',
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('image', FileType::class, [
-                'label' => 'Image de couverture',
-                'mapped' => false,
-                'required' => false,
-                'attr' => ['class' => 'form-control'],
-                'constraints' => [
-                    new File([
-                        'maxSize' => '2048k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                            'image/webp',
-                        ],
-                        'mimeTypesMessage' => 'Veuillez uploader une image valide (JPG, PNG, WEBP)',
-                    ]),
-                ],
-            ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description complète',
                 'attr' => [
