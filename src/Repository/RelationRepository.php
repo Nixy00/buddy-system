@@ -42,8 +42,9 @@ class RelationRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleScalarResult();
+    }
 
-
+    /**
      * Récupère toutes les relations validées pour un utilisateur.
      * @return Relation[]
      */
@@ -57,6 +58,5 @@ class RelationRepository extends ServiceEntityRepository
             ->orderBy('r.dateReponse', 'DESC')
             ->getQuery()
             ->getResult();
->>>>>>> src/Repository/RelationRepository.php
     }
 }
