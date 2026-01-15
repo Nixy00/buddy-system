@@ -8,7 +8,7 @@
         <h1>Découvrez nos Événements</h1>
         <p class="muted">Participez à la vie étudiante et rencontrez vos futurs parrains/filleuls !</p>
         <div style="text-align: center; margin-bottom: 2rem;">
-            {# Bouton pour les users  #}
+            {# Bouton pour les users #}
             {% if app.user %}
                 <a href="{{ path('app_event_create') }}" class="btn btn--primary">
                     <i class="fas fa-plus-circle"></i>
@@ -23,9 +23,9 @@
             {# Bouton réservé aux admins #}
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('admin', {
-                    'crudAction': 'index',
-                    'crudControllerFqcn': 'App\\Controller\\Admin\\EvenementCrudController',
-                    'query': 'EN_ATTENTE'
+                    crudAction: 'index',
+                    crudControllerFqcn: 'App\\Controller\\Admin\\EvenementCrudController',
+                    query: 'EN_ATTENTE',
                 }) }}" class="btn btn--secondary" style="margin-left: 10px; background-color: #ffc107; color: #000; border: none;">
                     <i class="fas fa-user-shield"></i> Voir les demandes en attente
                 </a>
@@ -66,7 +66,7 @@
     <!-- Grille des événements -->
     <div class="events-grid">
         {% for event in events %}
-            {% include 'events/_event_card.html.twig' %}
+            {{ include('events/_event_card.html.twig') }}
         {% else %}
             <div class="no-events" style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #F9FAFB; border-radius: var(--radius-lg);">
                 <p class="muted">Aucun événement ne correspond à vos critères.</p>
