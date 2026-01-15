@@ -11,7 +11,12 @@
             {# Bouton pour les users  #}
             {% if app.user %}
                 <a href="{{ path('app_event_create') }}" class="btn btn--primary">
-                    <i class="fas fa-plus-circle"></i> Faire une demande de création
+                    <i class="fas fa-plus-circle"></i>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        Créer un événement
+                    {% else %}
+                        Faire une demande de création
+                    {% endif %}
                 </a>
             {% endif %}
 
