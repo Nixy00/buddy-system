@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ParticipationRepository;
+use App\Repository\RelationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class DashboardController extends AbstractController
 {
     #[Route('/dashboard', name: 'app_dashboard')]
-    public function index(ParticipationRepository $participationRepository): Response
+    public function index(ParticipationRepository $participationRepository, RelationRepository $relationRepository): Response
     {
         $user = $this->getUser();
 
@@ -22,10 +23,25 @@ class DashboardController extends AbstractController
         }
 
         $mesParticipations = $participationRepository->findUpcomingEventsByUser($user);
+        $buddyCount = $relationRepository->countAcceptedForUser($user);
 
         return $this->render('dashboard/index.html.twig', [
             'user' => $user,
             'mesParticipations' => $mesParticipations,
+            'buddyCount' => $buddyCount,
+        ]);
+    }
+
+    #[Route('/dashboard/mes-buddies', name: 'app_dashboard_mes_buddies')]
+    public function mesBuddies(RelationRepository $relationRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) return $this->redirectToRoute('app_login');
+
+        $mesRelations = $relationRepository->findAcceptedRelationsByUser($user);
+
+        return $this->render('dashboard/mes_buddies.html.twig', [
+            'mesRelations' => $mesRelations,
         ]);
     }
 
