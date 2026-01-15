@@ -42,14 +42,14 @@
 
                     {# Bouton de signalement en haut à gauche #}
                     {% if app.user and profil.utilisateur and app.user != profil.utilisateur %}
-                        <a href="{{ path('app_signalement_new_buddy', {'id': profil.utilisateur.id}) }}" title="Signaler ce profil" style="position: absolute; top: 10px; left: 10px; z-index: 1; color: #dc3545; font-size: 1.2rem; text-decoration: none; background: rgba(255,255,255,0.7); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                        <a href="{{ path('app_signalement_new_buddy', {id: profil.utilisateur.id}) }}" title="Signaler ce profil" style="position: absolute; top: 10px; left: 10px; z-index: 1; color: #dc3545; font-size: 1.2rem; text-decoration: none; background: rgba(255,255,255,0.7); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
                             🚩
                         </a>
                     {% endif %}
 
                     <div style="height: 120px; background: var(--gray-100); position: relative;">
                         <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--gray-300); position: absolute; bottom: -40px; left: 20px; border: 4px solid white; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                            {% include '_components/_avatar.html.twig' with {'profil': profil} %}
+                            {{ include('_components/_avatar.html.twig', {profil: profil}) }}
                         </div>
                     </div>
                     <div style="padding: 50px 20px 20px;">
@@ -117,5 +117,3 @@
         {% endif %}
     </div>
 {% endblock %}
-
-
