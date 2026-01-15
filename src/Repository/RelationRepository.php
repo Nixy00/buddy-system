@@ -28,4 +28,19 @@ class RelationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * Compte les demandes reçues en attente
+     */
+    public function countDemandReceivedByUser(User $user): int
+    {
+        return (int) $this->createQueryBuilder('r')
+            ->select('count(r.id)')
+            ->where('r.statut = :statut')
+            ->andWhere('r.receveur = :user') // On ne compte que celles qu'on REÇOIT
+            ->setParameter('statut', 'en_attente')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
