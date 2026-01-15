@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Message;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,20 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
-    //    /**
-    //     * @return Message[] Returns an array of Message objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('m.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Message
-    //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Compte les messages non lus pour un utilisateur
+     */
+    public function countUnreadMessagesByUser(User $user): int
+    {
+        return (int) $this->createQueryBuilder('m')
+            ->select('count(m.id)')
+            ->join('m.conversation', 'c')
+            ->where('c.initiateur = :user OR c.interlocuteur = :user') // On est dans la conversation
+            ->andWhere('m.utilisateur != :user') // Ce n'est pas moi qui ai écrit le message
+            ->andWhere('m.dateLecture IS NULL') // Il n'est pas lu
+            ->andWhere('m.estSupprime = false') // Il n'est pas supprimé
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
