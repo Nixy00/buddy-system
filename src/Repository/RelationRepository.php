@@ -42,5 +42,21 @@ class RelationRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleScalarResult();
+
+
+     * Récupère toutes les relations validées pour un utilisateur.
+     * @return Relation[]
+     */
+    public function findAcceptedRelationsByUser(User $user): array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.statut = :statut')
+            ->andWhere('r.envoyeur = :user OR r.receveur = :user')
+            ->setParameter('statut', 'acceptee')
+            ->setParameter('user', $user)
+            ->orderBy('r.dateReponse', 'DESC')
+            ->getQuery()
+            ->getResult();
+>>>>>>> src/Repository/RelationRepository.php
     }
 }

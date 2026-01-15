@@ -33,6 +33,7 @@ class Conversation
      * @var Collection<int, Message>
      */
     #[ORM\OneToMany(mappedBy: 'conversation', targetEntity: Message::class, orphanRemoval: true)]
+    #[ORM\OrderBy(['dateEnvoi' => 'ASC'])]
     private Collection $messages;
 
     /**

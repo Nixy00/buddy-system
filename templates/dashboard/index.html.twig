@@ -26,16 +26,24 @@
                 </a>
             </li>
 
-            {# Carte Recherche Buddy #}
-            <li class="card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; background: white;">
-                <h3 style="margin: 0 0 0.5rem; color: var(--gray-900);">Recherche</h3>
-                <p style="color: var(--gray-600); margin: 0 0 1rem;">
-                    Trouvez un buddy qui correspond à vos attentes.
+            {# Carte Mes Buddies #}
+            <li class="card" style="border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; background: white; display: flex; flex-direction: column;">
+                <h3 style="margin: 0 0 0.5rem; color: var(--gray-900);">Mes Buddies</h3>
+
+                <p style="color: var(--gray-600); margin: 0 0 1rem; flex-grow: 1;">
+                    {% if buddyCount == 0 %}
+                        Vous n'avez pas encore de buddy. Lancez une recherche !
+                    {% else %}
+                        Vous êtes en relation avec <strong>{{ buddyCount }} {{ buddyCount > 1 ? 'buddies' : 'buddy' }}</strong>.
+                    {% endif %}
                 </p>
-                <a href="{{ path('app_recherche_buddy') }}" class="card__link"
-                   style="color: var(--color-accent); text-decoration: none; font-weight: 500;">
-                    Lancer une recherche →
-                </a>
+
+                <div style="display: flex; gap: 15px; align-items: center; justify-content: space-between;">
+                    <a href="{{ path('app_dashboard_mes_buddies') }}" class="card__link"
+                       style="color: var(--color-accent); text-decoration: none; font-weight: 500;">
+                        Voir mes buddies →
+                    </a>
+                </div>
             </li>
 
             {# Carte Messagerie #}
@@ -58,7 +66,7 @@
                     {% if mesParticipations is empty %}
                         Vous n'êtes inscrit à aucun événement pour le moment.
                     {% else %}
-                        Vous participez à {{ mesParticipations|length }} événement{{ mesParticipations|length > 1 ? 's' : '' }}.
+                        Vous participez à <strong>{{ mesParticipations|length }} événement{{ mesParticipations|length > 1 ? 's' : '' }}</strong>.
                     {% endif %}
                 </p>
                 <a href="{{ path('app_dashboard_mes_evenements') }}" class="card__link"

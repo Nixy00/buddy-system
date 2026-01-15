@@ -45,7 +45,7 @@ security:
         # protection du dashboard et du profil pour les utilisateurs connectés
         - { path: ^/dashboard, roles: ROLE_USER }
         - { path: ^/profil/edit, roles: ROLE_USER }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
     security:
