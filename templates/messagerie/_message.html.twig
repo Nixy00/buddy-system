@@ -8,7 +8,7 @@
     {# 1. AJOUT : BOUTON POUBELLE #}
     {# On le place AVANT la bulle pour qu'il s'affiche à sa GAUCHE #}
     {% if isMe and not message.estSupprime and not (isArchived|default(false)) %}
-        <a href="{{ path('app_message_delete', {'id': message.id}) }}"
+        <a href="{{ path('app_message_delete', {id: message.id}) }}"
            onclick="return confirm('Êtes-vous sur de vouloir supprimer ce message ?');"
            title="Supprimer"
            style="color: #adb5bd; padding-bottom: 12px; font-size: 0.85rem; transition: color 0.2s;">
@@ -50,7 +50,7 @@
     </div>
 
     {% if not isMe and not message.estSupprime %}
-        <a href="{{ path('app_signalement_new', {'id': message.id}) }}"
+        <a href="{{ path('app_signalement_new', {id: message.id}) }}"
            title="Signaler ce message"
            style="color: #dc3545 !important; font-size: 1rem; padding: 5px; text-decoration: none !important; display: inline-block;">
             🚩
