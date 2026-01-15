@@ -17,7 +17,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Compte le nombre total d'utilisateurs
+     * Compte le nombre total d'utilisateurs.
      */
     public function countUsers(): int
     {

@@ -40,7 +40,7 @@
                     {# Modification pour la biographie #}
                     <div class="form-group">
                         {{ form_label(form.biographie) }}
-                        {{ form_widget(form.biographie, {'attr': {'style': 'resize: none;'}}) }}
+                        {{ form_widget(form.biographie, {attr: {style: 'resize: none;'}}) }}
                         {{ form_errors(form.biographie) }}
                     </div>
 
@@ -50,8 +50,8 @@
                         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 8px;">
                             {% for child in form.langues %}
                                 <div class="form-check" style="display: flex; align-items: center; gap: 8px;">
-                                    {{ form_widget(child, {'attr': {'style': 'width: 16px; height: 16px; cursor: pointer;'}}) }}
-                                    {{ form_label(child, null, {'label_attr': {'style': 'cursor: pointer; margin-bottom: 0;'}}) }}
+                                    {{ form_widget(child, {attr: {style: 'width: 16px; height: 16px; cursor: pointer;'}}) }}
+                                    {{ form_label(child, null, {label_attr: {style: 'cursor: pointer; margin-bottom: 0;'}}) }}
                                 </div>
                             {% endfor %}
                         </div>
@@ -64,8 +64,8 @@
                         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 8px;">
                             {% for child in form.disponibilites %}
                                 <div class="form-check" style="display: flex; align-items: center; gap: 8px;">
-                                    {{ form_widget(child, {'attr': {'style': 'width: 16px; height: 16px; cursor: pointer;'}}) }}
-                                    {{ form_label(child, null, {'label_attr': {'style': 'cursor: pointer; margin-bottom: 0;'}}) }}
+                                    {{ form_widget(child, {attr: {style: 'width: 16px; height: 16px; cursor: pointer;'}}) }}
+                                    {{ form_label(child, null, {label_attr: {style: 'cursor: pointer; margin-bottom: 0;'}}) }}
                                 </div>
                             {% endfor %}
                         </div>
@@ -93,7 +93,7 @@
 
             {# Actions #}
             <div class="form-actions" style="display: flex; justify-content: flex-end; gap: 16px; padding-top: 10px;">
-                <a href="{{ path('app_profil_show', {'id': user.profil.id}) }}" class="btn btn--secondary" style="padding: 12px 24px; border-radius: 30px; border: 1px solid var(--gray-300); color: var(--gray-700); background: white; text-decoration: none; font-weight: 500;">
+                <a href="{{ path('app_profil_show', {id: user.profil.id}) }}" class="btn btn--secondary" style="padding: 12px 24px; border-radius: 30px; border: 1px solid var(--gray-300); color: var(--gray-700); background: white; text-decoration: none; font-weight: 500;">
                     Annuler
                 </a>
                 <button type="submit" class="btn btn--primary" style="padding: 12px 32px; border-radius: 30px;">

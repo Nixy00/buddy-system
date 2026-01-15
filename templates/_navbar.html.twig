@@ -16,7 +16,6 @@
         <nav class="nav" id="main-nav" aria-label="Navigation principale">
             <ul class="nav__list">
 
-
                 {# filtrage des liens selon la connexion #}
                 {% if app.user %}
                     <li><a class="nav__link" href="{{ path('app_dashboard') }}">Dashboard</a></li>
@@ -45,7 +44,7 @@
                                 </span>
                             {% endif %}
                         </a>
-                    </li>                    <li><a class="nav__link" href="{{ path('app_profil_show', {'id': app.user.profil.id}) }}">Mon Profil</a></li>
+                    </li>                    <li><a class="nav__link" href="{{ path('app_profil_show', {id: app.user.profil.id}) }}">Mon Profil</a></li>
                 {% else %}
                     {# les visiteurs voient seulement : #}
                     <li><a class="nav__link" href="{{ path('app_home') }}">Accueil</a></li>

@@ -54,7 +54,7 @@
                         {% set lastMessage = conversation.messages|last %}
                         {% set displayDate = lastMessage ? lastMessage.dateEnvoi : conversation.dateCrea %}
                         <span class="muted" style="font-size: 0.85rem;">
-                        {% if displayDate|date('Y-m-d') == "now"|date('Y-m-d') %}
+                        {% if displayDate|date('Y-m-d') == 'now'|date('Y-m-d') %}
                             {{ displayDate|buddyduration }}
                         {% else %}
                             {{ displayDate|buddysmartdate }}
@@ -64,10 +64,10 @@
                         {# Archiver / Supprimer #}
                         <div class="conversation-actions" style="display: flex; gap: 10px; opacity: 0; transition: opacity 0.2s;">
                             {# Bouton Archiver #}
-                            <a href="{{ path('app_conversation_archive', {'id': conversation.id}) }}" title="Archiver" style="color: var(--gray-500); transition: color 0.2s;">
+                            <a href="{{ path('app_conversation_archive', {id: conversation.id}) }}" title="Archiver" style="color: var(--gray-500); transition: color 0.2s;">
                                 <i class="fas fa-box-archive hover-primary"></i>
                             </a>
-                            <a href="{{ path('app_conversation_delete', {'id': conversation.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette conversation ? (Elle disparaîtra de votre liste)');" title="Supprimer" style="color: var(--gray-500); transition: color 0.2s;">
+                            <a href="{{ path('app_conversation_delete', {id: conversation.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette conversation ? (Elle disparaîtra de votre liste)');" title="Supprimer" style="color: var(--gray-500); transition: color 0.2s;">
                                 <i class="fas fa-trash hover-danger"></i>
                             </a>
                         </div>

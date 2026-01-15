@@ -42,7 +42,7 @@
                     <div>
                         <strong style="display: block; color: var(--gray-500); font-size: 0.9rem; margin-bottom: 0.25rem;">Signalé par</strong>
                         {% if signalement.utilisateur and signalement.utilisateur.profil %}
-                            <a href="{{ path('app_profil_show', {'id': signalement.utilisateur.profil.id}) }}">
+                            <a href="{{ path('app_profil_show', {id: signalement.utilisateur.profil.id}) }}">
                                 {{ signalement.utilisateur.profil.prenom }} {{ signalement.utilisateur.profil.nom }}
                             </a>
                         {% else %}
@@ -64,7 +64,7 @@
                     Envoyé par
                     <strong>
                         {% if signalement.message.utilisateur and signalement.message.utilisateur.profil %}
-                            <a href="{{ path('app_profil_show', {'id': signalement.message.utilisateur.profil.id}) }}">
+                            <a href="{{ path('app_profil_show', {id: signalement.message.utilisateur.profil.id}) }}">
                                 {{ signalement.message.utilisateur.profil.prenom }} {{ signalement.message.utilisateur.profil.nom }}
                             </a>
                         {% else %}
@@ -80,7 +80,7 @@
                         Profil de :
                         <strong>
                             {% if signalement.reportedUser.profil %}
-                                <a href="{{ path('app_profil_show', {'id': signalement.reportedUser.profil.id}) }}">
+                                <a href="{{ path('app_profil_show', {id: signalement.reportedUser.profil.id}) }}">
                                     {{ signalement.reportedUser.profil.prenom }} {{ signalement.reportedUser.profil.nom }}
                                 </a>
                             {% else %}
@@ -95,7 +95,7 @@
                     <p style="margin: 0; font-size: 1.1rem; line-height: 1.6; color: var(--gray-900);">
                         Événement :
                         <strong>
-                            <a href="{{ path('app_event_show', {'id': signalement.reportedEvent.id}) }}">
+                            <a href="{{ path('app_event_show', {id: signalement.reportedEvent.id}) }}">
                                 "{{ signalement.reportedEvent.titre }}"
                             </a>
                         </strong>
@@ -121,21 +121,21 @@
 
                 {% if signalement.statut == 'TRAITE' or signalement.statut == 'REJETE' %}
                     <div style="text-align: right;">
-                        <form method="post" action="{{ path('app_signalement_reopen', {'id': signalement.id}) }}" style="margin: 0;">
+                        <form method="post" action="{{ path('app_signalement_reopen', {id: signalement.id}) }}" style="margin: 0;">
                             <button type="submit" class="btn" style="background-color: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem;">Rouvrir le ticket</button>
                         </form>
                     </div>
                 {% else %}
-                    {{ form_start(form, {'attr': {'id': 'form_traitement'}}) }}
+                    {{ form_start(form, {attr: {id: 'form_traitement'}}) }}
                         <div style="display: grid; gap: 1.5rem;">
                             <div class="form-group">
-                                {{ form_label(form.statut, null, {'label_attr': {'style': 'font-weight: 600; margin-bottom: 0.5rem; display: block;'}}) }}
+                                {{ form_label(form.statut, null, {label_attr: {style: 'font-weight: 600; margin-bottom: 0.5rem; display: block;'}}) }}
                                 {{ form_widget(form.statut) }}
                                 {{ form_errors(form.statut) }}
                             </div>
 
                             <div class="form-group">
-                                {{ form_label(form.commentaireModeration, null, {'label_attr': {'style': 'font-weight: 600; margin-bottom: 0.5rem; display: block;'}}) }}
+                                {{ form_label(form.commentaireModeration, null, {label_attr: {style: 'font-weight: 600; margin-bottom: 0.5rem; display: block;'}}) }}
                                 {{ form_widget(form.commentaireModeration) }}
                                 {{ form_errors(form.commentaireModeration) }}
                             </div>
@@ -143,9 +143,9 @@
                     {{ form_end(form) }}
 
                     <div style="display: flex; justify-content: flex-end; align-items: stretch; gap: 1rem; margin-top: 1rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
-                        <a href="{{ path('app_signalement_edit', {'id': signalement.id}) }}" class="btn" style="background-color: #6c757d; color: white; border: none; padding: 0.75rem 1.5rem; text-decoration: none; display: flex; align-items: center;">Modifier</a>
+                        <a href="{{ path('app_signalement_edit', {id: signalement.id}) }}" class="btn" style="background-color: #6c757d; color: white; border: none; padding: 0.75rem 1.5rem; text-decoration: none; display: flex; align-items: center;">Modifier</a>
 
-                        <form method="post" action="{{ path('app_signalement_close', {'id': signalement.id}) }}" style="margin: 0;">
+                        <form method="post" action="{{ path('app_signalement_close', {id: signalement.id}) }}" style="margin: 0;">
                             <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none; padding: 0.75rem 1.5rem; height: 100%;">Fermer le ticket</button>
                         </form>
 

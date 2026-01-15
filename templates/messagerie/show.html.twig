@@ -43,7 +43,7 @@
                     {% set lastDate = currentDate %}
                 {% endif %}
 
-                {% include 'messagerie/_message.html.twig' with {'message': message, 'isArchived': isArchived} %}
+                {{ include('messagerie/_message.html.twig', {message: message, isArchived: isArchived}) }}
 
             {% else %}
                 <div id="empty-message" style="text-align: center; color: var(--gray-500); padding: 2rem;">
@@ -60,12 +60,12 @@
                     <p style="margin-bottom: 10px; font-size: 0.9rem;">
                         <i class="fas fa-lock"></i> Cette conversation est archivée (lecture seule).
                     </p>
-                    <a href="{{ path('app_conversation_unarchive', {'id': conversation.id}) }}" class="btn btn--primary-outline btn-sm">
+                    <a href="{{ path('app_conversation_unarchive', {id: conversation.id}) }}" class="btn btn--primary-outline btn-sm">
                         <i class="fas fa-box-open"></i> Désarchiver pour répondre
                     </a>
                 </div>
             {% else %}
-                {{ form_start(form, {'attr': {'id': 'chat-form', 'data-url': path('app_messagerie_ajax_send', {id: conversation.id})}}) }}
+                {{ form_start(form, {attr: {id: 'chat-form', 'data-url': path('app_messagerie_ajax_send', {id: conversation.id})}}) }}
                 <div style="display: flex; gap: 10px; align-items: flex-start;">
                     <div style="flex-grow: 1;">
                         {{ form_widget(form.contenu) }}

@@ -52,7 +52,7 @@ class ProfilRepository extends ServiceEntityRepository
         return $qb
             ->leftJoin('p.utilisateur', 'u')
             ->where('p.nom LIKE :search OR p.prenom LIKE :search OR p.biographie LIKE :search')
-            ->setParameter('search', '%' . $text . '%')
+            ->setParameter('search', '%'.$text.'%')
             ->orderBy('p.nom', 'ASC')
             ->addOrderBy('p.prenom', 'ASC')
             ->getQuery()
@@ -79,6 +79,7 @@ class ProfilRepository extends ServiceEntityRepository
                         return true;
                     }
                 }
+
                 return false;
             });
         }
@@ -91,15 +92,17 @@ class ProfilRepository extends ServiceEntityRepository
                         return true;
                     }
                 }
+
                 return false;
             });
         }
 
         usort($profils, function ($a, $b) {
             $cmp = strcmp($a->getNom(), $b->getNom());
-            if ($cmp !== 0) {
+            if (0 !== $cmp) {
                 return $cmp;
             }
+
             return strcmp($a->getPrenom(), $b->getPrenom());
         });
 

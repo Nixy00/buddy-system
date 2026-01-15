@@ -6,7 +6,7 @@
 <section class="section">
     <div class="container">
         <h1 class="h1">Mes Événements</h1>
-        
+
         {% if mesParticipations is empty %}
             <div style="text-align: center; padding: 3rem; background: #f8f9fa; border-radius: 8px; margin-top: 2rem;">
                 <p style="color: #6c757d; font-size: 1.1rem; margin-bottom: 1.5rem;">
@@ -20,11 +20,11 @@
             <p class="lead" style="margin-top: 1rem; margin-bottom: 2rem;">
                 Vous participez à {{ mesParticipations|length }} événement{{ mesParticipations|length > 1 ? 's' : '' }}.
             </p>
-            
+
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
                 {% for participation in mesParticipations %}
                     {% set evenement = participation.evenement %}
-                    {% include 'events/_event_card.html.twig' with {'event': evenement} %}
+                    {{ include('events/_event_card.html.twig', {event: evenement}) }}
                 {% endfor %}
             </div>
         {% endif %}

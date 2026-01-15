@@ -36,7 +36,9 @@ class DashboardController extends AbstractController
     public function mesBuddies(RelationRepository $relationRepository): Response
     {
         $user = $this->getUser();
-        if (!$user) return $this->redirectToRoute('app_login');
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
 
         $mesRelations = $relationRepository->findAcceptedRelationsByUser($user);
 

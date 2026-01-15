@@ -17,7 +17,7 @@ class EvenementRepository extends ServiceEntityRepository
     }
 
     /**
-     * Récupère les événements à venir (ouverts et futurs)
+     * Récupère les événements à venir (ouverts et futurs).
      */
     public function findUpcoming(int $limit = 3): array
     {
@@ -33,7 +33,7 @@ class EvenementRepository extends ServiceEntityRepository
     }
 
     /**
-     * Compte le nombre total d'événements
+     * Compte le nombre total d'événements.
      */
     public function countEvents(): int
     {
@@ -41,7 +41,7 @@ class EvenementRepository extends ServiceEntityRepository
     }
 
     /**
-     * Récupère tous les événements publiés (Ouvert ou Complet) pour l'affichage public
+     * Récupère tous les événements publiés (Ouvert ou Complet) pour l'affichage public.
      */
     public function findPublished(): array
     {
