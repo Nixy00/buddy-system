@@ -18,7 +18,7 @@ class MessageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Compte les messages non lus pour un utilisateur
+     * Compte les messages non lus pour un utilisateur.
      */
     public function countUnreadMessagesByUser(User $user): int
     {

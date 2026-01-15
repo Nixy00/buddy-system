@@ -30,7 +30,7 @@ class RelationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Compte les demandes reçues en attente
+     * Compte les demandes reçues en attente.
      */
     public function countDemandReceivedByUser(User $user): int
     {
@@ -46,6 +46,7 @@ class RelationRepository extends ServiceEntityRepository
 
     /**
      * Récupère toutes les relations validées pour un utilisateur.
+     *
      * @return Relation[]
      */
     public function findAcceptedRelationsByUser(User $user): array
