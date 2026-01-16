@@ -4,6 +4,14 @@
 
 Buddy System est une application web permettant de faciliter l'intégration des étudiants internationaux à l'Université de Reims Champagne-Ardenne. L'application permet aux étudiants locaux de se mettre en relation avec des étudiants internationaux via un système de parrainage, d'événements et de messagerie.
 
+## Dossier Documentation / VM
+
+Un dossier **`docs/`** est disponible à la racine du projet. Il contient tous les éléments relatifs à la gestion de projet et au déploiement :
+
+* **Cahier des charges** : Analyse des besoins et spécifications fonctionnelles.
+* **Comptes-rendus des Sprints** : Suivi de l'avancement (Analyse & Conception).
+* **VM** : la Machine Virtuelle.
+
 ## 📂 Sommaire
 
 - [Contributeurs](#-contributeurs)
@@ -123,14 +131,26 @@ composer install
 
 ### Installer Symfony CLI
 
-Si non installé, téléchargez **scoop** en exécutant les commandes suivantes dans un terminal **PowerShell** (Windows uniquement) :
+**Option 1 : Windows (Via PowerShell)**
+
+Nous recommandons l'utilisation de **Scoop** qui configure tout automatiquement (y compris le PATH).
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+Invoke-RestMethod -Uri [https://get.scoop.sh](https://get.scoop.sh) | Invoke-Expression
+scoop install symfony-cli
 ```
 
-Puis exécutez la commande que vous pouvez trouver sur le site Symfony : [Symfony CLI](https://symfony.com/download) (attention à exécuter la commande selon votre OS ici l'équipe avait principalement travaillé sur windows).
+**Option 2 : Linux**
+
+Exécutez la commande d'installation officielle, puis ajoutez Symfony à votre PATH pour pouvoir utiliser la commande symfony.
+
+```bash
+wget https://get.symfony.com/cli/installer -O - | bash
+```
+```bash
+export PATH="$HOME/.symfony5/bin:$PATH"
+```
 
 ### Configuration de l'accès à la base de données
 
@@ -171,6 +191,8 @@ Exécutez la commande suivante :
 ```bash
 composer start
 ```
+
+**Conseil** : Pour une expérience visuelle optimale (notamment pour le rendu des émojis sur Linux à l'IUT), nous recommandons l'utilisation du navigateur **Mozilla Firefox**.
 
 ## 📝 Scripts Composer
 
