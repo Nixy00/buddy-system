@@ -4,7 +4,17 @@
 
 Buddy System est une application web permettant de faciliter l'intégration des étudiants internationaux à l'Université de Reims Champagne-Ardenne. L'application permet aux étudiants locaux de se mettre en relation avec des étudiants internationaux via un système de parrainage, d'événements et de messagerie.
 
-## Dossier Documentation / VM
+### Accès au déploiement
+
+L'application est déployée et accessible à l'adresse suivante :  
+👉 **[http://10.31.33.97](http://10.31.33.97)**
+
+> **Important :** Cette adresse IP est interne au réseau de l'université.  
+> Pour y accéder, vous devez impérativement :
+> * Soit être connecté au **VPN de l'IUT**.
+> * Soit être connecté **physiquement** au réseau de l'IUT.
+
+### Dossier Documentation / VM
 
 Un dossier **`docs/`** est disponible à la racine du projet. Il contient tous les éléments relatifs à la gestion de projet et au déploiement :
 

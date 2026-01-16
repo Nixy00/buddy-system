@@ -1,0 +1,10 @@
+[virt-viewer]
+type=vnc
+title=Serveur-Web-BuddySystem
+host=one-dell1
+port=13911
+proxy=http://one-frontend:29876?token=k10ce63s9wxg6fs0hch5
+fullscreen=0
+toggle-fullscreen=shift+f11
+release-cursor=shift+f12
+secure-attention=ctrl+alt+end
